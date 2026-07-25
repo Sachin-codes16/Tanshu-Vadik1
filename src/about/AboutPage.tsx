@@ -4,6 +4,7 @@ import { AboutIntro } from './AboutIntro';
 import { AboutStats } from './AboutStats';
 import { AboutVisionMission } from './AboutVisionMission';
 import { AboutBusiness } from './AboutBusiness';
+import { AboutTeam } from './AboutTeam';
 
 const ComingSoon: React.FC<{ title: string }> = ({ title }) => (
   <section className="py-24 bg-[#FAF8F5]">
@@ -32,7 +33,7 @@ export const AboutPage: React.FC = () => {
       )}
 
       {activeTab === 'business' && <AboutBusiness />}
-      {activeTab === 'team' && <ComingSoon title="Our Team" />}
+      {activeTab === 'team' && <AboutTeam />}
     </div>
   );
 };

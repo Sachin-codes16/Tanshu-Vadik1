@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import logo from "../assets/Icons/tanshulogo.png";
+import australianOwnedBadge from "../assets/Icons/Austrilla.png";
+import familyOwnedBadge from "../assets/Icons/Family .png";
 
 /* ------------------------------------------------------------------ */
 /*  Palette                                                            */
@@ -32,13 +35,6 @@ const MapPinIcon: React.FC<IconProps> = ({ size = 14, color = ACCENT }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
     <circle cx="12" cy="10" r="3" />
-  </svg>
-);
-
-const SendIcon: React.FC<IconProps> = ({ size = 14, color = '#fff' }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="m22 2-7 20-4-9-9-4Z" />
-    <path d="M22 2 11 13" />
   </svg>
 );
 
@@ -94,23 +90,9 @@ const socials = [
 ];
 
 export const Footer: React.FC = () => {
-  const [emailInput, setEmailInput] = useState('');
-  const [success, setSuccess] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [sendHover, setSendHover] = useState(false);
   const [reqHover, setReqHover] = useState(false);
   const [bookHover, setBookHover] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (emailInput.trim() && emailInput.includes('@')) {
-      setSuccess(true);
-      setTimeout(() => {
-        setEmailInput('');
-        setSuccess(false);
-      }, 3000);
-    }
-  };
 
   const headingStyle: React.CSSProperties = {
     fontFamily: SERIF,
@@ -224,77 +206,31 @@ export const Footer: React.FC = () => {
           }}
           className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-[280px_170px_210px] justify-between gap-8 lg:gap-10 px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-8 lg:pb-1"
         >
-
         {/* ---------------- Stay Updated ---------------- */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <h4 style={headingStyle}>Stay Updated</h4>
-          <p
+         
+          <img
+            src={logo}
+            alt="Tanshu Group Logo"
             style={{
-              fontSize: 12.5,
-              color: MUTED,
-              lineHeight: 1.7,
-              fontWeight: 300,
+              width: '180px',
+              height: 'auto',
               margin: 0,
-              marginBottom: 16,
+              mixBlendMode: 'multiply',
             }}
-          >
-            Subscribe to our newsletter for new arrivals, trends and exclusive
-            insights.
-          </p>
-
-          {success ? (
-            <div
-              style={{
-                color: ACCENT,
-                fontSize: 12,
-                fontWeight: 600,
-                background: `${ACCENT}1a`,
-                padding: 10,
-                border: `1px solid ${ACCENT}4d`,
-                width: '100%',
-              }}
-            >
-              Subscribed! Check inbox.
-            </div>
-          ) : (
-            <form onSubmit={handleSubscribe} style={{ display: 'flex', width: '100%' }}>
-              <input
-                type="email"
-                required
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                placeholder="Enter your email"
-                style={{
-                  flexGrow: 1,
-                  minWidth: 0,
-                  background: '#fff',
-                  border: `1px solid ${ACCENT}40`,
-                  fontSize: 12.5,
-                  padding: '11px 12px',
-                  color: DARK,
-                  fontFamily: SANS,
-                  outline: 'none',
-                }}
-              />
-              <button
-                type="submit"
-                aria-label="Subscribe"
-                onMouseEnter={() => setSendHover(true)}
-                onMouseLeave={() => setSendHover(false)}
-                style={{
-                  background: sendHover ? '#fff' : ACCENT,
-                  border: `1px solid ${ACCENT}`,
-                  padding: '0 14px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  transition: 'background 0.2s ease',
-                }}
-              >
-                <SendIcon color={sendHover ? ACCENT : '#fff'} />
-              </button>
-            </form>
-          )}
+          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <img
+              src={australianOwnedBadge}
+              alt="Australian Owned Certified"
+              style={{ height: '95px', width: 'auto' }}
+            />
+            <img
+              src={familyOwnedBadge}
+              alt="A family owned Australian business"
+              style={{ height: '95px', width: 'auto', filter: 'invert(1)', mixBlendMode: 'multiply' }}
+            />
+          </div>
 
           {/* Social Icons */}
           <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
@@ -327,9 +263,9 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* ---------------- Quick Links ---------------- */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <h4 style={headingStyle}>Quick Links</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
             {quickLinks.map((label) => {
               const isHover = hovered === `ql-${label}`;
               return (
@@ -358,11 +294,11 @@ export const Footer: React.FC = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 12.5, color: MUTED }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <PhoneIcon />
-              <span>+61 2 9999 9166</span>
+              <span>+918930009468</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <MailIcon />
-              <span>info@tanshuvaidik.com.au</span>
+              <span>info@tanshuvaidik.com</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <MapPinIcon />

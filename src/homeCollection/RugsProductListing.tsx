@@ -13,7 +13,7 @@ import {
 import { Product } from '../types';
 import stripedRugImage from '../assets/images/WhatsApp Image 2026-07-20 at 11.45.28.jpeg';
 import trellisRugImage from '../assets/images/WhatsApp Image 2026-07-18 at 11.12.09.jpeg';
-import carpetImage from '../assets/images/Carpet.jpeg';
+import carpetImage from '../assets/images/Rugs.jpeg';
 
 interface RugsProductListingProps {
   products: Product[];
@@ -59,10 +59,10 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   return (
-    <section className="pt-6 pb-14">
-      <div className="max-w-[1280px] mx-auto px-6 flex flex-col lg:flex-row items-start gap-10">
+    <section className="pt-6 pb-0">
+      <div className="max-w-[1280px] mx-auto px-6 relative flex flex-col lg:block gap-10 lg:pb-4">
         {/* Filter sidebar (visual only) */}
-        <aside className="w-full lg:w-64 shrink-0">
+        <aside className="w-full lg:w-64 lg:absolute lg:top-0 lg:left-6 shrink-0">
           <div className="flex items-center justify-between pb-4 border-b border-[#EBE4DC]">
             <h3 className="font-sans text-sm font-bold text-[#2C2623] uppercase tracking-wide">Filter By</h3>
             <SlidersHorizontal size={16} className="text-[#615751]" />
@@ -107,7 +107,7 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
         </aside>
 
         {/* Product grid */}
-        <div className="flex-1">
+        <div className="lg:ml-[296px]">
           <div className="flex items-center justify-between mb-6">
             <span className="font-sans text-xs text-[#615751]">
               Showing {products.length + displayFillers.length} of {products.length + displayFillers.length} results
@@ -129,8 +129,12 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
               })),
               ...displayFillers.map((f, i) => ({ key: `filler-${i}`, ...f })),
             ].map((item) => (
-              <div key={item.key} className="group cursor-pointer" onClick={onSelectProduct}>
-                <div className="relative aspect-[4/3] overflow-hidden bg-[#F4EFEA] border border-[#EBE4DC]">
+              <div
+                key={item.key}
+                className="group cursor-pointer bg-[#FAF8F5] border border-[#EBE4DC] hover:border-[#8F533C]/40 hover:shadow-md transition-all duration-300"
+                onClick={onSelectProduct}
+              >
+                <div className="relative aspect-[4/3] overflow-hidden bg-[#F4EFEA]">
                   <img
                     src={item.image}
                     alt={item.name}
@@ -143,7 +147,7 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
                   </span>
                 </div>
 
-                <div className="mt-4">
+                <div className="p-4">
                   <div className="flex items-center gap-2 mb-2.5">
                     {swatchTones.map((tone) => (
                       <span
@@ -173,8 +177,8 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
       </div>
 
       {/* Trust strip */}
-      <div className="max-w-[1280px] mx-auto px-6 mt-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 bg-[#F4EFEA] border border-[#EBE4DC] px-8 py-6">
+      <div className="w-full mt-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-10 bg-[#F4EFEA] border border-[#EBE4DC] px-8 py-6">
           {trustItems.map((item) => (
             <div key={item.title} className="flex items-start gap-3">
               <span className="text-[#8F533C] shrink-0 mt-0.5">{item.icon}</span>

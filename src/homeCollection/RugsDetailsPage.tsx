@@ -35,7 +35,7 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ onBack }) => {
           {/* Breadcrumb */}
           <button
             onClick={onBack}
-            className="flex items-center gap-1.5 text-[11px] font-sans text-white/70 hover:text-white transition-colors cursor-pointer mb-4"
+            className="flex items-center gap-1.5 text-sm sm:text-base font-sans font-bold text-white/70 hover:text-white transition-colors cursor-pointer mb-4"
           >
             <span className="hover:underline">Home</span>
             <span>&gt;</span>

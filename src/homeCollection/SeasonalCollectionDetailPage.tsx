@@ -82,11 +82,11 @@ export const SeasonalCollectionDetailPage: React.FC<SeasonalCollectionDetailPage
         />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_75%_at_0%_100%,_rgba(44,38,35,0.88)_0%,_rgba(44,38,35,0.5)_40%,_transparent_75%)]" />
 
-        <div className="relative z-10 max-w-[1280px] mx-auto px-6 pb-14 w-full">
+        <div className="relative z-10 w-full px-6 pb-14">
           {/* Breadcrumb */}
           <button
             onClick={onBack}
-            className="flex items-center gap-1.5 text-[11px] font-sans text-white/70 hover:text-white transition-colors cursor-pointer mb-4"
+            className="flex items-center gap-1.5 text-sm sm:text-base font-sans font-bold text-white/70 hover:text-white transition-colors cursor-pointer mb-4"
           >
             <span className="hover:underline">Home</span>
             <span>&gt;</span>
@@ -116,8 +116,8 @@ export const SeasonalCollectionDetailPage: React.FC<SeasonalCollectionDetailPage
       </section>
 
       {/* Category grid */}
-      <section className="pt-6 pb-16">
-        <div className="max-w-[1280px] mx-auto px-6">
+      <section className="pt-6 pb-6">
+        <div className="w-full px-6">
           <div className="flex flex-col items-center text-center gap-1 mb-6">
             <h2 className="font-serif text-2xl sm:text-3xl text-[#2C2623] font-medium tracking-tight">
               Explore Our <span className="relative">
@@ -127,7 +127,7 @@ export const SeasonalCollectionDetailPage: React.FC<SeasonalCollectionDetailPage
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {seasonalCategories.map((category, index) => (
               <motion.div
                 key={category.name}
@@ -170,8 +170,8 @@ export const SeasonalCollectionDetailPage: React.FC<SeasonalCollectionDetailPage
       </section>
 
       {/* Trust strip */}
-      <div className="max-w-[1280px] mx-auto px-6 pb-14">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 bg-[#F4EFEA] border border-[#EBE4DC] px-8 py-6">
+      <div className="w-full px-6 pb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-10 bg-[#F4EFEA] border border-[#EBE4DC] px-8 py-6">
           {trustItems.map((item) => (
             <div key={item.title} className="flex items-start gap-3">
               <span className="text-[#8F533C] shrink-0 mt-0.5">{item.icon}</span>
