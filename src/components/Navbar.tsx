@@ -71,9 +71,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateCollections, onNavigat
                 className="relative font-sans text-[10px] lg:text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest transition-colors py-1 nav-link flex items-center gap-1 uppercase shrink-0"
               >
                 <span>{item.label}</span>
-                {item.label === 'SUSTAINABILITY' && (
-                  <span className="text-[8px] text-[#8F533C] translate-y-[0.5px]">▼</span>
-                )}
               </a>
             )
           )}

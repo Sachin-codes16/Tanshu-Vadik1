@@ -156,7 +156,7 @@ return (
     <section id="capabilities" className="bg-[#FAF8F5] scroll-mt-28">
       <div className="w-full">
         <div className="bg-white border border-[#EBE4DC] px-6 py-5">
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-x-4 gap-y-6 items-center justify-items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-x-4 gap-y-6 items-start justify-items-center">
           {stats.map((s, index) => (
             <motion.div
               key={index}
@@ -164,13 +164,15 @@ return (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: index * 0.04 }}
-              className="flex flex-row items-center justify-center gap-3 text-left w-full"
+              className={`flex flex-row items-center gap-3 text-left w-full justify-center ${
+                index % 2 === 0 ? 'max-sm:justify-start' : 'max-sm:justify-end'
+              }`}
             >
               <div className="flex-shrink-0 w-16 h-16 overflow-hidden rounded-full bg-[#EBE4DC] border border-[#8F533C]/30 shadow-[0_4px_14px_rgba(143,83,60,0.6)] flex items-center justify-center p-2.5">
                 {s.icon}
               </div>
 
-              <div className="flex flex-col justify-center min-w-0 -mt-1">
+              <div className="flex flex-col justify-center w-24 sm:w-28 shrink-0 -mt-1">
                 <div className="font-sans text-sm sm:text-base font-bold text-[#2C2623] tracking-tight leading-tight">
                   {s.value}
                 </div>

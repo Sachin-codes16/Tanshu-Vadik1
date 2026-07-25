@@ -82,7 +82,7 @@ export const SeasonalCollectionDetailPage: React.FC<SeasonalCollectionDetailPage
         />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_75%_at_0%_100%,_rgba(44,38,35,0.88)_0%,_rgba(44,38,35,0.5)_40%,_transparent_75%)]" />
 
-        <div className="relative z-10 w-full px-6 pb-14">
+        <div className="relative z-10 w-full px-[80px] pb-14">
           {/* Breadcrumb */}
           <button
             onClick={onBack}
@@ -117,7 +117,7 @@ export const SeasonalCollectionDetailPage: React.FC<SeasonalCollectionDetailPage
 
       {/* Category grid */}
       <section className="pt-6 pb-6">
-        <div className="w-full px-6">
+        <div className="w-full px-[80px]">
           <div className="flex flex-col items-center text-center gap-1 mb-6">
             <h2 className="font-serif text-2xl sm:text-3xl text-[#2C2623] font-medium tracking-tight">
               Explore Our <span className="relative">
@@ -127,7 +127,7 @@ export const SeasonalCollectionDetailPage: React.FC<SeasonalCollectionDetailPage
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
             {seasonalCategories.map((category, index) => (
               <motion.div
                 key={category.name}
@@ -170,7 +170,7 @@ export const SeasonalCollectionDetailPage: React.FC<SeasonalCollectionDetailPage
       </section>
 
       {/* Trust strip */}
-      <div className="w-full px-6 pb-6">
+      <div className="w-full pb-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-10 bg-[#F4EFEA] border border-[#EBE4DC] px-8 py-6">
           {trustItems.map((item) => (
             <div key={item.title} className="flex items-start gap-3">

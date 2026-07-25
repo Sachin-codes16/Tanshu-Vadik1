@@ -5,8 +5,8 @@ import { useInquiry } from '../context/InquiryContext';
 import { TrustStats } from './TrustStats';
 import { Certifications } from './Certifications';
 import { ProductShowcaseModal } from './ProductShowcaseModal';
-import springCollection from "../assets/images/Spring.png"
-import fallCollection from "../assets/images/Fall.png"
+import springCollection from "../assets/collection/Spring.png"
+import fallCollection from "../assets/collection/Spring2.png"
 
 const localImages = import.meta.glob('../assets/images/*', { eager: true, import: 'default' }) as Record<string, string>;
 const img = (filename: string): string => {
@@ -319,33 +319,43 @@ export const Collections: React.FC = () => {
               <img
                 src={category.image}
                 alt={category.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                  category.name.includes('FALL') ? 'brightness-125 contrast-105' : ''
+                }`}
               />
 
-              {category.image.endsWith('.png') ? null : (
-                <>
-                  {/* 2. Dark Tint Overlay for Readable Text */}
-                  <div className="absolute inset-0 bg-black/30 transition-colors duration-300 group-hover:bg-black/40" />
+              {/* 2. Dark Tint Overlay for Readable Text */}
+              <div className="absolute inset-0 bg-black/5 transition-colors duration-300 group-hover:bg-black/15" />
 
-                  {/* 3. Centered Absolute Content Box */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 text-white">
-                    <h3 className="font-serif text-2xl md:text-3xl tracking-widest uppercase mb-2">
-                      {category.name}
-                    </h3>
+              {/* 3. Content Box: Spring/Summer stays centered, Fall/Winter sits to the side */}
+              <div
+                className={`absolute inset-0 flex flex-col justify-center p-6 sm:p-10 text-white ${
+                  category.name.includes('SPRING')
+                    ? 'items-center text-center'
+                    : 'items-start text-left'
+                }`}
+              >
+                <h3
+                  className={`font-serif text-lg sm:text-2xl md:text-3xl tracking-wide sm:tracking-widest uppercase mb-2 leading-snug ${
+                    category.name.includes('SPRING') ? 'w-full' : 'max-w-[70%]'
+                  }`}
+                >
+                  {category.name.replace(' COLLECTION', '')}
+                  <br />
+                  COLLECTION
+                </h3>
 
-                    {category.subtitle && (
-                      <p className="font-serif italic text-sm md:text-base opacity-90 mb-6 tracking-wide">
-                        {category.subtitle}
-                      </p>
-                    )}
+                {category.subtitle && (
+                  <p className="font-serif italic text-sm md:text-base opacity-90 mb-6 tracking-wide">
+                    {category.subtitle}
+                  </p>
+                )}
 
-                    {/* Bordered Button Element */}
-                    <button className="px-6 py-2.5 border border-white text-xs uppercase tracking-widest transition-all duration-300 hover:bg-white hover:text-black">
-                      Explore Now &rarr;
-                    </button>
-                  </div>
-                </>
-              )}
+                {/* Bordered Button Element */}
+                <button className="px-6 py-2.5 border border-white text-xs uppercase tracking-widest transition-all duration-300 hover:bg-white hover:text-black">
+                  Explore Now &rarr;
+                </button>
+              </div>
             </div>
           ))}
         </div>

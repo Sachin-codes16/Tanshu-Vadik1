@@ -75,9 +75,9 @@ export const CollectionCardsSection: React.FC<CollectionCardsSectionProps> = ({
 
   return (
     <section className="bg-[#FAF8F5] pb-2">
-      <div className="max-w-[1280px] mx-auto px-3 pt-8">
+      <div className="w-full px-[80px] pt-8">
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {cards.map((card, index) => (
             <motion.div
               key={card.key}

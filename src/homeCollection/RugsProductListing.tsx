@@ -60,9 +60,9 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
 
   return (
     <section className="pt-6 pb-0">
-      <div className="max-w-[1280px] mx-auto px-6 relative flex flex-col lg:block gap-10 lg:pb-4">
+      <div className="w-full px-[80px] relative flex flex-col lg:block gap-10 lg:pb-4">
         {/* Filter sidebar (visual only) */}
-        <aside className="w-full lg:w-64 lg:absolute lg:top-0 lg:left-6 shrink-0">
+        <aside className="w-full lg:w-64 lg:absolute lg:top-0 lg:left-[80px] shrink-0">
           <div className="flex items-center justify-between pb-4 border-b border-[#EBE4DC]">
             <h3 className="font-sans text-sm font-bold text-[#2C2623] uppercase tracking-wide">Filter By</h3>
             <SlidersHorizontal size={16} className="text-[#615751]" />
@@ -118,7 +118,7 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
             </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               ...products.map((p) => ({
                 key: p.id,
