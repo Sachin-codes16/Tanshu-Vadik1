@@ -5,7 +5,7 @@ export const About: React.FC = () => {
   return (
     <section
       id="heritage"
-      className="pt-3 sm:pt-4 bg-[#FAF8F5]"
+      className="pt-3 sm:pt-4 bg-[#FAF8F5] scroll-mt-28"
     >
       <div className="w-full px-[80px] grid grid-cols-1 lg:grid-cols-[3fr_2fr] items-start">
 

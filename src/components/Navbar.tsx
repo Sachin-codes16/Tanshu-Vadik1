@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu, X, Mail, ClipboardList } from 'lucide-react';
 import { useInquiry } from '../context/InquiryContext';
 import { motion, AnimatePresence } from 'motion/react';
-import tanshuLogo from '../assets/images/Tanshulogo.png';
+import tanshuLogo from '../assets/Icons/tanshulogo.png';
 
 interface NavbarProps {
   onNavigateCollections: () => void;
@@ -28,18 +28,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateCollections, onNavigat
       id="navbar-root"
       className="fixed top-0 left-0 w-full z-50 bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#EBE4DC] py-4 shadow-xs"
     >
-      <div className="w-full px-[80px] flex items-center justify-between">
+      <div className="w-full px-4 sm:px-6 lg:px-[80px] flex items-center justify-between">
         
         {/* Brand Logo exactly as requested */}
         <a
           href="#"
           onClick={onNavigateHome}
-          className="flex items-center select-none group shrink-0 mr-4 sm:mr-8 lg:mr-12"
+          className="flex items-center select-none group shrink-0 mr-5 lg:mr-9"
         >
           <img
             src={tanshuLogo}
             alt="Tanshu Vaidik India Pvt. Ltd."
-            className="h-9 sm:h-11 md:h-12 w-auto object-contain"
+            className="h-12 sm:h-14 md:h-16 w-auto object-contain"
           />
         </a>
 

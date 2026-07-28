@@ -207,8 +207,8 @@ export const Footer: React.FC = () => {
           className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-[280px_170px_210px] justify-between gap-8 lg:gap-10 px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-8 lg:pb-1"
         >
         {/* ---------------- Stay Updated ---------------- */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-         
+        <div className="flex flex-col items-center sm:items-start">
+
           <img
             src={logo}
             alt="Tanshu Group Logo"
@@ -216,10 +216,9 @@ export const Footer: React.FC = () => {
               width: '180px',
               height: 'auto',
               margin: 0,
-              mixBlendMode: 'multiply',
             }}
           />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div className="flex flex-col items-center sm:flex-row sm:items-center gap-4 sm:gap-4" style={{ marginTop: 16 }}>
             <img
               src={australianOwnedBadge}
               alt="Australian Owned Certified"
@@ -289,7 +288,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* ---------------- Contact Us ---------------- */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+        <div className="flex flex-col items-center sm:items-start">
           <h4 style={headingStyle}>Contact Us</h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 12.5, color: MUTED }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

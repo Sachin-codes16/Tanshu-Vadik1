@@ -324,8 +324,8 @@ export const Collections: React.FC = () => {
                 }`}
               />
 
-              {/* 2. Dark Tint Overlay for Readable Text */}
-              <div className="absolute inset-0 bg-black/5 transition-colors duration-300 group-hover:bg-black/15" />
+              {/* 2. Light Tint for Balance */}
+              <div className="absolute inset-0 bg-black/25 transition-colors duration-300 group-hover:bg-black/35" />
 
               {/* 3. Content Box: Spring/Summer stays centered, Fall/Winter sits to the side */}
               <div
@@ -334,9 +334,10 @@ export const Collections: React.FC = () => {
                     ? 'items-center text-center'
                     : 'items-start text-left'
                 }`}
+                style={{ textShadow: '0 2px 10px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.9)' }}
               >
                 <h3
-                  className={`font-serif text-lg sm:text-2xl md:text-3xl tracking-wide sm:tracking-widest uppercase mb-2 leading-snug ${
+                  className={`font-serif font-bold text-lg sm:text-2xl md:text-3xl tracking-wide sm:tracking-widest uppercase mb-2 leading-snug ${
                     category.name.includes('SPRING') ? 'w-full' : 'max-w-[70%]'
                   }`}
                 >
@@ -346,13 +347,16 @@ export const Collections: React.FC = () => {
                 </h3>
 
                 {category.subtitle && (
-                  <p className="font-serif italic text-sm md:text-base opacity-90 mb-6 tracking-wide">
+                  <p className="font-serif italic font-bold text-sm md:text-base mb-6 tracking-wide">
                     {category.subtitle}
                   </p>
                 )}
 
                 {/* Bordered Button Element */}
-                <button className="px-6 py-2.5 border border-white text-xs uppercase tracking-widest transition-all duration-300 hover:bg-white hover:text-black">
+                <button
+                  className="px-6 py-2.5 border border-white text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white hover:text-black bg-black/25 backdrop-blur-[2px]"
+                  style={{ textShadow: 'none' }}
+                >
                   Explore Now &rarr;
                 </button>
               </div>
