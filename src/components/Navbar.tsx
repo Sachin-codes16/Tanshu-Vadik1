@@ -2,15 +2,21 @@ import React, { useState } from 'react';
 import { Menu, X, Mail, ClipboardList } from 'lucide-react';
 import { useInquiry } from '../context/InquiryContext';
 import { motion, AnimatePresence } from 'motion/react';
-import tanshuLogo from '../assets/Icons/tanshulogo.png';
+import tanshuLogo from '../assets/images/Tanshulogo.png';
 
 interface NavbarProps {
   onNavigateCollections: () => void;
   onNavigateAbout: () => void;
   onNavigateHome: () => void;
+  onNavigateCapabilities: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onNavigateCollections, onNavigateAbout, onNavigateHome }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  onNavigateCollections,
+  onNavigateAbout,
+  onNavigateHome,
+  onNavigateCapabilities,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const { cart, setIsPortalOpen } = useInquiry();
 
@@ -26,10 +32,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateCollections, onNavigat
   return (
     <nav
       id="navbar-root"
-      className="fixed top-0 left-0 w-full z-50 bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#EBE4DC] py-4 shadow-xs"
+      className="fixed top-0 left-0 w-full z-50 bg-[#FAF8F5] border-b border-[#EBE4DC] py-4 shadow-xs"
     >
       <div className="w-full px-4 sm:px-6 lg:px-[80px] flex items-center justify-between">
-        
+
         {/* Brand Logo exactly as requested */}
         <a
           href="#"
@@ -63,6 +69,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateCollections, onNavigat
               >
                 <span>{item.label}</span>
               </button>
+            ) : item.label === 'CAPABILITIES' ? (
+              <button
+                key={item.label}
+                onClick={onNavigateCapabilities}
+                className="relative font-sans text-[10px] lg:text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest transition-colors py-1 nav-link flex items-center gap-1 uppercase shrink-0 cursor-pointer bg-transparent"
+              >
+                <span>{item.label}</span>
+              </button>
             ) : (
               <a
                 key={item.label}
@@ -88,11 +102,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateCollections, onNavigat
             <ClipboardList size={11} className="shrink-0" />
             <span className="hidden min-[380px]:inline">REQUEST CATALOGUE</span>
             <span className="inline min-[380px]:hidden">CATALOGUE</span>
-            {cart.length > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-[#2C2623] text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-[#FAF8F5]">
-                {cart.length}
-              </span>
-            )}
+            <AnimatePresence>
+              {cart.length > 0 && (
+                <motion.span
+                  key={cart.length}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                  className="absolute -top-2 -right-2 bg-[#C0392B] text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 flex items-center justify-center rounded-full border-2 border-[#FAF8F5] shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
+                >
+                  {cart.length}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
 
           {/* WhatsApp Icon */}
@@ -147,6 +170,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigateCollections, onNavigat
                   onClick={() => {
                     setIsOpen(false);
                     onNavigateAbout();
+                  }}
+                  className="text-left font-sans text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest border-b border-[#F4EFEA] pb-2 transition-colors uppercase cursor-pointer bg-transparent"
+                >
+                  {item.label}
+                </button>
+              ) : item.label === 'CAPABILITIES' ? (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    setIsOpen(false);
+                    onNavigateCapabilities();
                   }}
                   className="text-left font-sans text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest border-b border-[#F4EFEA] pb-2 transition-colors uppercase cursor-pointer bg-transparent"
                 >

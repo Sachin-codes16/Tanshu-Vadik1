@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
-import { AnimatePresence } from 'motion/react';
 import { Leaf, Hand, Globe } from 'lucide-react';
-import { ProductShowcaseModal } from '../components/ProductShowcaseModal';
-import { RugsProductListing } from './RugsProductListing';
+import { RugsProductListing, getAllRugItems } from './RugsProductListing';
+import { RugProductDetailPage } from './RugProductDetailPage';
 import { getProductsForHomeCategory } from './HomeCollectionClick';
+import { Product } from '../types';
 import rugsHeroImage from '../assets/collection/ChatGPT Image Jul 23, 2026, 12_59_04 AM.png';
 
 interface RugsDetailsPageProps {
@@ -18,7 +18,24 @@ const features = [
 
 export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ onBack }) => {
   const rugsProducts = useMemo(() => getProductsForHomeCategory('Rugs'), []);
-  const [showProducts, setShowProducts] = useState(false);
+  const allRugItems = useMemo(() => getAllRugItems(rugsProducts), [rugsProducts]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const openProduct = (product: Product) => {
+    setSelectedProduct(product);
+    window.scrollTo({ top: 0 });
+  };
+
+  if (selectedProduct) {
+    return (
+      <RugProductDetailPage
+        product={selectedProduct}
+        relatedProducts={allRugItems.filter((item) => item.id !== selectedProduct.id)}
+        onBack={() => setSelectedProduct(null)}
+        onSelectRelated={openProduct}
+      />
+    );
+  }
 
   return (
     <div className="pt-16 sm:pt-[76px] bg-[#FAF8F5]">
@@ -35,7 +52,7 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ onBack }) => {
           {/* Breadcrumb */}
           <button
             onClick={onBack}
-            className="flex items-center gap-1.5 text-sm sm:text-base font-sans font-bold text-white/70 hover:text-white transition-colors cursor-pointer mb-4"
+            className="flex items-center gap-1.5 text-sm sm:text-base font-sans font-bold text-[#D99A78] hover:text-white transition-colors cursor-pointer mb-4"
           >
             <span className="hover:underline">Home</span>
             <span>&gt;</span>
@@ -65,14 +82,7 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ onBack }) => {
       </section>
 
       {/* Rugs product listing */}
-      <RugsProductListing products={rugsProducts} onSelectProduct={() => setShowProducts(true)} />
-
-      {/* Full product detail modal (Quick View / Spec Sheet) */}
-      <AnimatePresence>
-        {showProducts && (
-          <ProductShowcaseModal heading="Rugs" products={rugsProducts} onClose={() => setShowProducts(false)} />
-        )}
-      </AnimatePresence>
+      <RugsProductListing products={rugsProducts} onSelectProduct={openProduct} />
     </div>
   );
 };

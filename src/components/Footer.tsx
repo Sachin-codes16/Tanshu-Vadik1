@@ -80,6 +80,7 @@ const quickLinks = [
   'Sustainability',
   'Certifications',
   'Contact Us',
+  'Blogs',
 ];
 
 const socials = [
@@ -89,7 +90,12 @@ const socials = [
   { label: 'Pinterest', Icon: PinterestIcon },
 ];
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  onNavigateBlogs?: () => void;
+  onNavigateCapabilities?: () => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapabilities }) => {
   const [hovered, setHovered] = useState<string | null>(null);
   const [reqHover, setReqHover] = useState(false);
   const [bookHover, setBookHover] = useState(false);
@@ -202,12 +208,12 @@ export const Footer: React.FC = () => {
         <div
           style={{
             display: 'grid',
-            alignItems: 'flex-start',
+            alignItems: 'stretch',
           }}
           className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-[280px_170px_210px] justify-between gap-8 lg:gap-10 px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-8 lg:pb-1"
         >
         {/* ---------------- Stay Updated ---------------- */}
-        <div className="flex flex-col items-center sm:items-start">
+        <div className="flex flex-col items-center sm:items-start justify-between h-full">
 
           <img
             src={logo}
@@ -271,6 +277,13 @@ export const Footer: React.FC = () => {
                 <a
                   key={label}
                   href="#"
+                  onClick={
+                    label === 'Blogs'
+                      ? (e) => { e.preventDefault(); onNavigateBlogs?.(); }
+                      : label === 'Capabilities'
+                      ? (e) => { e.preventDefault(); onNavigateCapabilities?.(); }
+                      : undefined
+                  }
                   onMouseEnter={() => setHovered(`ql-${label}`)}
                   onMouseLeave={() => setHovered(null)}
                   style={{
@@ -278,6 +291,7 @@ export const Footer: React.FC = () => {
                     color: isHover ? ACCENT : MUTED,
                     textDecoration: 'none',
                     transition: 'color 0.2s ease',
+                    cursor: label === 'Blogs' || label === 'Capabilities' ? 'pointer' : undefined,
                   }}
                 >
                   {label}

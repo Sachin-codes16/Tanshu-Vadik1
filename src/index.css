@@ -24,6 +24,11 @@
   --spacing-container-max: 1280px;
 }
 
+html, body {
+  background-color: #FAF8F5;
+  scrollbar-gutter: stable;
+}
+
 @layer utilities {
   .font-display-lg {
     font-family: var(--font-serif);
