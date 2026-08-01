@@ -1,11 +1,11 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 
-import academy from "./academy.png";
-import metal from "./metal.png";
-import robotics from "./robotics.png";
-import vaidik from "./vaidik.png";
-import green from "./green.png";
+import academy from "./Academy.png";
+import metal from "./Metal.png";
+import robotics from "./Robotics.png";
+import vaidik from "./Vaidik.png";
+import green from "./Green.png";
 import navi from "./Navi.png";
 
 const logos = [metal, academy, robotics, vaidik, green, navi];
