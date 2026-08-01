@@ -1,7 +1,7 @@
 import React from 'react';
 import { Home, GraduationCap, Coins, Users, ArrowRight } from 'lucide-react';
 import artisanImage1 from '../assets/images/throws.jpeg';
-import artisanImage2 from '../assets/images/TableRunner.jpeg';
+import artisanImage2 from '../assets/images/tableRunner.jpeg';
 import artisanImage3 from '../assets/images/kitchenliner.jpeg';
 import artisanImage4 from '../assets/images/wall_decor_macrame_1783701205440.jpg';
 
