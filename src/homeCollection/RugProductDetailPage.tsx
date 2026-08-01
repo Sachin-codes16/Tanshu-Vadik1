@@ -193,8 +193,10 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mt-7">
                 {introBadges.map((badge) => (
-                  <div key={badge.label} className="flex flex-col gap-2">
-                    <span className="text-[#2C2623]">{badge.icon}</span>
+                  <div key={badge.label} className="flex flex-col items-center gap-2 text-center">
+                    <span className="w-8 h-8 flex items-center justify-center text-[#2C2623]">
+                      {badge.icon}
+                    </span>
                     <span className="font-sans text-[11px] font-bold text-[#2C2623] leading-snug">
                       {badge.label}
                     </span>
@@ -209,17 +211,6 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
                 >
                   Request Product Details
                   <ArrowRight size={14} />
-                </button>
-                <button
-                  onClick={() => (inCart ? removeFromCart(product.id) : addToCart(product))}
-                  className={`flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 font-button text-xs tracking-widest uppercase transition-colors cursor-pointer border ${
-                    inCart
-                      ? 'bg-[#F4EFEA] border-[#8F533C] text-[#8F533C]'
-                      : 'bg-transparent border-[#2C2623] text-[#2C2623] hover:bg-[#F4EFEA]'
-                  }`}
-                >
-                  {inCart ? 'Added to Enquiry' : 'Add to Enquiry'}
-                  <Heart size={14} fill={inCart ? 'currentColor' : 'none'} />
                 </button>
               </div>
 
@@ -253,7 +244,7 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
       </section>
 
       {/* CUSTOMISATION STUDIO */}
-      <section className="bg-white py-10">
+      <section className="bg-white pt-3 pb-10">
         <div className="w-full px-6 sm:px-[80px] text-center">
           <div className="relative flex items-center justify-center mb-8">
             <div className="absolute inset-x-0 top-1/2 h-px bg-[#EBE4DC]" />

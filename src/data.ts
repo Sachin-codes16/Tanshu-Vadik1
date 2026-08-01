@@ -479,9 +479,9 @@ export const offices: Office[] = [
     name: 'Tanshu Vaidik Headquarters',
     country: 'India',
     coords: { top: '45%', left: '55%' },
-    address: 'Plot No. 423-424, Sector 25 Part-II, HUDA, Panipat - 132103, Haryana, India',
+    address: 'Village Kharak Ramji, Near Samalkha Road, Panipat - 132103, Haryana, India',
     email: 'factory@tanshuvaidik.com',
-    phone: '+91 180 266 4230',
+    phone: '+91 86072 36222',
     highlight: 'Core integrated weaving facility, loom floor, dye lab, and global export packaging.'
   },
   {

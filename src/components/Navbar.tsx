@@ -9,6 +9,7 @@ interface NavbarProps {
   onNavigateAbout: () => void;
   onNavigateHome: () => void;
   onNavigateCapabilities: () => void;
+  onNavigateSustainability: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -16,6 +17,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateAbout,
   onNavigateHome,
   onNavigateCapabilities,
+  onNavigateSustainability,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { cart, setIsPortalOpen } = useInquiry();
@@ -77,6 +79,24 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <span>{item.label}</span>
               </button>
+            ) : item.label === 'SUSTAINABILITY' ? (
+              <button
+                key={item.label}
+                onClick={onNavigateSustainability}
+                className="relative font-sans text-[10px] lg:text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest transition-colors py-1 nav-link flex items-center gap-1 uppercase shrink-0 cursor-pointer bg-transparent"
+              >
+                <span>{item.label}</span>
+              </button>
+            ) : item.label === 'CONTACT US' ? (
+              <a
+                key={item.label}
+                href="/contact"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative font-sans text-[10px] lg:text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest transition-colors py-1 nav-link flex items-center gap-1 uppercase shrink-0"
+              >
+                <span>{item.label}</span>
+              </a>
             ) : (
               <a
                 key={item.label}
@@ -186,6 +206,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   {item.label}
                 </button>
+              ) : item.label === 'SUSTAINABILITY' ? (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    setIsOpen(false);
+                    onNavigateSustainability();
+                  }}
+                  className="text-left font-sans text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest border-b border-[#F4EFEA] pb-2 transition-colors uppercase cursor-pointer bg-transparent"
+                >
+                  {item.label}
+                </button>
+              ) : item.label === 'CONTACT US' ? (
+                <a
+                  key={item.label}
+                  href="/contact"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsOpen(false)}
+                  className="font-sans text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest border-b border-[#F4EFEA] pb-2 transition-colors uppercase"
+                >
+                  {item.label}
+                </a>
               ) : (
                 <a
                   key={item.label}

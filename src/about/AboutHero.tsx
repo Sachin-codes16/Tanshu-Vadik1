@@ -1,5 +1,6 @@
 import React from 'react';
 import heroImage from '../assets/images/heartbehind.png';
+import teamHeroImage from '../assets/collection/Contactus.png';
 
 export type AboutTab = 'about' | 'business' | 'team';
 
@@ -16,11 +17,12 @@ const tabs: Tab[] = [
 
 interface HeroContent {
   image: string;
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
+  tagline?: string;
   description: string;
-  ctaLabel: string;
-  ctaHref: string;
+  ctaLabel?: string;
+  ctaHref?: string;
 }
 
 const heroContent: Record<AboutTab, HeroContent> = {
@@ -44,12 +46,11 @@ const heroContent: Record<AboutTab, HeroContent> = {
     ctaHref: '#about-business',
   },
   team: {
-    image: heroImage,
-    eyebrow: 'Tanshu Vaidik India Pvt. Ltd.',
+    image: teamHeroImage,
     title: 'Our Team',
-    description: 'The artisans, designers, and specialists behind every Tanshu Vaidik product.',
-    ctaLabel: 'Meet The Team',
-    ctaHref: '#about-team',
+    tagline: 'Driven by passion. United by purpose. Creating handcrafted excellence for the world.',
+    description:
+      'Tanshu Vaidik is powered by a dedicated team of creators, innovators and craft champions.',
   },
 };
 
@@ -75,21 +76,33 @@ export const AboutHero: React.FC<AboutHeroProps> = (props: AboutHeroProps) => {
         <div className="absolute inset-0 bg-gradient-to-r from-[#2C2623]/90 via-[#2C2623]/60 to-[#2C2623]/20" />
 
         <div className="relative z-10 h-full w-full px-[20px] flex flex-col justify-center gap-5 max-w-2xl">
-          <span className="font-sans text-[11px] font-bold tracking-[0.3em] text-[#D8B88A] uppercase">
-            {content.eyebrow}
-          </span>
-          <h1 className="font-serif text-4xl sm:text-6xl text-white tracking-tight font-bold uppercase leading-none">
-            {content.title}
-          </h1>
+          {content.eyebrow && (
+            <span className="font-sans text-[11px] font-bold tracking-[0.3em] text-[#D8B88A] uppercase">
+              {content.eyebrow}
+            </span>
+          )}
+          <div>
+            <h1 className="font-serif text-4xl sm:text-6xl text-white tracking-tight font-bold uppercase leading-none">
+              {content.title}
+            </h1>
+            <span className="block h-[2px] w-14 bg-[#D8B88A] mt-4" />
+          </div>
+          {content.tagline && (
+            <p className="font-serif italic text-lg sm:text-xl text-[#F4EFEA] max-w-lg leading-snug">
+              {content.tagline}
+            </p>
+          )}
           <p className="font-sans text-sm sm:text-base text-[#F4EFEA] max-w-lg leading-relaxed">
             {content.description}
           </p>
-          <a
-            href={content.ctaHref}
-            className="mt-2 inline-block w-fit px-6 py-3 bg-[#8F533C] hover:bg-[#723F2B] text-white font-sans text-xs font-bold tracking-widest uppercase transition-colors"
-          >
-            {content.ctaLabel} &rarr;
-          </a>
+          {content.ctaLabel && content.ctaHref && (
+            <a
+              href={content.ctaHref}
+              className="mt-2 inline-block w-fit px-6 py-3 bg-[#8F533C] hover:bg-[#723F2B] text-white font-sans text-xs font-bold tracking-widest uppercase transition-colors"
+            >
+              {content.ctaLabel} &rarr;
+            </a>
+          )}
         </div>
       </div>
 

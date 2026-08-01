@@ -1,10 +1,10 @@
 import React from 'react';
-import rugTextureImage from '../assets/images/Rug.jpeg';
+import heroImage from '../assets/images/Rug.jpeg';
 
 export const CapabilitiesHero: React.FC = () => {
   return (
     <section className="bg-[#FAF8F5]">
-      <div className="w-full grid grid-cols-1 lg:grid-cols-2">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] items-stretch">
         <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-[80px] py-12 lg:py-0">
           <h1 className="font-serif text-3xl sm:text-4xl lg:text-[2.75rem] text-[#2C2623] font-medium leading-tight">
             Our Capabilities.
@@ -20,13 +20,13 @@ export const CapabilitiesHero: React.FC = () => {
           </p>
         </div>
 
-       <div className="relative flex items-center justify-center bg-[#FAF8F5] py-10 px-6">
-  <img
-    src={rugTextureImage}
-    alt="Tanshu Vaidik manufacturing"
-    className="w-full max-w-[500px] h-[320px] lg:h-[380px] object-cover rounded-none"
-  />
-</div>
+        <div className="relative h-85 lg:h-auto overflow-hidden bg-[#FAF8F5]">
+          <img
+            src={heroImage}
+            alt="Tanshu Vaidik manufacturing"
+            className="w-full h-full object-cover rounded-none"
+          />
+        </div>
       </div>
     </section>
   );

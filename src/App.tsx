@@ -14,18 +14,23 @@ import { AboutPage } from './about/AboutPage';
 import { B2BPortal } from './components/B2BPortal';
 import { BlogsPage } from './blogs/BlogsPage';
 import { CapabilitiesPage } from './capabilities/CapabilitiesPage';
+import { ContactPage } from './contact/ContactPage';
+import { SustainabilityPage } from './sustainability/SustainabilityPage';
 
 export default function App() {
   const [showCollectionsPage, setShowCollectionsPage] = useState(false);
   const [showAboutPage, setShowAboutPage] = useState(false);
   const [showBlogsPage, setShowBlogsPage] = useState(false);
   const [showCapabilitiesPage, setShowCapabilitiesPage] = useState(false);
+  const [showSustainabilityPage, setShowSustainabilityPage] = useState(false);
+  const [showContactPage] = useState(() => window.location.pathname === '/contact');
 
   const handleNavigateCollections = () => {
     setShowCollectionsPage(true);
     setShowAboutPage(false);
     setShowBlogsPage(false);
     setShowCapabilitiesPage(false);
+    setShowSustainabilityPage(false);
     window.scrollTo({ top: 0 });
   };
 
@@ -34,6 +39,7 @@ export default function App() {
     setShowCollectionsPage(false);
     setShowBlogsPage(false);
     setShowCapabilitiesPage(false);
+    setShowSustainabilityPage(false);
     window.scrollTo({ top: 0 });
   };
 
@@ -42,6 +48,7 @@ export default function App() {
     setShowAboutPage(false);
     setShowCollectionsPage(false);
     setShowCapabilitiesPage(false);
+    setShowSustainabilityPage(false);
     window.scrollTo({ top: 0 });
   };
 
@@ -50,6 +57,16 @@ export default function App() {
     setShowAboutPage(false);
     setShowCollectionsPage(false);
     setShowBlogsPage(false);
+    setShowSustainabilityPage(false);
+    window.scrollTo({ top: 0 });
+  };
+
+  const handleNavigateSustainability = () => {
+    setShowSustainabilityPage(true);
+    setShowAboutPage(false);
+    setShowCollectionsPage(false);
+    setShowBlogsPage(false);
+    setShowCapabilitiesPage(false);
     window.scrollTo({ top: 0 });
   };
 
@@ -58,6 +75,7 @@ export default function App() {
     setShowAboutPage(false);
     setShowBlogsPage(false);
     setShowCapabilitiesPage(false);
+    setShowSustainabilityPage(false);
     window.scrollTo({ top: 0 });
   };
 
@@ -71,10 +89,13 @@ export default function App() {
           onNavigateAbout={handleNavigateAbout}
           onNavigateHome={handleBackToHome}
           onNavigateCapabilities={handleNavigateCapabilities}
+          onNavigateSustainability={handleNavigateSustainability}
         />
 
         <div className="flex-1">
-          {showAboutPage ? (
+          {showContactPage ? (
+            <ContactPage />
+          ) : showAboutPage ? (
             <AboutPage />
           ) : showCollectionsPage ? (
             <HomeCollectionPage />
@@ -82,6 +103,8 @@ export default function App() {
             <BlogsPage />
           ) : showCapabilitiesPage ? (
             <CapabilitiesPage />
+          ) : showSustainabilityPage ? (
+            <SustainabilityPage />
           ) : (
             /* Master visual sections */
             <motion.main
@@ -111,7 +134,11 @@ export default function App() {
         </div>
 
         {/* Editorial Footnotes and Contacts */}
-        <Footer onNavigateBlogs={handleNavigateBlogs} onNavigateCapabilities={handleNavigateCapabilities} />
+        <Footer
+          onNavigateBlogs={handleNavigateBlogs}
+          onNavigateCapabilities={handleNavigateCapabilities}
+          onNavigateSustainability={handleNavigateSustainability}
+        />
 
         {/* Selected-products drawer, opened from the navbar's Request Catalogue button */}
         <B2BPortal />

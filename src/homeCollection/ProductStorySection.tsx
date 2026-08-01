@@ -161,7 +161,7 @@ export const ProductStorySection: React.FC<ProductStorySectionProps> = ({ produc
               href={active.pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 mt-6 font-sans text-xs font-bold tracking-widest uppercase text-[#8F533C] hover:text-[#2C2623] transition-colors"
+              className="inline-flex items-center gap-2 mt-6 px-6 py-3 border border-[#8F533C] text-[#8F533C] hover:bg-[#8F533C] hover:text-white font-button text-xs tracking-widest uppercase transition-colors cursor-pointer"
             >
               View More <ExternalLink size={16} />
             </a>

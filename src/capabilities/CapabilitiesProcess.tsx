@@ -1,40 +1,45 @@
 import React from 'react';
-import { PenTool, Sprout, FlaskConical, Factory, ShieldCheck, PackageCheck } from 'lucide-react';
+import icon1 from '../assets/images/ic1.svg';
+import icon2 from '../assets/images/ic2.svg';
+import icon3 from '../assets/images/ic3.svg';
+import icon4 from '../assets/images/ic4.svg';
+import icon5 from '../assets/images/ic5.svg';
+import icon6 from '../assets/images/ic6.svg';
 
 const steps = [
   {
     number: '01',
-    icon: <PenTool size={26} strokeWidth={1.5} />,
+    icon: <img src={icon1} className="w-10 h-10 object-contain mix-blend-multiply" />,
     title: 'Design & Concept',
     description: 'Trend research, sketches, CADs & mood boards as per buyer needs.',
   },
   {
     number: '02',
-    icon: <Sprout size={26} strokeWidth={1.5} />,
+    icon: <img src={icon2} className="w-10 h-10 object-contain mix-blend-multiply" />,
     title: 'Material Sourcing',
     description: 'Carefully selected natural, recycled & sustainable yarns from trusted sources.',
   },
   {
     number: '03',
-    icon: <FlaskConical size={26} strokeWidth={1.5} />,
+    icon: <img src={icon3} className="w-10 h-10 object-contain mix-blend-multiply" />,
     title: 'Sampling & Prototyping',
     description: 'Rapid sampling, custom sizes, colours construction for perfect evaluation.',
   },
   {
     number: '04',
-    icon: <Factory size={26} strokeWidth={1.5} />,
+    icon: <img src={icon4} className="w-10 h-10 object-contain mix-blend-multiply" />,
     title: 'Production',
     description: 'Skilled artisans & advanced machines work together for consistent quality at scale.',
   },
   {
     number: '05',
-    icon: <ShieldCheck size={26} strokeWidth={1.5} />,
+    icon: <img src={icon5} className="w-10 h-10 object-contain mix-blend-multiply" />,
     title: 'Quality Control',
     description: 'In-line & final inspection at multiple stages as per AQL & buyer standards.',
   },
   {
     number: '06',
-    icon: <PackageCheck size={26} strokeWidth={1.5} />,
+    icon: <img src={icon6} className="w-10 h-10 object-contain mix-blend-multiply" />,
     title: 'Packing & Logistics',
     description: 'Careful packing, labelling & reliable shipping to global destinations.',
   },

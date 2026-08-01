@@ -102,7 +102,7 @@ const trustItems = [
 ];
 
 export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products, onSelectProduct }) => {
-  const [expandedGroup, setExpandedGroup] = useState<string | null>('Size');
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   const allItems = getAllRugItems(products);
 
@@ -125,9 +125,9 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
 
   return (
     <section className="pt-6 pb-0">
-      <div className="w-full px-[80px] relative flex flex-col lg:block gap-10 lg:pb-4">
+      <div className="w-full px-[80px] relative flex flex-col lg:flex-row lg:items-start gap-10 lg:pb-4">
         {/* Filter sidebar (visual only) */}
-        <aside className="w-full lg:w-64 lg:absolute lg:top-0 lg:left-[80px] shrink-0">
+        <aside className="w-full lg:w-64 shrink-0">
           <div className="flex items-center justify-between pb-4 border-b border-[#EBE4DC]">
             <h3 className="font-sans text-sm font-bold text-[#2C2623] uppercase tracking-wide">Filter By</h3>
             <SlidersHorizontal size={16} className="text-[#615751]" />
@@ -199,7 +199,7 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
         </aside>
 
         {/* Product grid */}
-        <div className="lg:ml-[296px]">
+        <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-6">
             <span className="font-sans text-xs text-[#615751]">
               Showing {allItems.length} of {allItems.length} results

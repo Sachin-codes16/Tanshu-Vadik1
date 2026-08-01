@@ -93,9 +93,10 @@ const socials = [
 interface FooterProps {
   onNavigateBlogs?: () => void;
   onNavigateCapabilities?: () => void;
+  onNavigateSustainability?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapabilities }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapabilities, onNavigateSustainability }) => {
   const [hovered, setHovered] = useState<string | null>(null);
   const [reqHover, setReqHover] = useState(false);
   const [bookHover, setBookHover] = useState(false);
@@ -282,6 +283,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapab
                       ? (e) => { e.preventDefault(); onNavigateBlogs?.(); }
                       : label === 'Capabilities'
                       ? (e) => { e.preventDefault(); onNavigateCapabilities?.(); }
+                      : label === 'Sustainability'
+                      ? (e) => { e.preventDefault(); onNavigateSustainability?.(); }
                       : undefined
                   }
                   onMouseEnter={() => setHovered(`ql-${label}`)}
