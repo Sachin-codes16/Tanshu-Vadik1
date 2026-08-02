@@ -7,7 +7,9 @@ import {
   Droplets,
   PackageCheck,
   ClipboardList,
-  BadgeCheck,
+  Printer,
+  Paintbrush,
+  Settings2,
   Check,
   ExternalLink,
 } from 'lucide-react';
@@ -30,9 +32,9 @@ const sections: StorySection[] = [
   {
     id: 'story',
     icon: <FileText size={22} strokeWidth={1.5} />,
-    label: 'Product Story',
+    label: 'Hand Woven',
     description:
-      'Every product we manufacture begins with careful design thinking, blending traditional craftsmanship with modern functionality for global home and lifestyle markets.',
+      'Every Handwoven we manufacture begins with careful design thinking, blending traditional craftsmanship with modern functionality for global home and lifestyle markets.',
     highlights: [
       'Premium handwoven quality',
       'Soft texture for superior comfort',
@@ -42,51 +44,63 @@ const sections: StorySection[] = [
     ],
   },
   {
-    id: 'materials',
+    id: 'Braided',
     icon: <Layers size={22} strokeWidth={1.5} />,
-    label: 'Materials',
+    label: 'Braided',
     description:
       'Crafted from natural, recycled & sustainable fibers including cotton, jute, wool and linen, chosen for durability, texture and a natural finish.',
   },
   {
-    id: 'construction',
+    id: 'Hand tufted',
     icon: <Hammer size={22} strokeWidth={1.5} />,
-    label: 'Construction',
+    label: 'Hand tufted',
     description:
       'Hand-finished construction built for durability and consistent quality at scale, combining traditional technique with careful quality checks at every stage.',
   },
   {
-    id: 'sizes',
+    id: 'Hand Knotted',
     icon: <Ruler size={22} strokeWidth={1.5} />,
-    label: 'Sizes',
+    label: 'Hand Knotted',
     description: 'Available in a wide range of standard and fully custom sizes to match buyer specifications.',
   },
   {
-    id: 'care',
+    id: 'Macrame',
     icon: <Droplets size={22} strokeWidth={1.5} />,
-    label: 'Care Instructions',
+    label: 'Macrame',
     description:
       'Spot clean with a damp cloth. Avoid harsh chemicals and prolonged direct sunlight to preserve colour and texture. Professional cleaning recommended for deep stains.',
   },
   {
-    id: 'packaging',
+    id: 'Jute Weaving',
     icon: <PackageCheck size={22} strokeWidth={1.5} />,
-    label: 'Packaging',
+    label: 'Jute Weaving',
     description:
       'Compression-packed in moisture-resistant wrapping with reinforced cartons, tested for safe, cost-efficient global shipping.',
     pdfUrl: '/documents/sample-spec-sheet.pdf',
   },
   {
-    id: 'moq',
+    id: 'Stitched',
     icon: <ClipboardList size={22} strokeWidth={1.5} />,
-    label: 'MOQ & Lead Time',
+    label: 'Stitched',
     description:
       'Minimum order quantities and lead times are tailored to each product category and order volume — get in touch for a tailored quote.',
   },
   {
-    id: 'certifications',
-    icon: <BadgeCheck size={22} strokeWidth={1.5} />,
-    label: 'Certifications',
+    id: 'Printed',
+    icon: <Printer size={22} strokeWidth={1.5} />,
+    label: 'Printed',
+    description: 'Manufactured in a facility that follows ISO 9001:2015 quality management practices.',
+  },
+   {
+    id: 'Dyeing & Finishing',
+    icon: <Paintbrush size={22} strokeWidth={1.5} />,
+    label: 'Dyeing & Finishing',
+    description: 'Manufactured in a facility that follows ISO 9001:2015 quality management practices.',
+  },
+   {
+    id: 'Custom Construction',
+    icon: <Settings2 size={22} strokeWidth={1.5} />,
+    label: 'Custom Construction',
     description: 'Manufactured in a facility that follows ISO 9001:2015 quality management practices.',
   },
 ];
@@ -112,13 +126,13 @@ export const CapabilitiesProductStory: React.FC = () => {
   }, [activeId]);
 
   return (
-    <section className="bg-white pt-8 pb-8">
+    <section className="bg-white pt-8 pb-6">
       <div className="w-full px-6 sm:px-[80px]">
         <h2 className="font-serif text-xl sm:text-2xl lg:text-3xl text-[#2C2623] font-medium whitespace-nowrap mb-8">
           Our Manufacturing Styles &amp; Techniques
         </h2>
       </div>
-      <div className="w-full px-6 sm:px-[80px] grid grid-cols-1 lg:grid-cols-[220px_1fr_1.1fr] gap-8 items-start">
+      <div className="w-full px-5 sm:px-[80px] grid grid-cols-1 lg:grid-cols-[220px_1fr_1.1fr] gap-8 items-start">
         {/* Sidebar */}
         <div className="flex flex-col bg-[#FAF8F5] rounded-2xl shadow-lg p-3">
           {sections.map((section) => (
@@ -138,7 +152,7 @@ export const CapabilitiesProductStory: React.FC = () => {
         </div>
 
         {/* Content */}
-        <div ref={contentRef} className="min-w-0 bg-[#FAF8F5] rounded-2xl shadow-lg p-6">
+        <div ref={contentRef} className="min-w-0 bg-[#FAF8F5] rounded-2xl shadow-lg p-15">
           <h3 className="font-sans text-sm font-bold tracking-widest uppercase text-[#2C2623] mb-4">
             {active.label}
           </h3>
@@ -174,7 +188,7 @@ export const CapabilitiesProductStory: React.FC = () => {
 
         {/* Image */}
         <div
-          className="relative aspect-[4/3] lg:aspect-auto overflow-hidden bg-[#F4EFEA] lg:-mt-20"
+          className="relative aspect-[4/3] lg:aspect-auto overflow-hidden bg-[#F4EFEA] lg:-mt-12"
           style={contentHeight ? { height: contentHeight + IMAGE_LIFT_PX } : undefined}
         >
           <img

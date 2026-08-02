@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronDown, Play } from 'lucide-react';
 import { motion } from 'motion/react';
-import bannerDogVideo from "../assets/banner-dog.mp4";
+import bannerDogVideo from "../assets/images/banner-dog .mp4";
 
 export const Hero: React.FC = () => {
   return (
