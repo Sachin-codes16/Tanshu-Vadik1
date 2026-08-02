@@ -10,6 +10,7 @@ interface NavbarProps {
   onNavigateHome: () => void;
   onNavigateCapabilities: () => void;
   onNavigateSustainability: () => void;
+  onNavigateContact: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -18,6 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateHome,
   onNavigateCapabilities,
   onNavigateSustainability,
+  onNavigateContact,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { cart, setIsPortalOpen } = useInquiry();
@@ -88,15 +90,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>{item.label}</span>
               </button>
             ) : item.label === 'CONTACT US' ? (
-              <a
+              <button
                 key={item.label}
-                href="/contact"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative font-sans text-[10px] lg:text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest transition-colors py-1 nav-link flex items-center gap-1 uppercase shrink-0"
+                onClick={onNavigateContact}
+                className="relative font-sans text-[10px] lg:text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest transition-colors py-1 nav-link flex items-center gap-1 uppercase shrink-0 cursor-pointer bg-transparent"
               >
                 <span>{item.label}</span>
-              </a>
+              </button>
             ) : (
               <a
                 key={item.label}
@@ -218,16 +218,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {item.label}
                 </button>
               ) : item.label === 'CONTACT US' ? (
-                <a
+                <button
                   key={item.label}
-                  href="/contact"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setIsOpen(false)}
-                  className="font-sans text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest border-b border-[#F4EFEA] pb-2 transition-colors uppercase"
+                  onClick={() => {
+                    setIsOpen(false);
+                    onNavigateContact();
+                  }}
+                  className="text-left font-sans text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest border-b border-[#F4EFEA] pb-2 transition-colors uppercase cursor-pointer bg-transparent"
                 >
                   {item.label}
-                </a>
+                </button>
               ) : (
                 <a
                   key={item.label}

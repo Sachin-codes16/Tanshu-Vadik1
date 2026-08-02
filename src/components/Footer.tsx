@@ -94,9 +94,10 @@ interface FooterProps {
   onNavigateBlogs?: () => void;
   onNavigateCapabilities?: () => void;
   onNavigateSustainability?: () => void;
+  onNavigateContact?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapabilities, onNavigateSustainability }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapabilities, onNavigateSustainability, onNavigateContact }) => {
   const [hovered, setHovered] = useState<string | null>(null);
   const [reqHover, setReqHover] = useState(false);
   const [bookHover, setBookHover] = useState(false);
@@ -285,6 +286,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapab
                       ? (e) => { e.preventDefault(); onNavigateCapabilities?.(); }
                       : label === 'Sustainability'
                       ? (e) => { e.preventDefault(); onNavigateSustainability?.(); }
+                      : label === 'Contact Us'
+                      ? (e) => { e.preventDefault(); onNavigateContact?.(); }
                       : undefined
                   }
                   onMouseEnter={() => setHovered(`ql-${label}`)}
@@ -294,7 +297,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapab
                     color: isHover ? ACCENT : MUTED,
                     textDecoration: 'none',
                     transition: 'color 0.2s ease',
-                    cursor: label === 'Blogs' || label === 'Capabilities' ? 'pointer' : undefined,
+                    cursor: label === 'Blogs' || label === 'Capabilities' || label === 'Sustainability' || label === 'Contact Us' ? 'pointer' : undefined,
                   }}
                 >
                   {label}
