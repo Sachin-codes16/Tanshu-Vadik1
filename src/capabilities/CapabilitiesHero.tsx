@@ -1,10 +1,10 @@
 import React from 'react';
-import heroImage from '../assets/images/Rug.jpeg';
+import heroImage from '../assets/Capablities/cpapiblitieshero.png';
 
 export const CapabilitiesHero: React.FC = () => {
   return (
     <section className="bg-[#FAF8F5]">
-      <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] items-stretch">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] items-stretch lg:min-h-120">
         <div className="flex flex-col justify-center px-6 sm:px-12 lg:px-[80px] py-12 lg:py-0">
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] text-[#2C2623] font-medium leading-tight">
             Our Capabilities.

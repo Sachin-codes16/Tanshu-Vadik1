@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Mail,
   Phone,
-  MapPin,
   Send,
   Check,
   Gem,
@@ -58,7 +56,7 @@ export const ContactPage: React.FC = () => {
    return (
       <div className="pt-16 sm:pt-[76px]">
     {/* Hero */}
-    <div className="relative w-full h-[320px] sm:h-[380px] overflow-hidden">
+    <div className="relative w-full h-90 sm:h-120 overflow-hidden">
      <img
        src={heroImage}
        alt="Contact Tanshu Vaidik"
@@ -239,66 +237,49 @@ export const ContactPage: React.FC = () => {
            Get In Touch
          </h2>
 
-         <div className="flex items-start gap-4">
-           <span className="w-10 h-10 rounded-full bg-[#4A5D3A] text-white flex items-center justify-center shrink-0">
-             <Mail size={16} />
-           </span>
-           <div className="flex flex-col gap-0.5">
-             <h3 className="font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase">
-               Email Us
-             </h3>
-             <a href={`mailto:${indiaOffice.email}`} className="font-sans text-sm text-[#615751] hover:text-[#8F533C]">
-               {indiaOffice.email}
-             </a>
-             <a href={`mailto:${australiaOffice.email}`} className="font-sans text-sm text-[#615751] hover:text-[#8F533C]">
-               {australiaOffice.email}
-             </a>
-           </div>
+         <div className="flex flex-col gap-1">
+           <h3 className="font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase">
+             Email Us
+           </h3>
+           <a href={`mailto:${indiaOffice.email}`} className="font-sans text-sm text-[#615751] hover:text-[#8F533C]">
+             {indiaOffice.email}
+           </a>
+           <a href={`mailto:${australiaOffice.email}`} className="font-sans text-sm text-[#615751] hover:text-[#8F533C]">
+             {australiaOffice.email}
+           </a>
          </div>
 
          <div className="h-px bg-[#EBE4DC]" />
 
-         <div className="flex items-start gap-4">
-           <span className="w-10 h-10 rounded-full bg-[#4A5D3A] text-white flex items-center justify-center shrink-0">
-             <Phone size={16} />
+         <div className="flex flex-col gap-1">
+           <h3 className="font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase">
+             INDIA
+           </h3>
+           <span className="font-sans text-sm text-[#615751]">Head Office &amp; Manufacturing</span>
+           <span className="font-sans text-xs text-[#615751] leading-snug">
+             Village Kharak Ramji,<br />
+             Near Samalkha Road,<br />
+             Panipat - 132103,<br />
+             Haryana, India
            </span>
-           <div className="flex flex-col gap-0.5">
-             <h3 className="font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase">
-               Call / WhatsApp
-             </h3>
-             <a href={`tel:${indiaOffice.phone.replace(/\s/g, '')}`} className="font-sans text-sm text-[#615751] hover:text-[#8F533C]">
-               {indiaOffice.phone}
-             </a>
-             <span className="font-sans text-xs text-[#9C9188]">Mon – Sat: 9:30 AM – 6:30 PM IST</span>
-           </div>
+           <a href={`tel:${indiaOffice.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 font-sans text-sm text-[#615751] hover:text-[#8F533C] mt-1">
+             <Phone size={14} />
+             {indiaOffice.phone}
+           </a>
          </div>
 
          <div className="h-px bg-[#EBE4DC]" />
 
-         <div className="flex items-start gap-4">
-           <span className="w-10 h-10 rounded-full bg-[#4A5D3A] text-white flex items-center justify-center shrink-0">
-             <MapPin size={16} />
+         <div className="flex flex-col gap-1">
+           <h3 className="font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase">
+             AUSTRALIA
+           </h3>
+           <span className="font-sans text-sm text-[#615751]">Registered Office</span>
+           <span className="font-sans text-xs text-[#615751] leading-snug">
+             Tanshu Australia Pty Ltd,<br />
+             Melbourne, Victoria,<br />
+             Australia
            </span>
-           <div className="flex flex-col gap-0.5">
-             <h3 className="font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase">
-               Head Office &amp; Manufacturing
-             </h3>
-             <span className="font-sans text-sm text-[#615751]">{indiaOffice.address}</span>
-           </div>
-         </div>
-
-         <div className="h-px bg-[#EBE4DC]" />
-
-         <div className="flex items-start gap-4">
-           <span className="w-10 h-10 rounded-full bg-[#4A5D3A] text-white flex items-center justify-center shrink-0">
-             <Globe size={16} />
-           </span>
-           <div className="flex flex-col gap-0.5">
-             <h3 className="font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase">
-               Registered Office (Australia)
-             </h3>
-             <span className="font-sans text-sm text-[#615751]">{australiaOffice.address}</span>
-           </div>
          </div>
 
          <div className="h-px bg-[#EBE4DC]" />
@@ -327,7 +308,7 @@ export const ContactPage: React.FC = () => {
    </section>
 
    {/* Global Presence */}
-   <section className="pt-4 sm:pt-5 pb-3 sm:pb-4 bg-[#F8F4F0]">
+   <section className="pt-4 sm:pt-5 pb-3 sm:pb-4 bg-white">
      <div className="w-full px-6 sm:px-[80px] flex flex-col items-center text-center gap-2 mb-6 max-w-[1600px] mx-auto">
        <div className="flex items-center gap-4 w-full max-w-lg">
          <span className="h-px flex-1 bg-[#8F533C]/40" />
@@ -344,14 +325,14 @@ export const ContactPage: React.FC = () => {
      <div className="w-full px-6 sm:px-[80px] grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[1600px] mx-auto">
        {[
          { office: indiaOffice, photo: indiaOfficePhoto, role: 'Head Office & Manufacturing', mapShape: indiaMapShape, maskMode: 'luminance', maskSize: '190%' },
-         { office: australiaOffice, photo: australiaOfficePhoto, role: 'Registered Head Office (Australia)', mapShape: australiaMapShape, maskMode: 'alpha', maskSize: '150%' },
+         { office: australiaOffice, photo: australiaOfficePhoto, role: 'Registered Head Office', mapShape: australiaMapShape, maskMode: 'alpha', maskSize: '150%' },
        ].map(({ office, photo, role, mapShape, maskMode, maskSize }) => (
          <div key={office.id} className="bg-white border border-[#EBE4DC] flex flex-col sm:flex-row overflow-hidden">
            <div
              style={{ backgroundImage: `url(${photo})` }}
-             className="relative sm:w-1/3 min-h-[160px] sm:min-h-0 bg-cover bg-center"
+             className="relative sm:w-2/5 min-h-[160px] sm:min-h-0 bg-cover bg-center"
            />
-           <div className="relative flex-1 p-6 pr-40 sm:pr-44 flex flex-col gap-2 overflow-hidden">
+           <div className="relative flex-1 p-6 flex flex-col gap-2 overflow-hidden">
              <div
                style={{
                  WebkitMaskImage: `url(${mapShape})`,
@@ -365,13 +346,30 @@ export const ContactPage: React.FC = () => {
                  backgroundColor: '#8F533C',
                  ...({ WebkitMaskMode: maskMode, maskMode } as React.CSSProperties),
                }}
-               className="absolute right-2 top-1/2 -translate-y-1/2 w-36 h-36 sm:w-40 sm:h-40 opacity-25 pointer-events-none"
+               className="absolute right-8 top-1/2 -translate-y-1/2 w-36 h-36 sm:w-40 sm:h-40 opacity-25 pointer-events-none"
              />
              <span className="relative font-sans text-[11px] font-bold tracking-[0.2em] text-[#8F533C] uppercase">
                {office.country}
              </span>
              <h3 className="relative font-serif text-lg text-[#2C2623] font-bold">{role}</h3>
-             <p className="relative font-sans text-sm text-[#615751] leading-relaxed text-balance">{office.address}</p>
+             <p className="relative font-sans text-sm text-[#615751] leading-relaxed">
+               {office.id === 'india-factory' ? (
+                 <>
+                   Village Kharak Ramji,<br />
+                   Near Samalkha Road,<br />
+                   Panipat - 132103,<br />
+                   Haryana, India
+                 </>
+               ) : office.id === 'australia-office' ? (
+                 <>
+                   Tanshu Australia Pty Ltd,<br />
+                   Melbourne, Victoria,<br />
+                   Australia
+                 </>
+               ) : (
+                 office.address
+               )}
+             </p>
              <a href={`tel:${office.phone.replace(/\s/g, '')}`} className="relative flex items-center gap-2 font-sans text-sm font-bold text-[#2C2623] hover:text-[#8F533C] mt-1">
                <Phone size={14} />
                {office.phone}

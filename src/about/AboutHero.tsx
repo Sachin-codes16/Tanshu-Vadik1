@@ -73,8 +73,7 @@ export const AboutHero: React.FC<AboutHeroProps> = (props: AboutHeroProps) => {
           className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#2C2623]/90 via-[#2C2623]/70 to-[#2C2623]/45" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#2C2623]/60 to-transparent" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(44,38,35,0.8)_0%,rgba(44,38,35,0.8)_18%,rgba(44,38,35,0)_32%)]" />
 
         <div className="relative z-10 h-full w-full px-[20px] flex flex-col justify-center gap-5 max-w-2xl">
           {content.eyebrow && (
@@ -89,11 +88,19 @@ export const AboutHero: React.FC<AboutHeroProps> = (props: AboutHeroProps) => {
             <span className="block h-[2px] w-14 bg-[#D8B88A] mt-4" />
           </div>
           {content.tagline && (
-            <p className="font-serif italic text-lg sm:text-xl text-[#F4EFEA] max-w-lg leading-snug">
+            <p
+              className={`font-serif italic text-lg sm:text-xl text-[#F4EFEA] leading-snug ${
+                activeTab === 'team' ? 'max-w-65' : 'max-w-lg'
+              }`}
+            >
               {content.tagline}
             </p>
           )}
-          <p className="font-sans text-sm sm:text-base text-[#F4EFEA] max-w-lg leading-relaxed">
+          <p
+            className={`font-sans text-sm sm:text-base text-[#F4EFEA] leading-relaxed ${
+              activeTab === 'team' ? 'max-w-55' : 'max-w-lg'
+            }`}
+          >
             {content.description}
           </p>
           {content.ctaLabel && content.ctaHref && (

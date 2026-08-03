@@ -489,7 +489,7 @@ export const offices: Office[] = [
     name: 'Tanshu Australia Regional Office',
     country: 'Australia',
     coords: { top: '78%', left: '84%' },
-    address: 'Level 14, 383 Kent Street, Sydney, NSW 2000, Australia',
+    address: 'Tanshu Australia Pty Ltd, Melbourne, Victoria, Australia',
     email: 'au@tanshuvaidik.com',
     phone: '+61 2 9999 9168', // Matches the footer in mockup exactly!
     highlight: 'Dedicated brand managers, ocean freight logistics coord, and southern hemisphere customer support.'

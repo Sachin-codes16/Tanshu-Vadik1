@@ -121,12 +121,12 @@ export const AboutTeam: React.FC = () => {
       <section id="about-team" className="pt-25 sm:pt-8 pb-6 sm:pb-4 bg-[#FAF8F5]">
         <div className="w-full px-6 sm:px-10 lg:px-20 flex flex-col items-center text-center gap-3 mb-8">
           <SectionLabel label="Founders" />
-          <h2 className="font-serif text-4xl sm:text-5xl text-[#2C3A4D] font-medium tracking-tight">
+          <h2 className="font-serif text-5xl sm:text-6xl text-[#2C3A4D] font-medium tracking-tight">
             The Vision Behind Tanshu Vaidik
           </h2>
         </div>
 
-        <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-[0.6fr_2.1fr_0.6fr] gap-3 lg:gap-10 lg:items-stretch">
+        <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-[0.85fr_1.6fr_0.85fr] gap-3 lg:gap-8 lg:items-stretch">
           <div className="order-3 lg:order-1 flex flex-col gap-6 font-sans text-base text-[#615751] leading-relaxed">
             <p>
               Tanshu Vaidik was founded on the belief that traditional craftsmanship, when combined
@@ -207,12 +207,6 @@ export const AboutTeam: React.FC = () => {
       <section className="py-14 sm:py-10 bg-[#FAF8F5]">
         <div className="w-full px-6 sm:px-10 lg:px-20 flex flex-col items-center text-center gap-3 mb-10">
           <SectionLabel label="Our Team" />
-          <p className="font-serif italic text-base sm:text-lg text-[#2C2623] max-w-xl leading-snug">
-            Driven by passion. United by purpose. Creating handcrafted excellence for the world.
-          </p>
-          <p className="font-sans text-sm sm:text-base text-[#615751] leading-relaxed max-w-xl">
-            Tanshu Vaidik is powered by a dedicated team of creators, innovators and craft champions.
-          </p>
         </div>
 
         <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">

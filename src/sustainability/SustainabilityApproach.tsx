@@ -78,16 +78,16 @@ export const SustainabilityApproach: React.FC = () => {
             <div
               key={t.title}
               style={{ backgroundImage: `url(${t.image})` }}
-              className="relative aspect-[3/4] bg-cover bg-center flex flex-col items-center justify-center text-center gap-3 px-4 rounded-sm overflow-hidden"
+              className="relative aspect-[3/5] bg-cover bg-center flex flex-col items-center justify-center text-center gap-3 px-4 rounded-sm overflow-hidden"
             >
-              <div className="absolute inset-0 bg-black/45" />
+              <div className="absolute inset-0 bg-black/40" />
               <div className="relative w-12 h-12 rounded-full border border-white/70 flex items-center justify-center text-white shrink-0">
                 {t.icon}
               </div>
-              <h3 className="relative font-sans text-[11px] font-bold tracking-wider uppercase text-white leading-snug">
+              <h3 className="relative font-sans text-sm font-bold tracking-wider uppercase text-white leading-snug drop-shadow-sm">
                 {t.title}
               </h3>
-              <p className="relative font-sans text-[11px] text-white/85 leading-relaxed font-light">
+              <p className="relative font-sans text-xs text-white leading-relaxed font-light drop-shadow-sm">
                 {t.description}
               </p>
             </div>

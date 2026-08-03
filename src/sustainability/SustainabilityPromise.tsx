@@ -31,7 +31,7 @@ export const SustainabilityPromise: React.FC = () => {
       style={{ backgroundImage: `url(${forestBg})` }}
       className="relative w-full bg-cover bg-center"
     >
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#1A2313]/10 via-[#1A2313]/20 to-[#1A2313]/30" />
       <div className="relative px-6 sm:px-[80px] py-14 sm:py-20 grid grid-cols-1 lg:grid-cols-[0.8fr_2fr] gap-10 items-center">
         {/* Left Content */}
         <div>
@@ -52,10 +52,10 @@ export const SustainabilityPromise: React.FC = () => {
               <div className="w-14 h-14 rounded-full border border-white/70 flex items-center justify-center text-white shrink-0">
                 {p.icon}
               </div>
-              <h3 className="font-sans text-[11px] font-bold tracking-wider uppercase text-white leading-snug">
+              <h3 className="font-sans text-sm font-bold tracking-wider uppercase text-white leading-snug">
                 {p.title}
               </h3>
-              <p className="font-sans text-[11px] text-white/80 leading-relaxed font-light max-w-[160px]">
+              <p className="font-sans text-xs text-white/80 leading-relaxed font-light max-w-[160px]">
                 {p.description}
               </p>
             </div>
