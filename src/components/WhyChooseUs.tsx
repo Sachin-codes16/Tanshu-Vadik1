@@ -44,7 +44,7 @@ export const WhyChooseUs: React.FC = () => {
 
   return (
     <section className="py-8 ">
-      <div className="w-full px-[80px]">
+      <div className="w-full px-6 sm:px-10 lg:px-20">
         
         {/* Title Block */}
         <div className="text-center max-w-3xl mx-auto mb-1 flex flex-col items-center gap-2">

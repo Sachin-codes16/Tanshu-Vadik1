@@ -170,8 +170,8 @@ export const ProductStorySection: React.FC<ProductStorySectionProps> = ({ produc
 
         {/* Image */}
         <div
-          className="relative aspect-[4/3] lg:aspect-auto overflow-hidden bg-[#F4EFEA]"
-          style={contentHeight ? { height: contentHeight } : undefined}
+          className="relative aspect-[4/3] lg:aspect-auto overflow-hidden bg-[#F4EFEA] -my-8 lg:-mr-[80px]"
+          style={contentHeight ? { height: contentHeight + 64 } : undefined}
         >
           <img src={image ?? defaultStoryImage} alt={product.name} className="w-full h-full object-cover" />
         </div>

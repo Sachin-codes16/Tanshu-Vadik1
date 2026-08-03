@@ -49,7 +49,7 @@ export const CapabilitiesProcess: React.FC = () => {
   return (
     <section className="bg-[#F4EFEA] py-14">
       <div className="w-full px-6 sm:px-[80px] flex flex-col items-center text-center gap-1 mb-10">
-        <span className="font-sans text-xs sm:text-sm font-bold tracking-widest uppercase text-[#2C2623]">
+        <span className="font-sans text-sm sm:text-base font-bold tracking-widest uppercase text-[#2C2623]">
           Our End-to-End Process
         </span>
         <div className="h-[2px] w-10 bg-[#8F533C] mt-2" />
@@ -60,13 +60,16 @@ export const CapabilitiesProcess: React.FC = () => {
           <div key={step.title} className="relative flex flex-col items-center text-center gap-3 px-2">
             <span className="text-[#8F533C]">{step.icon}</span>
             <span className="font-serif text-lg font-bold text-[#8F533C]">{step.number}</span>
-            <h4 className="font-sans text-xs font-bold tracking-wide uppercase text-[#2C2623]">
+            <h4 className="font-sans text-sm font-bold tracking-wide uppercase text-[#2C2623]">
               {step.title}
             </h4>
-            <p className="font-sans text-xs text-[#615751] leading-relaxed">{step.description}</p>
+            <p className="font-sans text-sm text-[#615751] leading-relaxed">{step.description}</p>
 
             {index < steps.length - 1 && (
-              <span className="hidden lg:block absolute top-3 -right-2 text-[#8F533C]/50">›</span>
+              <div className="hidden lg:flex absolute inset-y-0 -right-2 w-px items-center justify-center">
+                <span className="absolute inset-y-0 w-px border-l border-dashed border-[#8F533C]/40" />
+                <span className="relative bg-[#F4EFEA] px-0.5 text-[#8F533C]/60">›</span>
+              </div>
             )}
           </div>
         ))}

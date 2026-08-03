@@ -75,7 +75,7 @@ export const CollectionCardsSection: React.FC<CollectionCardsSectionProps> = ({
 
   return (
     <section className="bg-[#FAF8F5] pb-2">
-      <div className="w-full px-[80px] pt-8">
+      <div className="w-full px-6 sm:px-10 lg:px-20 pt-8">
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {cards.map((card, index) => (

@@ -12,9 +12,9 @@ const logos = [metal, academy, robotics, vaidik, green, navi];
 
 export const CapabilitiesGroup: React.FC = () => {
   return (
-    <section className="bg-[#F4EFEA] py-16">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <section className="bg-[#F4EFEA] pt-4 pb-16">
+      <div className="w-full px-6 sm:px-[80px]">
+        <div className="grid lg:grid-cols-[1fr_1.15fr] gap-1 items-center">
 
           {/* Left Content */}
           <div>
@@ -22,13 +22,18 @@ export const CapabilitiesGroup: React.FC = () => {
               The Tanshu Group
             </span>
 
-            <h2 className="font-serif text-4xl text-[#2C2623] mt-3 mb-5">
-              One Group. Many Strengths.
+            <h2 className="font-serif text-4xl text-[#2C2623] mt-1 mb-2">
+              One Group.
+              <br />
+              Many Strengths.
             </h2>
 
-            <p className="text-[#615751] leading-8 mb-10 max-w-lg">
-              The Tanshu Group brings together design, manufacturing,
-              innovation and global expertise through a family of companies.
+            <p className="text-[#615751] leading-8 mb-4 max-w-lg">
+              The Tanshu Group brings together design,
+              <br />
+              manufacturing, innovation and global expertise
+              <br />
+              through a family of companies.
             </p>
 
             <a
@@ -41,16 +46,20 @@ export const CapabilitiesGroup: React.FC = () => {
           </div>
 
           {/* Right Logos */}
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-3 max-w-2xl">
             {logos.map((logo, index) => (
               <div
                 key={index}
-                className="rounded-xl shadow-md h-40 flex items-center justify-center"
+                className={`h-40 flex items-center justify-center ${
+                  index % 3 !== 0 ? 'border-l border-[#DCD3C7]' : ''
+                }`}
               >
                 <img
                   src={logo}
                   alt=""
-                  className="h-14 w-auto max-w-[90%] object-contain"
+                  className={`w-auto object-contain ${
+                    index === 3 || index === 4 ? 'h-40 max-w-full' : 'h-28 max-w-[90%]'
+                  }`}
                 />
               </div>
             ))}

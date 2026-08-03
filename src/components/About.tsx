@@ -7,7 +7,7 @@ export const About: React.FC = () => {
       id="heritage"
       className="pt-3 sm:pt-4 bg-[#FAF8F5] scroll-mt-28"
     >
-      <div className="w-full px-[80px] grid grid-cols-1 lg:grid-cols-[3fr_2fr] items-start">
+      <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-[3fr_2fr] items-start">
 
         {/* LEFT SIDE: Artisan Image */}
         <div className="relative w-full h-56 sm:h-72 lg:h-auto overflow-hidden lg:pr-0">

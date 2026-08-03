@@ -10,14 +10,13 @@ import {
   Printer,
   Paintbrush,
   Settings2,
-  Check,
   ExternalLink,
 } from 'lucide-react';
 import storyImage from '../assets/images/Carpet.jpeg';
 
 // Pulls the image up on desktop so its top lines up with the "Our Manufacturing" heading
 // instead of the content box below it; height grows by the same amount to keep the bottom aligned.
-const IMAGE_LIFT_PX = 80;
+const IMAGE_LIFT_PX = 48;
 
 interface StorySection {
   id: string;
@@ -36,7 +35,7 @@ const sections: StorySection[] = [
     description:
       'Every Handwoven we manufacture begins with careful design thinking, blending traditional craftsmanship with modern functionality for global home and lifestyle markets.',
     highlights: [
-      'Premium handwoven quality',
+      'Premium quality',
       'Soft texture for superior comfort',
       'Strong & durable for long-lasting use',
       'Neutral design fits every interior',
@@ -109,13 +108,17 @@ export const CapabilitiesProductStory: React.FC = () => {
   const [activeId, setActiveId] = useState(sections[0].id);
   const active = sections.find((section) => section.id === activeId) ?? sections[0];
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
   const [contentHeight, setContentHeight] = useState<number | undefined>(undefined);
 
   useLayoutEffect(() => {
     const measure = () => {
-      if (window.innerWidth >= 1024 && contentRef.current) {
-        const measured = contentRef.current.getBoundingClientRect().height;
-        setContentHeight((prev) => (prev ? Math.max(prev, measured) : measured));
+      if (window.innerWidth >= 1024 && contentRef.current && sidebarRef.current) {
+        const measured = Math.max(
+          contentRef.current.getBoundingClientRect().height,
+          sidebarRef.current.getBoundingClientRect().height,
+        );
+        setContentHeight(measured);
       } else {
         setContentHeight(undefined);
       }
@@ -134,45 +137,31 @@ export const CapabilitiesProductStory: React.FC = () => {
       </div>
       <div className="w-full px-5 sm:px-[80px] grid grid-cols-1 lg:grid-cols-[220px_1fr_1.1fr] gap-8 items-start">
         {/* Sidebar */}
-        <div className="flex flex-col bg-[#FAF8F5] rounded-2xl shadow-lg p-3">
-          {sections.map((section) => (
-            <button
-              key={section.id}
-              onClick={() => setActiveId(section.id)}
-              className={`flex items-center gap-3 px-3 py-2.5 text-left font-sans text-sm transition-colors cursor-pointer border-l-2 ${
-                active.id === section.id
-                  ? 'bg-[#F4EFEA] text-[#2C2623] font-bold border-[#8F533C]'
-                  : 'text-[#615751] hover:bg-[#FAF8F5] border-transparent'
-              }`}
-            >
-              <span className="text-[#8F533C] shrink-0">{section.icon}</span>
-              {section.label}
-            </button>
+        <div ref={sidebarRef} className="flex flex-col gap-0.5 bg-[#FAF8F5] rounded-2xl shadow-lg p-3">
+          {sections.map((section, index) => (
+            <React.Fragment key={section.id}>
+              {index > 0 && <div className="mx-3 border-t border-[#DCD3C7]" />}
+              <button
+                onClick={() => setActiveId(section.id)}
+                className={`flex items-center gap-3 px-3 py-3 text-left font-sans text-sm transition-colors cursor-pointer border-l-2 ${
+                  active.id === section.id
+                    ? 'bg-[#F4EFEA] text-[#2C2623] font-bold border-[#8F533C]'
+                    : 'text-[#615751] hover:bg-[#FAF8F5] border-transparent'
+                }`}
+              >
+                <span className="text-[#8F533C] shrink-0">{section.icon}</span>
+                {section.label}
+              </button>
+            </React.Fragment>
           ))}
         </div>
 
         {/* Content */}
-        <div ref={contentRef} className="min-w-0 bg-[#FAF8F5] rounded-2xl shadow-lg p-15">
+        <div ref={contentRef} className="min-w-0 bg-[#FAF8F5] rounded-2xl shadow-lg px-15 pt-6 pb-15 lg:min-h-[200px]">
           <h3 className="font-sans text-sm font-bold tracking-widest uppercase text-[#2C2623] mb-4">
             {active.label}
           </h3>
           <p className="font-sans text-sm text-[#615751] leading-relaxed">{active.description}</p>
-
-          {active.highlights && (
-            <div className="bg-[#F4EFEA] border border-[#EBE4DC] p-5 mt-6">
-              <span className="font-sans text-xs font-bold tracking-widest uppercase text-[#8F533C] block mb-3">
-                Why Buyers Love It
-              </span>
-              <ul className="flex flex-col gap-2">
-                {active.highlights.map((point) => (
-                  <li key={point} className="flex items-start gap-2 font-sans text-sm text-[#615751]">
-                    <Check size={18} className="text-[#8F533C] shrink-0 mt-0.5" />
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
 
           {active.pdfUrl && (
             <a

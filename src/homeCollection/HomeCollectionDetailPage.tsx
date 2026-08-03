@@ -82,7 +82,7 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
           Back to Collections
         </button>
 
-        <div className="relative z-10 w-full px-[80px] pb-10 sm:pb-14">
+        <div className="relative z-10 w-full px-6 sm:px-10 lg:px-20 pb-10 sm:pb-14">
           <h1 className="font-serif text-4xl sm:text-5xl text-white font-medium">Home Collection</h1>
           <div className="h-[2px] w-14 bg-[#8F533C] my-3" />
           <p className="font-sans text-sm sm:text-base text-white/80 max-w-xl leading-relaxed">
@@ -93,7 +93,7 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
 
       {/* Category grid */}
       <section className="pt-6 pb-16">
-        <div className="w-full px-[80px]">
+        <div className="w-full px-6 sm:px-10 lg:px-20">
           <div className="flex flex-col items-center text-center gap-1 mb-6">
             <h2 className="font-serif text-2xl sm:text-3xl text-[#2C2623] font-medium tracking-tight">
               Explore Our Home Categories

@@ -65,18 +65,28 @@ export const ContactPage: React.FC = () => {
        className="absolute inset-0 w-full h-full object-cover object-top"
        referrerPolicy="no-referrer"
      />
-     <div className="absolute inset-0 bg-gradient-to-r from-[#2C2623]/65 via-[#2C2623]/35 to-[#2C2623]/10" />
-
+     <div className="absolute inset-0 bg-gradient-to-r from-white from-5% via-white/50 via-30% to-transparent to-45%" />
      <div className="relative z-10 h-full w-full px-6 sm:px-[80px] flex flex-col justify-center gap-4 max-w-2xl">
-       <span className="font-sans text-xs text-[#D8B88A]">
+       <span className="font-sans text-xs text-[#8F533C]">
          <a href="/" className="hover:underline">Home</a> / Contact Us
        </span>
-       <h1 className="font-serif text-4xl sm:text-6xl text-white tracking-tight font-bold uppercase leading-none">
-         Contact Us
-       </h1>
-       <p className="font-sans text-sm sm:text-base text-[#F4EFEA] max-w-lg leading-relaxed">
-         We would love to hear from you. Whether you have a question about our products, need a
-         custom solution, or want to explore a partnership, our team is here to help.
+       <div>
+         <h1 className="font-serif text-4xl sm:text-6xl text-[#2C2623] tracking-tight font-medium leading-none">
+           Contact Us
+         </h1>
+         <span className="block w-12 h-px bg-[#8F533C] mt-4" />
+       </div>
+       <p className="font-sans text-sm sm:text-base text-[#615751] max-w-lg leading-relaxed">
+         We would love to hear from you.
+         <br />
+         Let's create something exceptional together.
+       </p>
+       <p className="font-sans text-sm sm:text-base text-[#615751] max-w-lg leading-relaxed">
+         Whether you have a question about our products,
+         <br />
+         need a custom solution, or want to explore a
+         <br />
+         partnership, our team is here to help.
        </p>
      </div>
    </div>
@@ -295,7 +305,9 @@ export const ContactPage: React.FC = () => {
 
          <div>
            <h3 className="flex items-center gap-2 font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase mb-3">
-             <Send size={14} className="text-[#4A5D3A]" />
+             <span className="w-10 h-10 rounded-full bg-[#4A5D3A] text-white flex items-center justify-center shrink-0">
+               <Send size={16} />
+             </span>
              Connect With Us
            </h3>
            <div className="flex items-center gap-3">
@@ -315,7 +327,7 @@ export const ContactPage: React.FC = () => {
    </section>
 
    {/* Global Presence */}
-   <section className="pt-4 sm:pt-5 pb-8 sm:pb-10 bg-[#F8F4F0]">
+   <section className="pt-4 sm:pt-5 pb-3 sm:pb-4 bg-[#F8F4F0]">
      <div className="w-full px-6 sm:px-[80px] flex flex-col items-center text-center gap-2 mb-6 max-w-[1600px] mx-auto">
        <div className="flex items-center gap-4 w-full max-w-lg">
          <span className="h-px flex-1 bg-[#8F533C]/40" />

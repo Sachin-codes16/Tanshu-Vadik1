@@ -4,7 +4,7 @@ import worldMapImage from '../assets/About/mapimage.png';
 export const GlobalPresence: React.FC = () => {
   return (
     <section id="presence" className="pt-0 pb-0 bg-[#F8F4F0]">
-      <div className="w-full px-[80px] grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
         {/* LEFT: Heading & CTA */}
         <div className="lg:col-span-4 flex flex-col items-start gap-4 px-6 sm:px-12 lg:px-0">

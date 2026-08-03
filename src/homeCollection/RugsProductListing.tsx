@@ -125,7 +125,7 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
 
   return (
     <section className="pt-6 pb-0">
-      <div className="w-full px-[80px] relative flex flex-col lg:flex-row lg:items-start gap-10 lg:pb-4">
+      <div className="w-full px-6 sm:px-10 lg:px-20 relative flex flex-col lg:flex-row lg:items-start gap-10 lg:pb-4">
         {/* Filter sidebar (visual only) */}
         <aside className="w-full lg:w-64 shrink-0">
           <div className="flex items-center justify-between pb-4 border-b border-[#EBE4DC]">

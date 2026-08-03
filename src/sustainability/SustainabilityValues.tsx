@@ -52,10 +52,10 @@ export const SustainabilityValues: React.FC = () => {
               <div className="w-14 h-14 rounded-full border border-[#8F533C] flex items-center justify-center text-[#8F533C] shrink-0">
                 {v.icon}
               </div>
-              <h3 className="font-sans text-[11px] font-bold tracking-wider uppercase text-[#2C2623] leading-snug">
+              <h3 className="font-sans text-[13px] font-bold tracking-wider uppercase text-[#2C2623] leading-snug">
                 {v.title}
               </h3>
-              <p className="font-sans text-xs text-[#615751] leading-relaxed font-light max-w-[160px]">
+              <p className="font-sans text-sm text-[#615751] leading-relaxed font-light max-w-[160px]">
                 {v.description}
               </p>
             </div>

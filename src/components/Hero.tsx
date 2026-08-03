@@ -36,7 +36,7 @@ export const Hero: React.FC = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="relative z-10 w-full px-[80px] grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 w-full px-6 sm:px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
         {/* Left Side: Typography content */}
         <div className="lg:col-span-8 flex flex-col items-start gap-6 text-white">

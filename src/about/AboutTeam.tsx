@@ -10,10 +10,37 @@ import {
   HeartHandshake,
   Leaf,
   Globe,
+  MapPin,
+  Gem,
 } from 'lucide-react';
 import nareshPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_29_24 PM.png';
-import shubhamPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_32_34 PM.png';
 import adityaPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_34_15 PM.png';
+import shubhamPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_32_34 PM.png';
+import ourTeamPhoto from '../assets/About/ourteam.jpeg';
+
+interface Director {
+  photo?: string;
+  initials: string;
+  name: string;
+  title: string;
+  bio: string;
+}
+
+const directors: Director[] = [
+  {
+    photo: shubhamPhoto,
+    initials: 'SK',
+    name: 'Shubham Kaushik',
+    title: 'Director',
+    bio: 'Oversees global marketing strategies, client\nrelationships and brand positioning. With\nextensive experience in international\nmarkets, he ensures Tanshu Vaidik stays\nconnected with evolving customer needs.',
+  },
+  {
+    initials: 'SS',
+    name: 'Sheela Sharma',
+    title: 'Director',
+    bio: 'Ensures seamless execution across the\nsupply chain, production planning and\nquality assurance. Her operational expertise\nstrengthens efficiency and delivery\nexcellence.',
+  },
+];
 
 interface Founder {
   photo: string;
@@ -34,30 +61,6 @@ const founders: Founder[] = [
     name: 'Aditya Kush',
     title: 'Director',
     bio: 'Oversees operations, production and product development with a strong focus on quality, craftsmanship and continuous improvement. Also looks after the department of marketing.',
-  },
-];
-
-interface Director {
-  photo?: string;
-  initials: string;
-  name: string;
-  title: string;
-  bio: string;
-}
-
-const directors: Director[] = [
-  {
-    photo: shubhamPhoto,
-    initials: 'SK',
-    name: 'Shubham Kaushik',
-    title: 'Director',
-    bio: 'Oversees global marketing strategies, client relationships and brand positioning. With extensive experience in international markets, he ensures Tanshu Vaidik stays connected with evolving customer needs.',
-  },
-  {
-    initials: 'SS',
-    name: 'Sheela Sharma',
-    title: 'Director',
-    bio: 'Ensures seamless execution across the supply chain, production planning and quality assurance. Her operational expertise strengthens efficiency and delivery excellence.',
   },
 ];
 
@@ -102,9 +105,9 @@ const InitialsAvatar: React.FC<{ initials: string; className?: string }> = ({ in
 );
 
 const SectionLabel: React.FC<{ label: string }> = ({ label }) => (
-  <div className="flex items-center gap-4 max-w-xs w-full mx-auto mb-4">
+  <div className="flex items-center gap-4 w-full mb-4">
     <span className="h-px flex-1 bg-[#8F533C]/40" />
-    <span className="font-sans text-[11px] font-bold tracking-[0.3em] text-[#8F533C] uppercase whitespace-nowrap">
+    <span className="font-sans text-[13px] sm:text-sm font-bold tracking-[0.3em] text-[#8F533C] uppercase whitespace-nowrap">
       {label}
     </span>
     <span className="h-px flex-1 bg-[#8F533C]/40" />
@@ -115,16 +118,16 @@ export const AboutTeam: React.FC = () => {
   return (
     <>
       {/* Founders */}
-      <section id="about-team" className="py-14 sm:py-16 bg-[#FAF8F5]">
-        <div className="w-full px-6 sm:px-[80px] flex flex-col items-center text-center gap-3 mb-10">
+      <section id="about-team" className="pt-25 sm:pt-8 pb-6 sm:pb-4 bg-[#FAF8F5]">
+        <div className="w-full px-6 sm:px-10 lg:px-20 flex flex-col items-center text-center gap-3 mb-8">
           <SectionLabel label="Founders" />
           <h2 className="font-serif text-3xl sm:text-4xl text-[#2C2623] font-medium tracking-tight">
             The Vision Behind Tanshu Vaidik
           </h2>
         </div>
 
-        <div className="w-full px-6 sm:px-[80px] max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.3fr_1fr] gap-8 lg:gap-10 items-center">
-          <div className="order-2 lg:order-1 flex flex-col gap-4 font-sans text-sm text-[#615751] leading-relaxed">
+        <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-[0.6fr_2.1fr_0.6fr] gap-3 lg:gap-10 lg:items-stretch">
+          <div className="order-3 lg:order-1 flex flex-col gap-6 font-sans text-base text-[#615751] leading-relaxed">
             <p>
               Tanshu Vaidik was founded on the belief that traditional craftsmanship, when combined
               with contemporary design and ethical practices, can create products that enhance lives
@@ -137,20 +140,19 @@ export const AboutTeam: React.FC = () => {
             </p>
           </div>
 
-          <div className="order-1 lg:order-2 rounded-2xl overflow-hidden aspect-[4/3] flex shadow-sm">
-            <img src={founders[0].photo} alt={founders[0].name} className="w-1/2 h-full object-cover" />
-            <img src={founders[1].photo} alt={founders[1].name} className="w-1/2 h-full object-cover" />
+          <div className="order-1 lg:order-2 rounded-2xl overflow-hidden aspect-2212/1557 flex shadow-sm lg:self-start">
+            <img src={ourTeamPhoto} alt="Tanshu Vaidik founders" className="w-full h-full object-cover" />
           </div>
 
-          <div className="order-3 flex flex-col gap-6">
+          <div className="order-2 lg:order-3 flex flex-col gap-3">
             {founders.map((f) => (
               <div key={f.name}>
-                <h3 className="font-sans text-sm font-bold tracking-wider text-[#8F533C] uppercase">
+                <h3 className="font-sans text-base font-bold tracking-wider text-[#8F533C] uppercase">
                   {f.name}
                 </h3>
-                <span className="font-sans text-sm text-[#2C2623] font-semibold">{f.title}</span>
+                <span className="font-sans text-base text-[#2C2623] font-semibold">{f.title}</span>
                 <span className="block w-8 h-px bg-[#8F533C]/40 my-2" />
-                <p className="font-sans text-sm text-[#615751] leading-relaxed">{f.bio}</p>
+                <p className="font-sans text-base text-[#615751] leading-relaxed">{f.bio}</p>
               </div>
             ))}
           </div>
@@ -158,29 +160,42 @@ export const AboutTeam: React.FC = () => {
       </section>
 
       {/* Directors */}
-      <section className="py-14 sm:py-16 bg-[#EBE4DC]/30">
-        <div className="w-full px-6 sm:px-[80px]">
+      <section className="pt-14 sm:pt-10 pb-6 sm:pb-4 bg-[#FAF8F5]">
+        <div className="w-full px-6 sm:px-10 lg:px-20 flex flex-col items-center text-center gap-3 mb-10">
           <SectionLabel label="Directors" />
         </div>
-        <div className="w-full px-6 sm:px-[80px] max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+        <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
           {directors.map((d) => (
-            <div key={d.name} className="bg-white border border-[#EBE4DC] p-5 flex gap-4">
+            <div key={d.name} className="flex gap-8 items-start text-left">
               {d.photo ? (
-                <img src={d.photo} alt={d.name} className="w-20 h-20 rounded-lg object-cover shrink-0" />
+                <img
+                  src={d.photo}
+                  alt={d.name}
+                  className="w-47.5 h-56.25 rounded-xl object-cover shrink-0"
+                />
               ) : (
-                <InitialsAvatar initials={d.initials} className="w-20 h-20 rounded-lg text-xl" />
+                <InitialsAvatar initials={d.initials} className="w-47.5 h-56.25 rounded-xl text-3xl" />
               )}
-              <div className="flex flex-col gap-1 min-w-0">
-                <h3 className="font-sans text-sm font-bold text-[#2C2623] uppercase tracking-wide">
+              <div className="flex flex-col gap-2">
+                <h3 className="font-sans text-base font-bold tracking-wider text-[#8F533C] uppercase">
                   {d.name}
                 </h3>
-                <span className="font-sans text-xs text-[#8F533C] font-semibold">{d.title}</span>
-                <p className="font-sans text-xs text-[#615751] leading-relaxed mt-1">{d.bio}</p>
+                <span className="font-sans text-base text-[#2C2623] font-semibold">{d.title}</span>
+                <span className="block w-8 h-px bg-[#8F533C]/40" />
+                <p className="font-sans text-lg text-[#615751] leading-relaxed">
+                  {d.bio.split('\n').map((line, i, arr) => (
+                    <React.Fragment key={i}>
+                      {line}
+                      {i < arr.length - 1 && <br />}
+                    </React.Fragment>
+                  ))}
+                </p>
                 <a
                   href="#"
-                  className="mt-2 w-7 h-7 rounded bg-[#2C2623] hover:bg-[#8F533C] text-white flex items-center justify-center transition-colors"
+                  className="w-8 h-8 rounded bg-[#2C2623] hover:bg-[#8F533C] text-white flex items-center justify-center transition-colors"
                 >
-                  <Linkedin size={13} />
+                  <Linkedin size={15} />
                 </a>
               </div>
             </div>
@@ -189,8 +204,8 @@ export const AboutTeam: React.FC = () => {
       </section>
 
       {/* Our Team */}
-      <section className="py-14 sm:py-16 bg-[#FAF8F5]">
-        <div className="w-full px-6 sm:px-[80px] flex flex-col items-center text-center gap-3 mb-10">
+      <section className="py-14 sm:py-10 bg-[#FAF8F5]">
+        <div className="w-full px-6 sm:px-10 lg:px-20 flex flex-col items-center text-center gap-3 mb-10">
           <SectionLabel label="Our Team" />
           <p className="font-sans text-sm sm:text-base text-[#615751] leading-relaxed max-w-xl">
             A talented team of designers, merchandisers, quality experts and support professionals
@@ -198,18 +213,20 @@ export const AboutTeam: React.FC = () => {
           </p>
         </div>
 
-        <div className="w-full px-6 sm:px-[80px] max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
           {teamMembers.map((m) => (
             <div
               key={m.name}
-              className="bg-white border border-[#EBE4DC] p-4 flex flex-col items-center text-center gap-2"
+              className="bg-[#F4EFEA] rounded-2xl overflow-hidden flex flex-col items-center text-center shadow-sm"
             >
-              <InitialsAvatar initials={m.initials} className="w-16 h-16 rounded-full text-base" />
-              <h3 className="font-sans text-xs font-bold text-[#8F533C] uppercase tracking-wide">
-                {m.name}
-              </h3>
-              <span className="font-sans text-[11px] text-[#615751]">{m.role}</span>
-              <m.icon size={16} className="text-[#8F533C] mt-1" />
+              <InitialsAvatar initials={m.initials} className="w-full aspect-[3/4] text-3xl" />
+              <div className="p-3 flex flex-col items-center gap-1">
+                <h3 className="font-sans text-xs font-bold text-[#8F533C] uppercase tracking-wide">
+                  {m.name}
+                </h3>
+                <span className="font-sans text-[11px] text-[#615751]">{m.role}</span>
+                <m.icon size={16} className="text-[#8F533C] mt-1" />
+              </div>
             </div>
           ))}
         </div>
@@ -217,7 +234,7 @@ export const AboutTeam: React.FC = () => {
 
       {/* Values */}
       <section className="py-10 sm:py-12 bg-[#EBE4DC]/40 border-t border-[#E4DACB]">
-        <div className="w-full px-6 sm:px-[80px] max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-8 sm:divide-x sm:divide-[#D8CFC4]">
+        <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-2 sm:grid-cols-4 gap-10 sm:divide-x sm:divide-[#D8CFC4]">
           {values.map((v) => (
             <div key={v.title} className="flex flex-col items-center text-center gap-2 sm:px-4">
               <v.icon size={22} className="text-[#8F533C]" />
@@ -230,22 +247,33 @@ export const AboutTeam: React.FC = () => {
         </div>
       </section>
 
-      {/* Get In Touch CTA */}
-      <section className="py-14 sm:py-16 bg-[#FAF8F5]">
-        <div className="w-full px-6 sm:px-[80px] flex flex-col items-center text-center gap-5 max-w-2xl mx-auto">
-          <h2 className="font-serif text-2xl sm:text-3xl text-[#2C2623] font-medium tracking-tight uppercase">
-            Get In Touch With Us Now
-          </h2>
-          <p className="font-sans text-sm sm:text-base text-[#615751] leading-relaxed">
-            Our team is ready to help you design, source, and deliver handcrafted products tailored to
-            your requirements. Let's start the conversation.
-          </p>
-          <a
-            href="#contact"
-            className="inline-block w-fit px-6 py-3 bg-[#8F533C] hover:bg-[#723F2B] text-white font-sans text-xs font-bold tracking-widest uppercase transition-colors"
-          >
-            Contact Us &rarr;
-          </a>
+      {/* Brand Banner */}
+      <section className="relative bg-[#2C2623] overflow-hidden">
+        <div className="w-full px-6 sm:px-10 lg:px-20 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <span className="w-11 h-11 rounded-full border border-[#D8B88A]/40 flex items-center justify-center text-[#D8B88A] shrink-0">
+              <Gem size={20} strokeWidth={1.5} />
+            </span>
+            <div className="text-left">
+              <h3 className="font-serif text-lg text-white font-semibold tracking-tight">
+                Tanshu Vaidik
+              </h3>
+              <p className="font-sans text-[11px] text-white/60 tracking-[0.15em] uppercase">
+                Crafted For Living. Designed For The World.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
+            <div className="flex items-center gap-2 text-white/80">
+              <MapPin size={16} className="text-[#D8B88A] shrink-0" />
+              <span className="font-sans text-sm">Panipat, India (Head Office &amp; Manufacturing)</span>
+            </div>
+            <div className="flex items-center gap-2 text-white/80">
+              <Globe size={16} className="text-[#D8B88A] shrink-0" />
+              <span className="font-sans text-sm">Exporting to 40+ Countries</span>
+            </div>
+          </div>
         </div>
       </section>
     </>

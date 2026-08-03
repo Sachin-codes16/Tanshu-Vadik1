@@ -36,11 +36,11 @@ export const SustainabilityCertifications: React.FC = () => {
       <div className="w-full px-6 sm:px-[80px] grid grid-cols-1 lg:grid-cols-[0.7fr_2fr] gap-8 items-center">
         {/* Left Content */}
         <div>
-          <span className="font-sans text-sm font-bold tracking-[3px] uppercase text-[#8F533C]">
+          <span className="font-sans text-base font-bold tracking-[3px] uppercase text-[#8F533C]">
             Our Certifications &amp; Compliances
           </span>
           <div className="h-[2px] w-10 bg-[#8F533C] my-4" />
-          <p className="font-sans text-base text-[#615751] leading-relaxed max-w-xs">
+          <p className="font-sans text-lg text-[#615751] leading-relaxed max-w-xs">
             We are committed to international standards that ensure quality, environmental
             responsibility and ethical business practices.
           </p>
@@ -51,8 +51,8 @@ export const SustainabilityCertifications: React.FC = () => {
           {certs.map((c) => (
             <div key={c.id} className="flex flex-col items-center text-center gap-3 px-2">
               <div className="w-24 h-24 flex items-center justify-center shrink-0">{c.logo}</div>
-              <span className="font-sans text-xs font-bold text-[#2C2623] leading-tight">{c.name}</span>
-              <span className="font-sans text-xs text-[#615751] font-light leading-tight max-w-[120px]">
+              <span className="font-sans text-sm font-bold text-[#2C2623] leading-tight">{c.name}</span>
+              <span className="font-sans text-sm text-[#615751] font-light leading-tight max-w-[120px]">
                 {c.description}
               </span>
             </div>

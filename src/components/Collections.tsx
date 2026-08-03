@@ -189,8 +189,8 @@ export const Collections: React.FC = () => {
 
   return (
     <section id="collections" className="py-0 bg-[#FAF8F5]">
-      <div className="w-full px-[80px]">
-        
+      <div className="w-full px-6 sm:px-10 lg:px-20">
+
         {/* Editorial Heading Section exactly styled like the mockup */}
         <div className="flex flex-col items-center text-center gap-3 mb-3">
 

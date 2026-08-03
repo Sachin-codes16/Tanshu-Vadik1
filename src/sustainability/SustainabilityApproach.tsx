@@ -38,11 +38,11 @@ export const SustainabilityApproach: React.FC = () => {
       <div className="w-full px-6 sm:px-[80px] grid grid-cols-1 lg:grid-cols-[0.7fr_2fr] gap-8 items-center">
         {/* Left Content */}
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl tracking-tight text-[#4A5D3A] uppercase">
+          <h2 className="font-serif text-3xl sm:text-4xl tracking-tight text-[#4A5D3A] uppercase">
             Our Approach
           </h2>
           <div className="h-[2px] w-10 bg-[#4A5D3A] my-4" />
-          <p className="font-sans text-sm text-[#615751] leading-relaxed">
+          <p className="font-sans text-base text-[#615751] leading-relaxed">
             Sustainability at Tanshu Vaidik is not a trend, it is a way of life. From design to
             delivery, we make conscious choices that reduce our environmental footprint and
             support the well-being of our people and planet.

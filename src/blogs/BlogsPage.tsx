@@ -81,7 +81,7 @@ export const BlogsPage: React.FC = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#2C2623]/90 via-[#2C2623]/60 to-[#2C2623]/20" />
 
-        <div className="relative z-10 w-full px-[80px] pb-10 sm:pb-14">
+        <div className="relative z-10 w-full px-6 sm:px-10 lg:px-20 pb-10 sm:pb-14">
           <span className="font-sans text-[11px] font-bold tracking-[0.3em] text-[#D8B88A] uppercase">
             Tanshu Vaidik India Pvt. Ltd.
           </span>
@@ -95,7 +95,7 @@ export const BlogsPage: React.FC = () => {
 
       {/* Post grid */}
       <section className="py-14 sm:py-16">
-        <div className="w-full px-[80px]">
+        <div className="w-full px-6 sm:px-10 lg:px-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (
               <article
