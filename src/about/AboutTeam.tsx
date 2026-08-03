@@ -121,7 +121,7 @@ export const AboutTeam: React.FC = () => {
       <section id="about-team" className="pt-25 sm:pt-8 pb-6 sm:pb-4 bg-[#FAF8F5]">
         <div className="w-full px-6 sm:px-10 lg:px-20 flex flex-col items-center text-center gap-3 mb-8">
           <SectionLabel label="Founders" />
-          <h2 className="font-serif text-3xl sm:text-4xl text-[#2C2623] font-medium tracking-tight">
+          <h2 className="font-serif text-4xl sm:text-5xl text-[#2C3A4D] font-medium tracking-tight">
             The Vision Behind Tanshu Vaidik
           </h2>
         </div>
@@ -207,9 +207,11 @@ export const AboutTeam: React.FC = () => {
       <section className="py-14 sm:py-10 bg-[#FAF8F5]">
         <div className="w-full px-6 sm:px-10 lg:px-20 flex flex-col items-center text-center gap-3 mb-10">
           <SectionLabel label="Our Team" />
+          <p className="font-serif italic text-base sm:text-lg text-[#2C2623] max-w-xl leading-snug">
+            Driven by passion. United by purpose. Creating handcrafted excellence for the world.
+          </p>
           <p className="font-sans text-sm sm:text-base text-[#615751] leading-relaxed max-w-xl">
-            A talented team of designers, merchandisers, quality experts and support professionals
-            working together to bring craftsmanship to life.
+            Tanshu Vaidik is powered by a dedicated team of creators, innovators and craft champions.
           </p>
         </div>
 
@@ -225,7 +227,7 @@ export const AboutTeam: React.FC = () => {
                   {m.name}
                 </h3>
                 <span className="font-sans text-[11px] text-[#615751]">{m.role}</span>
-                <m.icon size={16} className="text-[#8F533C] mt-1" />
+                <m.icon size={26} className="text-[#8F533C] mt-1" />
               </div>
             </div>
           ))}
@@ -236,12 +238,14 @@ export const AboutTeam: React.FC = () => {
       <section className="py-10 sm:py-12 bg-[#EBE4DC]/40 border-t border-[#E4DACB]">
         <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-2 sm:grid-cols-4 gap-10 sm:divide-x sm:divide-[#D8CFC4]">
           {values.map((v) => (
-            <div key={v.title} className="flex flex-col items-center text-center gap-2 sm:px-4">
-              <v.icon size={22} className="text-[#8F533C]" />
-              <h3 className="font-sans text-xs font-bold text-[#2C2623] uppercase tracking-wide">
-                {v.title}
-              </h3>
-              <p className="font-sans text-[11px] text-[#615751] leading-relaxed">{v.desc}</p>
+            <div key={v.title} className="flex items-start text-left gap-3 sm:px-4">
+              <v.icon size={34} className="text-[#8F533C] shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-sans text-xs font-bold text-[#2C2623] uppercase tracking-wide">
+                  {v.title}
+                </h3>
+                <p className="font-sans text-[11px] text-[#615751] leading-relaxed mt-1">{v.desc}</p>
+              </div>
             </div>
           ))}
         </div>

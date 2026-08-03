@@ -1,45 +1,45 @@
 import React from 'react';
-import icon1 from '../assets/images/ic1.svg';
-import icon2 from '../assets/images/ic2.svg';
-import icon3 from '../assets/images/ic3.svg';
-import icon4 from '../assets/images/ic4.svg';
-import icon5 from '../assets/images/ic5.svg';
-import icon6 from '../assets/images/ic6.svg';
+import icon1 from '../assets/Capablities/icon1.png';
+import icon2 from '../assets/Capablities/icon2.png';
+import icon3 from '../assets/Capablities/icon3.png';
+import icon4 from '../assets/Capablities/icon4.png';
+import icon5 from '../assets/Capablities/icon5.png';
+import icon6 from '../assets/Capablities/icon6.png';
 
 const steps = [
   {
     number: '01',
-    icon: <img src={icon1} className="w-10 h-10 object-contain mix-blend-multiply" />,
+    icon: <img src={icon1} className="w-16 h-16 object-contain mix-blend-multiply contrast-125 saturate-150 brightness-90" />,
     title: 'Design & Concept',
     description: 'Trend research, sketches, CADs & mood boards as per buyer needs.',
   },
   {
     number: '02',
-    icon: <img src={icon2} className="w-10 h-10 object-contain mix-blend-multiply" />,
+    icon: <img src={icon2} className="w-16 h-16 object-contain mix-blend-multiply contrast-125 saturate-150 brightness-90" />,
     title: 'Material Sourcing',
     description: 'Carefully selected natural, recycled & sustainable yarns from trusted sources.',
   },
   {
     number: '03',
-    icon: <img src={icon3} className="w-10 h-10 object-contain mix-blend-multiply" />,
+    icon: <img src={icon3} className="w-16 h-16 object-contain mix-blend-multiply contrast-125 saturate-150 brightness-90" />,
     title: 'Sampling & Prototyping',
     description: 'Rapid sampling, custom sizes, colours construction for perfect evaluation.',
   },
   {
     number: '04',
-    icon: <img src={icon4} className="w-10 h-10 object-contain mix-blend-multiply" />,
+    icon: <img src={icon4} className="w-16 h-16 object-contain mix-blend-multiply contrast-125 saturate-150 brightness-90" />,
     title: 'Production',
     description: 'Skilled artisans & advanced machines work together for consistent quality at scale.',
   },
   {
     number: '05',
-    icon: <img src={icon5} className="w-10 h-10 object-contain mix-blend-multiply" />,
+    icon: <img src={icon5} className="w-16 h-16 object-contain mix-blend-multiply contrast-125 saturate-150 brightness-90" />,
     title: 'Quality Control',
     description: 'In-line & final inspection at multiple stages as per AQL & buyer standards.',
   },
   {
     number: '06',
-    icon: <img src={icon6} className="w-10 h-10 object-contain mix-blend-multiply" />,
+    icon: <img src={icon6} className="w-16 h-16 object-contain mix-blend-multiply contrast-125 saturate-150 brightness-90" />,
     title: 'Packing & Logistics',
     description: 'Careful packing, labelling & reliable shipping to global destinations.',
   },

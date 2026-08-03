@@ -46,13 +46,11 @@ export const CapabilitiesGroup: React.FC = () => {
           </div>
 
           {/* Right Logos */}
-          <div className="grid grid-cols-3 max-w-2xl">
+          <div className="grid grid-cols-3 gap-4 max-w-2xl">
             {logos.map((logo, index) => (
               <div
                 key={index}
-                className={`h-40 flex items-center justify-center ${
-                  index % 3 !== 0 ? 'border-l border-[#DCD3C7]' : ''
-                }`}
+                className="h-40 flex items-center justify-center bg-white rounded-2xl shadow-md p-4"
               >
                 <img
                   src={logo}

@@ -73,7 +73,8 @@ export const AboutHero: React.FC<AboutHeroProps> = (props: AboutHeroProps) => {
           className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#2C2623]/90 via-[#2C2623]/60 to-[#2C2623]/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#2C2623]/90 via-[#2C2623]/70 to-[#2C2623]/45" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#2C2623]/60 to-transparent" />
 
         <div className="relative z-10 h-full w-full px-[20px] flex flex-col justify-center gap-5 max-w-2xl">
           {content.eyebrow && (

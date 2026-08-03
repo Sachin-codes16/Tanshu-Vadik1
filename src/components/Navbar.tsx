@@ -63,7 +63,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="relative font-sans text-[10px] lg:text-xs font-bold text-[#2C2623] hover:text-[#8F533C] tracking-widest transition-colors py-1 nav-link flex items-center gap-1 uppercase shrink-0 cursor-pointer bg-transparent"
               >
                 <span>{item.label}</span>
-                <span className="text-[8px] text-[#8F533C] translate-y-[0.5px]">▼</span>
               </button>
             ) : item.label === 'ABOUT US' ? (
               <button

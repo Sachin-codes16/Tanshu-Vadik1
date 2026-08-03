@@ -1,9 +1,9 @@
 import React from 'react';
 import { Home, GraduationCap, Coins, Users, ArrowRight } from 'lucide-react';
-import artisanImage1 from '../assets/images/throws.jpeg';
-import artisanImage2 from '../assets/images/tableRunner.jpeg';
-import artisanImage3 from '../assets/images/kitchenliner.jpeg';
-import artisanImage4 from '../assets/images/wall_decor_macrame_1783701205440.jpg';
+import artisanImage1 from '../assets/Capablities/woven1.png';
+import artisanImage2 from '../assets/Capablities/woven2.png';
+import artisanImage3 from '../assets/Capablities/woven3.png';
+import artisanImage4 from '../assets/Capablities/woven4.png';
 
 const values = [
   { icon: <Home size={20} strokeWidth={1.5} />, title: 'Work From Home', description: 'Flexible & safe working environment' },
