@@ -4,7 +4,6 @@ import cottonImg from '../assets/images/Rug.jpeg';
 import woolImg from '../assets/images/throws.jpeg';
 import recycledCottonImg from '../assets/images/pot_holders_terracotta_1783704070207.jpg';
 import seagrassImg from '../assets/images/Rugs.jpeg';
-import waterHyacinthImg from '../assets/images/wall_decor_macrame_1783701205440.jpg';
 
 const materials = [
   { label: 'Jute', image: juteImg },
@@ -12,7 +11,6 @@ const materials = [
   { label: 'Wool', image: woolImg },
   { label: 'Recycled Cotton', image: recycledCottonImg },
   { label: 'Seagrass', image: seagrassImg },
-  { label: 'Water Hyacinth', image: waterHyacinthImg },
 ];
 
 export const SustainabilityMaterials: React.FC = () => {
@@ -32,7 +30,7 @@ export const SustainabilityMaterials: React.FC = () => {
         </div>
 
         {/* Right Circles */}
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-6 justify-items-center">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-6 justify-items-center">
           {materials.map((m) => (
             <div key={m.label} className="flex flex-col items-center gap-3">
               <div

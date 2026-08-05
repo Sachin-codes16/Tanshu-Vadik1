@@ -48,7 +48,7 @@ export const CapabilitiesInfrastructure: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 lg:mt-10 lg:pl-10 lg:border-l lg:border-[#8F533C]/20">
+        <div className="flex flex-col gap-5 lg:mt-14 lg:pl-10 lg:border-l lg:border-[#8F533C]/20">
           <p className="font-sans text-base text-[#615751] leading-relaxed">
             Our state-of-the-art facility is equipped with advanced machinery and traditional skills
             working in harmony to deliver large volume with consistent quality.

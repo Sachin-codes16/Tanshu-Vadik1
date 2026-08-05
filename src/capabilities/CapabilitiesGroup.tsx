@@ -12,12 +12,12 @@ const logos = [metal, academy, robotics, vaidik, green, navi];
 
 export const CapabilitiesGroup: React.FC = () => {
   return (
-    <section className="bg-[#F4EFEA] pt-4 pb-16">
+    <section className="bg-[#F4EFEA]">
       <div className="w-full px-6 sm:px-[80px]">
-        <div className="grid lg:grid-cols-[1fr_1.15fr] gap-1 items-center">
+        <div className="grid lg:grid-cols-[1fr_1.15fr] gap-1 items-stretch">
 
           {/* Left Content */}
-          <div>
+          <div className="py-6 lg:py-8 flex flex-col justify-center items-start">
             <span className="font-sans text-xs font-bold tracking-[3px] uppercase text-[#8F533C]">
               The Tanshu Group
             </span>
@@ -46,11 +46,13 @@ export const CapabilitiesGroup: React.FC = () => {
           </div>
 
           {/* Right Logos */}
-          <div className="grid grid-cols-3 gap-4 max-w-2xl">
+          <div className="grid grid-cols-3 grid-rows-2 bg-white w-full h-full">
             {logos.map((logo, index) => (
               <div
                 key={index}
-                className="h-40 flex items-center justify-center bg-white rounded-2xl shadow-md p-4"
+                className={`flex items-center justify-center p-4 border-[#EBE4DC] ${
+                  index % 3 !== 2 ? 'border-r' : ''
+                } ${index < 3 ? 'border-b' : ''}`}
               >
                 <img
                   src={logo}

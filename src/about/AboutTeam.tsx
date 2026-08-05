@@ -12,11 +12,17 @@ import {
   Globe,
   MapPin,
   Gem,
+  PenTool,
 } from 'lucide-react';
 import nareshPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_29_24 PM.png';
 import adityaPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_34_15 PM.png';
 import shubhamPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_32_34 PM.png';
 import ourTeamPhoto from '../assets/About/ourteam.jpeg';
+import deepakPhoto from '../assets/Our Team/Deepak.jpg';
+import monuPhoto from '../assets/Our Team/Monu Sharma.jpg';
+import rahatPhoto from '../assets/Our Team/Rahat (1).jpg';
+import rahulPhoto from '../assets/Our Team/Rahul Verma (2).jpg';
+import vijayPhoto from '../assets/Our Team/Vijay Chugh.jpg';
 
 interface Director {
   photo?: string;
@@ -31,7 +37,7 @@ const directors: Director[] = [
     photo: shubhamPhoto,
     initials: 'SK',
     name: 'Shubham Kaushik',
-    title: 'Director',
+    title: 'Director & Group CEO',
     bio: 'Oversees global marketing strategies, client\nrelationships and brand positioning. With\nextensive experience in international\nmarkets, he ensures Tanshu Vaidik stays\nconnected with evolving customer needs.',
   },
   {
@@ -53,24 +59,25 @@ const founders: Founder[] = [
   {
     photo: nareshPhoto,
     name: 'Naresh Kumar Kaushik',
-    title: 'Co-Founder & Managing Director (Group CEO)',
+    title: 'Co-Founder & Managing Director',
     bio: 'Leads the overall vision, strategy and global business development initiatives. Passionate about driving innovation, building strong partnerships and creating sustainable growth for the company.',
   },
   {
     photo: adityaPhoto,
     name: 'Aditya Kush',
-    title: 'Director',
+    title: 'Co-Founder & Director',
     bio: 'Oversees operations, production and product development with a strong focus on quality, craftsmanship and continuous improvement. Also looks after the department of marketing.',
   },
 ];
 
 const teamMembers = [
   { initials: 'MA', name: 'Mamta Arora', role: 'Marketing Merchandiser', icon: Megaphone },
-  { initials: 'VC', name: 'Vijay Chug', role: 'Production Manager', icon: Settings },
+  { initials: 'VC', name: 'Vijay Chug', role: 'Production Manager', icon: Settings, photo: vijayPhoto },
   { initials: 'RS', name: 'Rajvir Sharma', role: 'HR & Legal Head', icon: Users },
-  { initials: 'RV', name: 'Rahul Verma', role: 'Quality Head', icon: ShieldCheck },
-  { initials: 'D', name: 'Deepak', role: 'Dispatch Head', icon: Truck },
-  { initials: 'MS', name: 'Monu Sharma', role: 'Accounts', icon: Calculator },
+  { initials: 'RV', name: 'Rahul Verma', role: 'Quality Head', icon: ShieldCheck, photo: rahulPhoto },
+  { initials: 'D', name: 'Deepak', role: 'Dispatch Head', icon: Truck, photo: deepakPhoto },
+  { initials: 'MS', name: 'Monu Sharma', role: 'Accounts', icon: Calculator, photo: monuPhoto },
+  { initials: 'R', name: 'Rahat', role: 'Designer', icon: PenTool, photo: rahatPhoto },
 ];
 
 const values = [
@@ -209,18 +216,22 @@ export const AboutTeam: React.FC = () => {
           <SectionLabel label="Our Team" />
         </div>
 
-        <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+        <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-5">
           {teamMembers.map((m) => (
             <div
               key={m.name}
               className="bg-[#F4EFEA] rounded-2xl overflow-hidden flex flex-col items-center text-center shadow-sm"
             >
-              <InitialsAvatar initials={m.initials} className="w-full aspect-[3/4] text-3xl" />
+              {m.photo ? (
+                <img src={m.photo} alt={m.name} className="w-full aspect-3/4 object-cover" />
+              ) : (
+                <InitialsAvatar initials={m.initials} className="w-full aspect-3/4 text-3xl" />
+              )}
               <div className="p-3 flex flex-col items-center gap-1">
-                <h3 className="font-sans text-xs font-bold text-[#8F533C] uppercase tracking-wide">
+                <h3 className="font-sans text-sm font-bold text-[#8F533C] uppercase tracking-wide">
                   {m.name}
                 </h3>
-                <span className="font-sans text-[11px] text-[#615751]">{m.role}</span>
+                <span className="font-sans text-xs text-[#615751]">{m.role}</span>
                 <m.icon size={26} className="text-[#8F533C] mt-1" />
               </div>
             </div>

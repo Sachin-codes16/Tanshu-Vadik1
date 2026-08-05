@@ -29,7 +29,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'COLLECTIONS', href: '#collections' },
     { label: 'CAPABILITIES', href: '#capabilities' },
     { label: 'SUSTAINABILITY', href: '#heritage' },
-    { label: 'CERTIFICATIONS', href: '#certifications' },
     { label: 'CONTACT US', href: '#contact' },
   ];
 
