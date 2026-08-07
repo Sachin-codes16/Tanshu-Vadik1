@@ -14,26 +14,45 @@ export const AboutIntro: React.FC = () => {
           <h2 className="font-serif text-3xl sm:text-4xl text-[#2C2623] font-medium tracking-tight uppercase">
             About Tanshu Vaidik
           </h2>
-          <p className="font-sans text-sm sm:text-base text-[#615751] leading-relaxed">
-            Tanshu Vaidik India Pvt. Ltd. is a leading manufacturer and exporter of premium handcrafted
-            home décor, home furnishing, and pet lifestyle products based in Panipat, India. With years of
-            expertise in traditional weaving and modern manufacturing, we bring together the finest
-            craftsmanship, innovative designs, and global quality standards to create products that add
-            value to homes and brands worldwide.
+          <p className="font-sans text-xs sm:text-sm text-[#615751] leading-relaxed">
+            Every journey begins with a vision. Ours began when Naresh Kumar founded Tanshu Group in
+            Sydney—built on precision, discipline, and a commitment to engineering excellence. What started
+            with a single laser cutter and CNC press brake soon evolved into something far greater—a
+            foundation for a global enterprise.
           </p>
-          <p className="font-sans text-sm sm:text-base text-[#615751] leading-relaxed">
-            Our journey is built on the dedication of skilled artisans who preserve generations of Indian
-            craftsmanship while embracing contemporary techniques and sustainable production methods.
-            Every product is thoughtfully designed, carefully handcrafted, and rigorously inspected to
-            ensure exceptional quality, durability, and aesthetic appeal.
+          <p className="font-sans text-xs sm:text-sm text-[#615751] leading-relaxed">
+            With growth came clarity of purpose. Tanshu expanded into specialised verticals—Metal Products,
+            Machinery Solutions, and Robotics &amp; Automation—each defined by expertise, innovation, and
+            performance. Over the years, the Group established a strong global footprint, exporting
+            machinery across continents and delivering solutions shaped by international standards.
           </p>
-          <p className="font-sans text-sm sm:text-base text-[#615751] leading-relaxed">
-            At Tanshu Vaidik, quality, transparency, ethical manufacturing, and customer satisfaction are
-            at the heart of everything we do. Our commitment to timely deliveries, competitive pricing,
-            sustainable practices, and long-term partnerships has helped us build a strong presence in
-            the USA, Europe, Australia, the Middle East, Japan, and many other international markets. We
-            continue to connect the timeless beauty of Indian craftsmanship with the evolving demands of
-            the global marketplace.
+          <p className="font-sans text-xs sm:text-sm text-[#615751] leading-relaxed">
+            As the vision expanded, so did its horizons. The establishment of Tanshu Vaidik India Pvt. Ltd.
+            marked a new chapter—bringing the Group's engineering mindset into the world of textiles and
+            home furnishings. Rooted in Panipat, India's textile capital, Tanshu Vaidik was created to
+            merge traditional craftsmanship with modern precision. Today, with a corporate office and
+            multiple manufacturing facilities, Tanshu Vaidik delivers thoughtfully crafted products to
+            markets across Europe, the United States, Australia, and beyond. Each piece reflects a balance
+            of design, durability, and detail—shaped for contemporary living.
+          </p>
+          <p className="font-sans text-xs sm:text-sm text-[#615751] leading-relaxed">
+            The journey did not stop there. From expanding into renewable energy to building advanced
+            manufacturing capabilities in Northern India, and strengthening global logistics through its
+            freight forwarding network, the Tanshu Group continues to evolve—quietly, confidently, and with
+            purpose.
+          </p>
+          <p className="font-sans text-xs sm:text-sm text-[#615751] leading-relaxed">
+            Yet, at its core, the philosophy remains unchanged:
+            <br />
+            To create with intention.
+            <br />
+            To deliver with precision.
+            <br />
+            To grow with integrity.
+          </p>
+          <p className="font-sans text-xs sm:text-sm text-[#615751] leading-relaxed">
+            We stand today as a reflection of this journey—where heritage, engineering, and global vision
+            come together to shape the future of modern living.
           </p>
         </div>
 

@@ -19,7 +19,7 @@ import adityaPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_34_15 PM
 import shubhamPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_32_34 PM.png';
 import ourTeamPhoto from '../assets/About/ourteam.jpeg';
 import deepakPhoto from '../assets/Our Team/Deepak.jpg';
-import monuPhoto from '../assets/Our Team/Monu Sharma.jpg';
+import monuPhoto from '../assets/About/Monu Sharma.jpeg';
 import rahatPhoto from '../assets/Our Team/Rahat (1).jpg';
 import rahulPhoto from '../assets/Our Team/Rahul Verma (2).jpg';
 import vijayPhoto from '../assets/Our Team/Vijay Chugh.jpg';
@@ -72,7 +72,7 @@ const founders: Founder[] = [
 
 const teamMembers = [
   { initials: 'MA', name: 'Mamta Arora', role: 'Marketing Merchandiser', icon: Megaphone },
-  { initials: 'VC', name: 'Vijay Chug', role: 'Production Manager', icon: Settings, photo: vijayPhoto },
+  { initials: 'VC', name: 'Vijay Chugh', role: 'Production Manager', icon: Settings, photo: vijayPhoto },
   { initials: 'RS', name: 'Rajvir Sharma', role: 'HR & Legal Head', icon: Users },
   { initials: 'RV', name: 'Rahul Verma', role: 'Quality Head', icon: ShieldCheck, photo: rahulPhoto },
   { initials: 'D', name: 'Deepak', role: 'Dispatch Head', icon: Truck, photo: deepakPhoto },

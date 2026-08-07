@@ -1,10 +1,10 @@
 import React from 'react';
-import icon1 from '../assets/Capablities/icon1.png';
-import icon2 from '../assets/Capablities/icon2.png';
-import icon3 from '../assets/Capablities/icon3.png';
-import icon4 from '../assets/Capablities/icon4.png';
-import icon5 from '../assets/Capablities/icon5.png';
-import icon6 from '../assets/Capablities/icon6.png';
+import icon1 from '../assets/Icons/14.png';
+import icon2 from '../assets/Icons/15.png';
+import icon3 from '../assets/Icons/16.png';
+import icon4 from '../assets/Icons/17.png';
+import icon5 from '../assets/Icons/18.png';
+import icon6 from '../assets/Icons/19.png';
 
 const steps = [
   {

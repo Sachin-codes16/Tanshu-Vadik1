@@ -14,7 +14,7 @@ export const CapabilitiesGroup: React.FC = () => {
   return (
     <section className="bg-[#F4EFEA]">
       <div className="w-full px-6 sm:px-[80px]">
-        <div className="grid lg:grid-cols-[1fr_1.15fr] gap-1 items-stretch">
+        <div className="grid lg:grid-cols-[280px_1fr] gap-8 lg:gap-10 items-stretch">
 
           {/* Left Content */}
           <div className="py-6 lg:py-8 flex flex-col justify-center items-start">
@@ -29,11 +29,13 @@ export const CapabilitiesGroup: React.FC = () => {
             </h2>
 
             <p className="text-[#615751] leading-8 mb-4 max-w-lg">
-              The Tanshu Group brings together design,
+              The Tanshu Group brings together
               <br />
-              manufacturing, innovation and global expertise
+              design, manufacturing, innovation and
               <br />
-              through a family of companies.
+              global expertise through a family
+              <br />
+              of companies.
             </p>
 
             <a
@@ -46,19 +48,19 @@ export const CapabilitiesGroup: React.FC = () => {
           </div>
 
           {/* Right Logos */}
-          <div className="grid grid-cols-3 grid-rows-2 bg-white w-full h-full">
+          <div className="grid grid-cols-6 bg-white w-full h-full">
             {logos.map((logo, index) => (
               <div
                 key={index}
-                className={`flex items-center justify-center p-4 border-[#EBE4DC] ${
-                  index % 3 !== 2 ? 'border-r' : ''
-                } ${index < 3 ? 'border-b' : ''}`}
+                className={`flex items-center justify-center p-2 border-[#EBE4DC] ${
+                  index !== logos.length - 1 ? 'border-r' : ''
+                }`}
               >
                 <img
                   src={logo}
                   alt=""
-                  className={`w-auto object-contain ${
-                    index === 3 || index === 4 ? 'h-40 max-w-full' : 'h-28 max-w-[90%]'
+                  className={`w-auto max-w-full object-contain ${
+                    index === 4 ? 'max-h-44' : 'max-h-36'
                   }`}
                 />
               </div>

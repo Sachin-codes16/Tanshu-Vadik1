@@ -1,9 +1,9 @@
 import React from 'react';
 import { Leaf, Hand, Recycle, Package } from 'lucide-react';
-import sourcedImg from '../assets/images/cushion.jpeg';
-import handcraftedImg from '../assets/images/wall_decor_macrame_1783701205440.jpg';
-import footprintImg from '../assets/images/basket_rope_twotone_1783702315626.jpeg';
-import packagingImg from '../assets/images/tote_cork_bottom_1783702287513.jpg';
+import sourcedImg from '../assets/Capablities/responsiblysourced.jpeg';
+import handcraftedImg from '../assets/Capablities/handcrafted.jpeg';
+import footprintImg from '../assets/images/reducing footprint.jpeg';
+import packagingImg from '../assets/images/sustainable packaging.jpeg';
 
 const tiles = [
   {

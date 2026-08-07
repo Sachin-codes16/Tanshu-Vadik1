@@ -121,7 +121,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapab
         padding: '0 0 0 0',
         fontFamily: SANS,
         color: `${DARK}e6`,
-        scrollMarginTop: '112px',
+        // scrollMarginTop: '112px',
+        // bottom: 0,
       }}
     >
       <div className="grid grid-cols-1 lg:grid-cols-[38%_1fr] items-stretch">
@@ -210,9 +211,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapab
         <div
           style={{
             display: 'grid',
-            alignItems: 'stretch',
+            alignItems: 'start',
           }}
-          className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-[280px_170px_210px] justify-between gap-8 lg:gap-10 px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-8 lg:pb-1"
+          className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-[280px_170px_210px] justify-between gap-8 lg:gap-10 px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-8 lg:pb-8"
         >
         {/* ---------------- Stay Updated ---------------- */}
         <div className="flex flex-col items-center sm:items-start justify-between h-full">

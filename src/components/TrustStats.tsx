@@ -74,17 +74,16 @@
 
 
 import React from 'react';
-import { Layers, Users, Hammer, ClipboardList, Sliders, ShieldCheck, Truck } from 'lucide-react';
 import { motion } from 'motion/react';
 
 // image import
-import icon1 from "../assets/images/ico-a.svg";
-import icon2 from "../assets/images/ico-b.svg";
-import icon3 from "../assets/images/ico-c.svg";
-import icon4 from "../assets/images/ico-d.svg";
-import icon5 from "../assets/images/ico-e.svg";
-import icon6 from "../assets/images/ico-f.svg";
-import icon7 from "../assets/images/global shipping logo 2 png.png";
+import icon1 from "../assets/Icons/iconhome7.png";
+import icon2 from "../assets/Icons/iconhome1.png";
+import icon3 from "../assets/Icons/iconhome2.png";
+import icon4 from "../assets/Icons/iconhome3.png";
+import icon5 from "../assets/Icons/iconhome4.png";
+import icon6 from "../assets/Icons/iconhome5.png";
+import icon7 from "../assets/Icons/iconhome6.png";
 
 export const TrustStats: React.FC = () => {
   const stats = [
@@ -144,7 +143,7 @@ export const TrustStats: React.FC = () => {
     },
     {
       icon: (
-        <div className="w-full h-full rounded-full bg-[#C7AF95] border border-[#8F533C]/45 flex items-center justify-center overflow-hidden">
+        <div className="w-full h-full rounded-full bg-[#DBC7AE] border border-[#8F533C]/45 flex items-center justify-center overflow-hidden">
           <img src={icon7} alt="Global shipping" className="w-full h-full object-contain scale-[1.85] mix-blend-multiply" />
         </div>
       ),

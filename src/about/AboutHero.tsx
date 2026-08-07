@@ -1,6 +1,6 @@
 import React from 'react';
 import heroImage from '../assets/images/heartbehind.png';
-import teamHeroImage from '../assets/collection/Contactus.png';
+import teamHeroImage from '../assets/Our Team/our team hero image (2).png';
 
 export type AboutTab = 'about' | 'business' | 'team';
 
@@ -66,11 +66,13 @@ export const AboutHero: React.FC<AboutHeroProps> = (props: AboutHeroProps) => {
   return (
     <div>
       {/* Full width hero banner */}
-      <div className="relative w-full h-[420px] sm:h-[480px] overflow-hidden">
+      <div className="relative w-full h-[420px] sm:h-[480px] overflow-hidden bg-[#2C2623]">
         <img
           src={content.image}
           alt={content.title}
-          className="absolute inset-0 w-full h-full object-cover"
+          className={`absolute inset-0 w-full h-full ${
+            activeTab === 'team' ? 'object-contain' : 'object-cover'
+          }`}
           referrerPolicy="no-referrer"
         />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(44,38,35,0.8)_0%,rgba(44,38,35,0.8)_18%,rgba(44,38,35,0)_32%)]" />

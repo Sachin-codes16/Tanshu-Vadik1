@@ -5,11 +5,11 @@ import warehouseImage from '../assets/collection/ChatGPT Image Jul 23, 2026, 12_
 const leftStats = [
   { icon: <Ruler size={22} strokeWidth={1.5} />, title: '50,000+ Sq.Ft.', description: 'Manufacturing Area' },
   { icon: <Cog size={22} strokeWidth={1.5} />, title: 'Advanced Machinery', description: 'For large-scale production & Dyeing' },
+  { icon: <Warehouse size={22} strokeWidth={1.5} />, title: 'Large Warehouse', description: '& Finished Goods Storage' },
 ];
 
 const rightStats = [
   { icon: <Layers size={22} strokeWidth={1.5} />, title: 'In-house Yarn Preparing', description: '& Finishing' },
-  { icon: <Warehouse size={22} strokeWidth={1.5} />, title: 'Large Warehouse', description: '& Finished Goods Storage' },
   { icon: <Workflow size={22} strokeWidth={1.5} />, title: 'Efficient Production Planning', description: '& Workflow' },
 ];
 
@@ -24,8 +24,8 @@ export const CapabilitiesInfrastructure: React.FC = () => {
           <div className="h-[2px] w-10 bg-[#8F533C] mt-2 mb-6" />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
             <div className="flex flex-col gap-6">
-              {leftStats.map((stat, index) => (
-                <div key={stat.title} className={`flex items-start gap-3 ${index === 1 ? 'mt-8' : ''}`}>
+              {leftStats.map((stat) => (
+                <div key={stat.title} className="flex items-start gap-3">
                   <span className="text-[#8F533C] mt-0.5 shrink-0">{stat.icon}</span>
                   <div>
                     <h4 className="font-sans text-base font-bold text-[#2C2623] leading-tight">{stat.title}</h4>

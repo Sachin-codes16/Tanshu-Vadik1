@@ -1,18 +1,20 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import {
-  FileText,
-  Layers,
-  Hammer,
-  Ruler,
-  Droplets,
-  PackageCheck,
-  ClipboardList,
-  Printer,
-  Paintbrush,
-  Settings2,
-  ExternalLink,
-} from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import storyImage from '../assets/images/Carpet.jpeg';
+import wovenIcon from '../assets/Cpablities icon/woven.png';
+import dyeingIcon from '../assets/Cpablities icon/image.png';
+import braidedIcon from '../assets/Cpablities icon/braided.png';
+import tuftedIcon from '../assets/Cpablities icon/Tufting Gun.png';
+import knottedIcon from '../assets/Cpablities icon/hand knotted.png';
+import macrameIcon from '../assets/Cpablities icon/macrame.png';
+import juteWeavingIcon from '../assets/Cpablities icon/jute weave.png';
+import stitchedIcon from '../assets/Cpablities icon/stitched.png';
+import printedIcon from '../assets/Cpablities icon/printed.png';
+import customIcon from '../assets/Cpablities icon/custom.png';
+
+const styleIcon = (src: string, alt: string) => (
+  <img src={src} alt={alt} className="w-[22px] h-[22px] object-contain" />
+);
 
 // Pulls the image up on desktop so its top lines up with the "Our Manufacturing" heading
 // instead of the content box below it; height grows by the same amount to keep the bottom aligned.
@@ -30,7 +32,7 @@ interface StorySection {
 const sections: StorySection[] = [
   {
     id: 'story',
-    icon: <FileText size={22} strokeWidth={1.5} />,
+    icon: styleIcon(wovenIcon, 'Hand Woven'),
     label: 'Hand Woven',
     description:
       'Every Handwoven we manufacture begins with careful design thinking, blending traditional craftsmanship with modern functionality for global home and lifestyle markets.',
@@ -44,34 +46,34 @@ const sections: StorySection[] = [
   },
   {
     id: 'Braided',
-    icon: <Layers size={22} strokeWidth={1.5} />,
+    icon: styleIcon(braidedIcon, 'Braided'),
     label: 'Braided',
     description:
       'Crafted from natural, recycled & sustainable fibers including cotton, jute, wool and linen, chosen for durability, texture and a natural finish.',
   },
   {
     id: 'Hand tufted',
-    icon: <Hammer size={22} strokeWidth={1.5} />,
+    icon: styleIcon(tuftedIcon, 'Hand tufted'),
     label: 'Hand tufted',
     description:
       'Hand-finished construction built for durability and consistent quality at scale, combining traditional technique with careful quality checks at every stage.',
   },
   {
     id: 'Hand Knotted',
-    icon: <Ruler size={22} strokeWidth={1.5} />,
+    icon: styleIcon(knottedIcon, 'Hand Knotted'),
     label: 'Hand Knotted',
     description: 'Available in a wide range of standard and fully custom sizes to match buyer specifications.',
   },
   {
     id: 'Macrame',
-    icon: <Droplets size={22} strokeWidth={1.5} />,
+    icon: styleIcon(macrameIcon, 'Macrame'),
     label: 'Macrame',
     description:
       'Spot clean with a damp cloth. Avoid harsh chemicals and prolonged direct sunlight to preserve colour and texture. Professional cleaning recommended for deep stains.',
   },
   {
     id: 'Jute Weaving',
-    icon: <PackageCheck size={22} strokeWidth={1.5} />,
+    icon: styleIcon(juteWeavingIcon, 'Jute Weaving'),
     label: 'Jute Weaving',
     description:
       'Compression-packed in moisture-resistant wrapping with reinforced cartons, tested for safe, cost-efficient global shipping.',
@@ -79,26 +81,26 @@ const sections: StorySection[] = [
   },
   {
     id: 'Stitched',
-    icon: <ClipboardList size={22} strokeWidth={1.5} />,
+    icon: styleIcon(stitchedIcon, 'Stitched'),
     label: 'Stitched',
     description:
       'Minimum order quantities and lead times are tailored to each product category and order volume — get in touch for a tailored quote.',
   },
   {
     id: 'Printed',
-    icon: <Printer size={22} strokeWidth={1.5} />,
+    icon: styleIcon(printedIcon, 'Printed'),
     label: 'Printed',
     description: 'Manufactured in a facility that follows ISO 9001:2015 quality management practices.',
   },
    {
     id: 'Dyeing & Finishing',
-    icon: <Paintbrush size={22} strokeWidth={1.5} />,
+    icon: styleIcon(dyeingIcon, 'Dyeing & Finishing'),
     label: 'Dyeing & Finishing',
     description: 'Manufactured in a facility that follows ISO 9001:2015 quality management practices.',
   },
    {
     id: 'Custom Construction',
-    icon: <Settings2 size={22} strokeWidth={1.5} />,
+    icon: styleIcon(customIcon, 'Custom Construction'),
     label: 'Custom Construction',
     description: 'Manufactured in a facility that follows ISO 9001:2015 quality management practices.',
   },

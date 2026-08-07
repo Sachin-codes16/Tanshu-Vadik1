@@ -1,12 +1,12 @@
 import React from 'react';
 import { Palette, Landmark, ShieldCheck, Leaf, Tag, Globe } from 'lucide-react';
 import { motion } from 'motion/react';
-import icon1 from '../assets/images/ic1.svg';
-import icon2 from '../assets/images/ic2.svg';
+import icon1 from '../assets/Icons/whychoose(design).png';
 import icon3 from '../assets/images/ic3.svg';
 import icon4 from '../assets/images/ic4.svg';
 import icon5 from '../assets/images/ic5.svg';
 import icon6 from '../assets/images/ic6.svg';
+import headOfficeFlag from '../assets/Capablities/headoffice.jpeg';
 
 export const WhyChooseUs: React.FC = () => {
   const benefits = [
@@ -16,7 +16,7 @@ export const WhyChooseUs: React.FC = () => {
       description: 'Trend-driven designs and custom collections tailored to your brand.',
     },
     {
-      icon: <img src = {icon2} className="w-16 h-16 text-[#8F533C] object-contain mix-blend-multiply"  />,
+      icon: <img src = {headOfficeFlag} className="w-16 h-16 object-contain mix-blend-multiply"  />,
       title: 'AUSTRALIAN     HEAD OFFICE',
       description: 'Seamless communication and dedicated support for global buyers.',
     },

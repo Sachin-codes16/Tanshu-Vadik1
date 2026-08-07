@@ -1,9 +1,9 @@
 import React from 'react';
 import { Home, GraduationCap, Coins, Users, ArrowRight } from 'lucide-react';
-import artisanImage1 from '../assets/Capablities/woven1.png';
-import artisanImage2 from '../assets/Capablities/woven2.png';
-import artisanImage3 from '../assets/Capablities/woven3.png';
-import artisanImage4 from '../assets/Capablities/woven4.png';
+import artisanImage1 from '../assets/Heart of Tasnhu/work from home.jpeg';
+import artisanImage2 from '../assets/Heart of Tasnhu/skill development.jpg';
+import artisanImage3 from '../assets/Heart of Tasnhu/fair income (1).jpg';
+import artisanImage4 from '../assets/Heart of Tasnhu/women empowerment.jpg';
 
 const values = [
   { icon: <Home size={20} strokeWidth={1.5} />, title: 'Work From Home', description: 'Flexible & safe working environment' },
@@ -16,7 +16,7 @@ const artisanImages = [artisanImage1, artisanImage2, artisanImage3, artisanImage
 
 export const CapabilitiesWomen: React.FC = () => {
   return (
-    <section className="bg-[#FAF8F5] py-14">
+    <section className="bg-[#FAF8F5] pt-14 pb-4">
       <div className="w-full px-6 sm:px-[80px] grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 lg:gap-10">
         <div>
           <span className="font-sans text-xs sm:text-sm font-bold tracking-widest uppercase text-[#8F533C] block mb-2">
@@ -46,7 +46,9 @@ export const CapabilitiesWomen: React.FC = () => {
                 <img
                   src={artisanImages[index]}
                   alt="Tanshu Vaidik women artisans at work"
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover ${
+                    index === 2 ? 'scale-125 origin-top' : ''
+                  }`}
                 />
               </div>
               <div className="flex items-start gap-3">

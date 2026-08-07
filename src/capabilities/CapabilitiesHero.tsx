@@ -1,14 +1,35 @@
-import React from 'react';
-import heroImage from '../assets/Capablities/cpapiblitieshero.png';
+import React, { useEffect, useState } from 'react';
+import heroImage from '../assets/Capablities/capabilities hero image.jpeg';
+import heroImage2 from '../assets/Capablities/capabilities hero image 2 (1).jpeg';
+
+const slides = [heroImage, heroImage2];
 
 export const CapabilitiesHero: React.FC = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative w-full h-[70vh] min-h-[520px] overflow-hidden">
-      <img
-        src={heroImage}
-        alt="Tanshu Vaidik manufacturing"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+      <div
+        className="absolute inset-0 flex h-full transition-transform duration-1000 ease-in-out"
+        style={{ width: `${slides.length * 100}%`, transform: `translateX(-${activeIndex * (100 / slides.length)}%)` }}
+      >
+        {slides.map((slide, index) => (
+          <div key={index} className="relative h-full shrink-0" style={{ width: `${100 / slides.length}%` }}>
+            <img
+              src={slide}
+              alt="Tanshu Vaidik manufacturing"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(44,38,35,0.85)_0%,rgba(44,38,35,0.75)_35%,rgba(44,38,35,0.2)_75%)]" />
 
       <div className="relative z-10 h-full w-full px-6 sm:px-12 lg:px-[80px] flex flex-col justify-center">
