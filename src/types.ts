@@ -9,6 +9,29 @@ export interface Product {
   dimensions: string;
   leadTime: string;
   minOrderQuantity: string;
+  slug?: string;
+}
+
+export interface ProductDetailData {
+  categoryName: string;
+  categorySlug: string;
+  subCategoryName: string;
+  subCategorySlug: string;
+  productID: string;
+  productName: string;
+  thumbnailImage: string;
+  shortDescription: string;
+  productStory: string;
+  material: string;
+  construction: string;
+  sizes: string;
+  careInstructions: string;
+  packaging: string;
+  packagingCataloguePDF: string;
+  moqLeadTime: string;
+  certifications: string;
+  productSlug: string;
+  productGallery: { image: string }[];
 }
 
 export interface Artisan {

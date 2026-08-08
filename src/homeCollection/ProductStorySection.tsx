@@ -11,7 +11,7 @@ import {
   Check,
   ExternalLink,
 } from 'lucide-react';
-import { Product } from '../types';
+import { Product, ProductDetailData } from '../types';
 import defaultStoryImage from '../assets/collection/rugs2.png';
 
 interface StorySection {
@@ -19,16 +19,18 @@ interface StorySection {
   icon: React.ReactNode;
   label: string;
   description: string;
+  isHtml?: boolean;
   highlights?: string[];
   pdfUrl?: string;
 }
 
 interface ProductStorySectionProps {
   product: Product;
+  detail: ProductDetailData | null;
   image?: string;
 }
 
-export const ProductStorySection: React.FC<ProductStorySectionProps> = ({ product, image }) => {
+export const ProductStorySection: React.FC<ProductStorySectionProps> = ({ product, detail, image }) => {
   const [activeId, setActiveId] = useState('story');
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [contentHeight, setContentHeight] = useState<number | undefined>(undefined);
@@ -38,39 +40,44 @@ export const ProductStorySection: React.FC<ProductStorySectionProps> = ({ produc
       id: 'story',
       icon: <FileText size={22} strokeWidth={1.5} />,
       label: 'Product Story',
-      description: product.description,
-      highlights: [
-        'Premium handwoven quality',
-        'Soft texture for superior comfort',
-        'Strong & durable for long-lasting use',
-        'Neutral design fits every interior',
-        'Sustainable & eco-friendly materials',
-      ],
+      description: detail?.productStory ?? product.description,
+      isHtml: Boolean(detail?.productStory),
+      highlights: detail?.productStory
+        ? undefined
+        : [
+            'Premium handwoven quality',
+            'Soft texture for superior comfort',
+            'Strong & durable for long-lasting use',
+            'Neutral design fits every interior',
+            'Sustainable & eco-friendly materials',
+          ],
     },
     {
       id: 'materials',
       icon: <Layers size={22} strokeWidth={1.5} />,
       label: 'Materials',
-      description: `Crafted from ${product.material}, chosen for durability, texture and a natural finish.`,
+      description: detail?.material ?? `Crafted from ${product.material}, chosen for durability, texture and a natural finish.`,
     },
     {
       id: 'construction',
       icon: <Hammer size={22} strokeWidth={1.5} />,
       label: 'Construction',
       description:
+        detail?.construction ??
         'Hand-finished construction built for durability and consistent quality at scale, combining traditional technique with careful quality checks at every stage.',
     },
     {
       id: 'sizes',
       icon: <Ruler size={22} strokeWidth={1.5} />,
       label: 'Sizes',
-      description: `Available in ${product.dimensions}.`,
+      description: detail?.sizes ?? `Available in ${product.dimensions}.`,
     },
     {
       id: 'care',
       icon: <Droplets size={22} strokeWidth={1.5} />,
       label: 'Care Instructions',
       description:
+        detail?.careInstructions ??
         'Spot clean with a damp cloth. Avoid harsh chemicals and prolonged direct sunlight to preserve colour and texture. Professional cleaning recommended for deep stains.',
     },
     {
@@ -78,20 +85,25 @@ export const ProductStorySection: React.FC<ProductStorySectionProps> = ({ produc
       icon: <PackageCheck size={22} strokeWidth={1.5} />,
       label: 'Packaging',
       description:
+        detail?.packaging ??
         'Compression-packed in moisture-resistant wrapping with reinforced cartons, tested for safe, cost-efficient global shipping.',
-      pdfUrl: '/documents/sample-spec-sheet.pdf',
+      pdfUrl: detail?.packagingCataloguePDF ?? '/documents/sample-spec-sheet.pdf',
     },
     {
       id: 'moq',
       icon: <ClipboardList size={22} strokeWidth={1.5} />,
       label: 'MOQ & Lead Time',
-      description: `Minimum order quantity: ${product.minOrderQuantity}. Standard lead time: ${product.leadTime}.`,
+      description:
+        detail?.moqLeadTime ??
+        `Minimum order quantity: ${product.minOrderQuantity}. Standard lead time: ${product.leadTime}.`,
     },
     {
       id: 'certifications',
       icon: <BadgeCheck size={22} strokeWidth={1.5} />,
       label: 'Certifications',
-      description: 'Manufactured in a facility that follows ISO 9001:2015 quality management practices.',
+      description:
+        detail?.certifications ??
+        'Manufactured in a facility that follows ISO 9001:2015 quality management practices.',
     },
   ];
 
@@ -138,7 +150,14 @@ export const ProductStorySection: React.FC<ProductStorySectionProps> = ({ produc
           <h3 className="font-sans text-sm font-bold tracking-widest uppercase text-[#2C2623] mb-4">
             {active.label}
           </h3>
-          <p className="font-sans text-sm text-[#615751] leading-relaxed">{active.description}</p>
+          {active.isHtml ? (
+            <div
+              className="font-sans text-sm text-[#615751] leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_strong]:text-[#2C2623] [&_strong]:font-bold [&_ul]:mt-3 [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2 [&_li]:list-disc [&_li]:ml-4"
+              dangerouslySetInnerHTML={{ __html: active.description }}
+            />
+          ) : (
+            <p className="font-sans text-sm text-[#615751] leading-relaxed">{active.description}</p>
+          )}
 
           {active.highlights && (
             <div className="bg-[#F4EFEA] border border-[#EBE4DC] p-5 mt-6">
@@ -173,7 +192,12 @@ export const ProductStorySection: React.FC<ProductStorySectionProps> = ({ produc
           className="relative aspect-[4/3] lg:aspect-auto overflow-hidden bg-[#F4EFEA] -my-8 lg:-mr-[80px]"
           style={contentHeight ? { height: contentHeight + 64 } : undefined}
         >
-          <img src={image ?? defaultStoryImage} alt={product.name} className="w-full h-full object-cover" />
+          <img
+            src={image ?? defaultStoryImage}
+            alt={product.name}
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-cover"
+          />
         </div>
       </div>
     </section>

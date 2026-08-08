@@ -8,7 +8,6 @@ import {
   ChevronRight,
   ChevronUp,
   Hand,
-  Heart,
   Layers,
   Leaf,
   ShieldCheck,
@@ -16,16 +15,10 @@ import {
   SlidersHorizontal,
   Truck,
 } from 'lucide-react';
-import { Product } from '../types';
+import { Product, ProductDetailData } from '../types';
 import { useInquiry } from '../context/InquiryContext';
 import { ProductStorySection } from './ProductStorySection';
 import { CustomDesignBanner } from './CustomDesignBanner';
-import rugImageA from '../assets/images/Rugs.jpeg';
-import rugImageB from '../assets/images/Rug.jpeg';
-import rugImageC from '../assets/images/WhatsApp Image 2026-07-20 at 11.45.28.jpeg';
-import rugImageD from '../assets/images/WhatsApp Image 2026-07-18 at 11.12.09.jpeg';
-
-const GALLERY_IMAGES = [rugImageA, rugImageB, rugImageC, rugImageD];
 
 const introBadges = [
   { icon: <Hand size={28} strokeWidth={1.5} />, label: 'Handcrafted Excellence' },
@@ -55,6 +48,9 @@ const trustBadges = [
 
 interface RugProductDetailPageProps {
   product: Product;
+  detail: ProductDetailData | null;
+  detailLoading: boolean;
+  detailError: string | null;
   relatedProducts: Product[];
   onBack: () => void;
   onSelectRelated: (product: Product) => void;
@@ -62,6 +58,9 @@ interface RugProductDetailPageProps {
 
 export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
   product,
+  detail,
+  detailLoading,
+  detailError,
   relatedProducts,
   onBack,
   onSelectRelated,
@@ -96,12 +95,18 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
   }, [product]);
 
   useEffect(() => {
+    if (detail?.thumbnailImage) setActiveImage(detail.thumbnailImage);
+  }, [detail]);
+
+  useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 480);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const gallery = [product.image, ...GALLERY_IMAGES.filter((img) => img !== product.image)].slice(0, 4);
+  const galleryImages = detail?.productGallery?.map((item) => item.image) ?? [];
+  const mainImage = detail?.thumbnailImage ?? product.image;
+  const gallery = [mainImage, ...galleryImages.filter((img) => img !== mainImage)];
   const inCart = isInCart(product.id);
 
   return (
@@ -148,7 +153,7 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
                       activeImage === img ? 'border-[#8F533C]' : 'border-[#EBE4DC]'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img src={img} alt="" referrerPolicy="no-referrer" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -171,6 +176,7 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
               <img
                 src={activeImage}
                 alt={product.name}
+                referrerPolicy="no-referrer"
                 className="w-full h-full object-cover aspect-[4/3] lg:aspect-auto"
               />
             </div>
@@ -178,7 +184,7 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
             {/* Info panel */}
             <div className="order-3 min-w-0">
               <span className="font-sans text-xs font-bold tracking-widest uppercase text-[#8F533C]">
-                Rugs Collection
+                {detail?.subCategoryName ? `${detail.subCategoryName} Collection` : 'Rugs Collection'}
               </span>
               <h1 className="font-serif text-3xl sm:text-4xl text-[#2C2623] font-bold uppercase leading-tight mt-2">
                 {product.name}
@@ -189,7 +195,9 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
 
               <div className="h-px w-full bg-[#EBE4DC] my-5" />
 
-              <p className="font-sans text-sm text-[#615751] leading-relaxed">{product.description}</p>
+              <p className="font-sans text-sm text-[#615751] leading-relaxed">
+                {detail?.shortDescription || product.description}
+              </p>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mt-7">
                 {introBadges.map((badge) => (
@@ -206,7 +214,10 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
 
               <div className="flex flex-col sm:flex-row gap-3 mt-8">
                 <button
-                  onClick={() => setIsPortalOpen(true)}
+                  onClick={() => {
+                    addToCart(product);
+                    setIsPortalOpen(true);
+                  }}
                   className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#2C2623] hover:bg-[#8F533C] text-white font-button text-xs tracking-widest uppercase transition-colors cursor-pointer"
                 >
                   Request Product Details
@@ -240,7 +251,13 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
 
       {/* PRODUCT DETAILS */}
       <section>
-        <ProductStorySection product={product} image={gallery[1] ?? product.image} />
+        {detailLoading && (
+          <p className="text-center font-sans text-sm text-[#615751] py-6">Loading full product details...</p>
+        )}
+        {!detailLoading && detailError && (
+          <p className="text-center font-sans text-sm text-[#C0392B] py-6">{detailError}</p>
+        )}
+        <ProductStorySection product={product} detail={detail} image={gallery[1] ?? mainImage} />
       </section>
 
       {/* CUSTOMISATION STUDIO */}
@@ -260,6 +277,7 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
                   <img
                     src={gallery[index % gallery.length]}
                     alt=""
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover"
                   />
                 </span>
@@ -297,7 +315,24 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
           </div>
 
           {relatedProducts.length === 0 ? (
-            <p className="font-sans text-sm text-[#615751] text-center">No other rugs to show right now.</p>
+            galleryImages.length > 0 ? (
+              <div className="flex items-center justify-center gap-5 flex-wrap">
+                {galleryImages.map((img) => (
+                  <div key={img} className="w-[180px] sm:w-[220px]">
+                    <div className="relative aspect-square overflow-hidden rounded-lg bg-white">
+                      <img
+                        src={img}
+                        alt={product.name}
+                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="font-sans text-sm text-[#615751] text-center">No other rugs to show right now.</p>
+            )
           ) : (
             <div className="flex items-center gap-2 sm:gap-4">
               <button

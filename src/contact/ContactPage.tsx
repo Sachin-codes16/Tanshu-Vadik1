@@ -23,6 +23,7 @@ import australiaMapShape from '../assets/Capablities/australia-map-mask.png';
 import { COUNTRIES } from '../data/countries';
 import { offices } from '../data';
 import { useInquiry } from '../context/InquiryContext';
+import { submitContactUs } from '../api';
 
 const PinterestIcon: React.FC<{ size?: number }> = ({ size = 15 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -47,10 +48,31 @@ export const ContactPage: React.FC = () => {
   const { setIsPortalOpen } = useInquiry();
   const [agreed, setAgreed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    const formData = new FormData(e.currentTarget);
+
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      await submitContactUs({
+        FullName: formData.get('fullName'),
+        CompanyName: formData.get('companyName'),
+        Email: formData.get('email'),
+        Phone: formData.get('phone'),
+        Country: formData.get('country'),
+        EnquiryType: formData.get('enquiryType'),
+        Message: formData.get('message'),
+      });
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError('Something went wrong while sending your message. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
    return (
@@ -119,6 +141,7 @@ export const ContactPage: React.FC = () => {
                </label>
                <input
                  type="text"
+                 name="fullName"
                  required
                  className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] focus:outline-none focus:border-[#8F533C]"
                />
@@ -128,6 +151,7 @@ export const ContactPage: React.FC = () => {
                <label className="font-sans text-sm text-[#2C2623]">Company Name</label>
                <input
                  type="text"
+                 name="companyName"
                  className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] focus:outline-none focus:border-[#8F533C]"
                />
              </div>
@@ -138,6 +162,7 @@ export const ContactPage: React.FC = () => {
                </label>
                <input
                  type="email"
+                 name="email"
                  required
                  className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] focus:outline-none focus:border-[#8F533C]"
                />
@@ -149,6 +174,7 @@ export const ContactPage: React.FC = () => {
                </label>
                <input
                  type="tel"
+                 name="phone"
                  required
                  className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] focus:outline-none focus:border-[#8F533C]"
                />
@@ -159,6 +185,7 @@ export const ContactPage: React.FC = () => {
                  Country <span className="text-[#C0392B]">*</span>
                </label>
                <select
+                 name="country"
                  required
                  defaultValue=""
                  className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] focus:outline-none focus:border-[#8F533C]"
@@ -179,6 +206,7 @@ export const ContactPage: React.FC = () => {
                  Enquiry Type <span className="text-[#C0392B]">*</span>
                </label>
                <select
+                 name="enquiryType"
                  required
                  defaultValue=""
                  className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] focus:outline-none focus:border-[#8F533C]"
@@ -199,6 +227,7 @@ export const ContactPage: React.FC = () => {
                  Your Message <span className="text-[#C0392B]">*</span>
                </label>
                <textarea
+                 name="message"
                  required
                  rows={5}
                  className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] resize-y focus:outline-none focus:border-[#8F533C]"
@@ -221,11 +250,16 @@ export const ContactPage: React.FC = () => {
                </span>
              </label>
 
+             {submitError && (
+               <p className="sm:col-span-2 font-sans text-sm text-[#C0392B]">{submitError}</p>
+             )}
+
              <button
                type="submit"
-               className="sm:col-span-2 w-full sm:w-fit flex items-center justify-center gap-2 px-6 py-4 bg-[#8F533C] hover:bg-[#2C2623] text-white font-sans text-xs font-bold tracking-widest uppercase transition-colors cursor-pointer"
+               disabled={submitting}
+               className="sm:col-span-2 w-full sm:w-fit flex items-center justify-center gap-2 px-6 py-4 bg-[#8F533C] hover:bg-[#2C2623] disabled:opacity-60 disabled:cursor-not-allowed text-white font-sans text-xs font-bold tracking-widest uppercase transition-colors cursor-pointer"
              >
-               Send Message <Send size={14} />
+               {submitting ? 'Sending...' : 'Send Message'} <Send size={14} />
              </button>
            </form>
          )}

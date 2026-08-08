@@ -1,13 +1,33 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Leaf, Hand, Globe } from 'lucide-react';
-import { RugsProductListing, getAllRugItems } from './RugsProductListing';
+import { RugsProductListing } from './RugsProductListing';
 import { RugProductDetailPage } from './RugProductDetailPage';
-import { getProductsForHomeCategory } from './HomeCollectionClick';
-import { Product } from '../types';
+import { getProductList, getProductDetail } from '../api';
+import { Product, ProductDetailData } from '../types';
 import rugsHeroImage from '../assets/collection/ChatGPT Image Jul 23, 2026, 12_59_04 AM.png';
 
 interface RugsDetailsPageProps {
+  categorySlug: string;
+  subCategorySlug: string;
   onBack: () => void;
+}
+
+interface ApiProduct {
+  productID: string;
+  productName: string;
+  productImage: string;
+  shortDescription: string;
+  material: string;
+  dimensions: string;
+  leadTime: string;
+  minOrderQuantity: string;
+  productSlug: string;
+}
+
+interface ApiProductDetailResponse {
+  data?: {
+    data?: ProductDetailData;
+  };
 }
 
 const features = [
@@ -16,10 +36,90 @@ const features = [
   { icon: <Globe size={14} />, label: 'Export Quality' },
 ];
 
-export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ onBack }) => {
-  const rugsProducts = useMemo(() => getProductsForHomeCategory('Rugs'), []);
-  const allRugItems = useMemo(() => getAllRugItems(rugsProducts), [rugsProducts]);
+export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, subCategorySlug, onBack }) => {
+  const [rugsProducts, setRugsProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [productDetail, setProductDetail] = useState<ProductDetailData | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [detailError, setDetailError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+// rugsdetals page ki hai ye api 
+
+    getProductList(categorySlug, subCategorySlug)
+      .then((res: { data?: { data?: ApiProduct[] } }) => {
+        if (cancelled) return;
+        const list = res?.data?.data ?? [];
+        setRugsProducts(
+          list.map((item): Product => ({
+            id: item.productID,
+            name: item.productName,
+            collection: 'home-decor',
+            subcategory: 'Rugs',
+            image: item.productImage,
+            description: item.shortDescription,
+            material: item.material,
+            dimensions: item.dimensions,
+            leadTime: item.leadTime,
+            minOrderQuantity: item.minOrderQuantity,
+            slug: item.productSlug,
+          }))
+        );
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        console.error('Failed to load rug products.', err);
+        setError('Could not load products right now. Please try again shortly.');
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [categorySlug, subCategorySlug]);
+
+  useEffect(() => {
+    if (!selectedProduct?.slug) {
+      setProductDetail(null);
+      setDetailError(null);
+      return;
+    }
+
+    let cancelled = false;
+    setDetailLoading(true);
+    setDetailError(null);
+    setProductDetail(null);
+// Product details ki api hai ye 
+    getProductDetail(categorySlug, subCategorySlug, selectedProduct.slug)
+      .then((res: ApiProductDetailResponse) => {
+        if (cancelled) return;
+        const data = res?.data?.data;
+        if (data) {
+          setProductDetail(data);
+        } else {
+          setDetailError('Could not load full product details right now.');
+        }
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        console.error('Failed to load product detail.', err);
+        setDetailError('Could not load full product details right now.');
+      })
+      .finally(() => {
+        if (!cancelled) setDetailLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedProduct?.slug, categorySlug, subCategorySlug]);
 
   const openProduct = (product: Product) => {
     setSelectedProduct(product);
@@ -30,7 +130,10 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ onBack }) => {
     return (
       <RugProductDetailPage
         product={selectedProduct}
-        relatedProducts={allRugItems.filter((item) => item.id !== selectedProduct.id)}
+        detail={productDetail}
+        detailLoading={detailLoading}
+        detailError={detailError}
+        relatedProducts={rugsProducts.filter((item) => item.id !== selectedProduct.id)}
         onBack={() => setSelectedProduct(null)}
         onSelectRelated={openProduct}
       />
@@ -82,7 +185,15 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ onBack }) => {
       </section>
 
       {/* Rugs product listing */}
-      <RugsProductListing products={rugsProducts} onSelectProduct={openProduct} />
+      {loading && (
+        <p className="text-center font-sans text-sm text-[#615751] py-16">Loading products...</p>
+      )}
+      {!loading && error && (
+        <p className="text-center font-sans text-sm text-[#C0392B] py-16">{error}</p>
+      )}
+      {!loading && !error && (
+        <RugsProductListing products={rugsProducts} onSelectProduct={openProduct} />
+      )}
     </div>
   );
 };

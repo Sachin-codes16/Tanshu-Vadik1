@@ -3,6 +3,7 @@ import { useInquiry } from '../context/InquiryContext';
 import { X, ChevronDown, Check, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { COUNTRIES } from '../data/countries';
+import { submitProductEnquiry } from '../api';
 
 export const B2BPortal: React.FC = () => {
   const { cart, clearCart, isPortalOpen, setIsPortalOpen } = useInquiry();
@@ -13,6 +14,14 @@ export const B2BPortal: React.FC = () => {
   );
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
   const [countrySearch, setCountrySearch] = useState('');
+
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [serviceInquiry, setServiceInquiry] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const filteredCountries = COUNTRIES.filter((c) =>
     c.name.toLowerCase().includes(countrySearch.toLowerCase())
@@ -28,14 +37,41 @@ export const B2BPortal: React.FC = () => {
   const handleClose = () => {
     setIsPortalOpen(false);
     setCountryDropdownOpen(false);
+    setSubmitError(null);
+    setSubmitSuccess(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    clearCart();
-    setNotRobotChecked(false);
-    setTermsChecked(false);
-    setIsPortalOpen(false);
+    if (submitting) return;
+
+    setSubmitError(null);
+    setSubmitting(true);
+
+    try {
+      await submitProductEnquiry({
+        FullName: fullName,
+        Email: email,
+        Phone: phone,
+        ServiceInquiry: serviceInquiry,
+        ProductID: cart[0]?.id ?? '',
+        Url: window.location.href,
+      });
+
+      setSubmitSuccess(true);
+      clearCart();
+      setFullName('');
+      setEmail('');
+      setPhone('');
+      setServiceInquiry('');
+      setNotRobotChecked(false);
+      setTermsChecked(false);
+    } catch (err) {
+      console.error('Failed to submit product enquiry.', err);
+      setSubmitError('Could not submit your enquiry right now. Please try again shortly.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -73,6 +109,22 @@ export const B2BPortal: React.FC = () => {
               </div>
               <p className="font-sans text-sm text-[#615751] mb-8">{subtitle}</p>
 
+              {submitSuccess ? (
+                <div className="flex flex-col items-center text-center gap-4 py-10">
+                  <span className="w-14 h-14 rounded-full bg-[#8F533C]/10 flex items-center justify-center">
+                    <Check size={28} className="text-[#8F533C]" />
+                  </span>
+                  <h4 className="font-serif text-xl text-[#2C2623] font-bold">Thank you!</h4>
+                  <p className="font-sans text-sm text-[#615751]">Product enquiry submitted successfully.</p>
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    className="mt-2 px-6 py-3 bg-[#8F533C] hover:bg-[#2C2623] text-white font-button text-xs tracking-widest uppercase transition-colors rounded-none cursor-pointer border border-[#8F533C] hover:border-[#2C2623]"
+                  >
+                    Close
+                  </button>
+                </div>
+              ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="font-sans text-sm text-[#2C2623]">
@@ -81,6 +133,8 @@ export const B2BPortal: React.FC = () => {
                   <input
                     type="text"
                     required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
                     className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] focus:outline-none focus:border-[#8F533C]"
                   />
                 </div>
@@ -92,6 +146,8 @@ export const B2BPortal: React.FC = () => {
                   <input
                     type="email"
                     required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] focus:outline-none focus:border-[#8F533C]"
                   />
                 </div>
@@ -115,6 +171,8 @@ export const B2BPortal: React.FC = () => {
                     <input
                       type="tel"
                       required
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
                       className="w-full px-4 py-3 font-sans text-sm text-[#2C2623] focus:outline-none"
                     />
 
@@ -174,6 +232,8 @@ export const B2BPortal: React.FC = () => {
                   <textarea
                     required
                     rows={4}
+                    value={serviceInquiry}
+                    onChange={(e) => setServiceInquiry(e.target.value)}
                     placeholder={cart.length > 0 ? `Interested in: ${cart.map((item) => item.name).join(', ')}` : undefined}
                     className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] placeholder:text-[#9C9188] resize-y focus:outline-none focus:border-[#8F533C]"
                   />
@@ -216,13 +276,19 @@ export const B2BPortal: React.FC = () => {
                   </span>
                 </label>
 
+                {submitError && (
+                  <p className="font-sans text-xs text-[#C0392B]">{submitError}</p>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full py-4 bg-[#8F533C] hover:bg-[#2C2623] text-white font-button text-xs tracking-widest uppercase transition-colors rounded-none cursor-pointer border border-[#8F533C] hover:border-[#2C2623]"
+                  disabled={submitting}
+                  className="w-full py-4 bg-[#8F533C] hover:bg-[#2C2623] text-white font-button text-xs tracking-widest uppercase transition-colors rounded-none cursor-pointer border border-[#8F533C] hover:border-[#2C2623] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Submit Enquiry
+                  {submitting ? 'Submitting...' : 'Submit Enquiry'}
                 </button>
               </form>
+              )}
             </div>
           </motion.div>
         </div>

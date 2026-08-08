@@ -2,20 +2,20 @@ import React, { useRef, useState } from 'react';
 import { HeroBanner } from './HeroBanner';
 import { CollectionCardsSection } from './CollectionCardsSection';
 import { TrustStrip } from './TrustStrip';
-import { HomeCollectionDetailPage } from './HomeCollectionDetailPage';
+import { HomeCollectionDetailPage } from './homecollection1';
 import { SeasonalCollectionDetailPage } from './SeasonalCollectionDetailPage';
 
 export const HomeCollectionPage: React.FC = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
-  const [showHomeDetail, setShowHomeDetail] = useState(false);
+  const [homeDetailSlug, setHomeDetailSlug] = useState<string | null>(null);
   const [showSeasonalDetail, setShowSeasonalDetail] = useState(false);
 
   const scrollToCards = () => {
     cardsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  if (showHomeDetail) {
-    return <HomeCollectionDetailPage onBack={() => setShowHomeDetail(false)} />;
+  if (homeDetailSlug) {
+    return <HomeCollectionDetailPage categorySlug={homeDetailSlug} onBack={() => setHomeDetailSlug(null)} />;
   }
 
   if (showSeasonalDetail) {
@@ -27,7 +27,7 @@ export const HomeCollectionPage: React.FC = () => {
       <HeroBanner onExploreCollections={scrollToCards} />
       <div ref={cardsRef}>
         <CollectionCardsSection
-          onOpenHomeCollection={() => setShowHomeDetail(true)}
+          onOpenHomeCollection={(categorySlug) => setHomeDetailSlug(categorySlug)}
           onOpenSeasonalCollection={() => setShowSeasonalDetail(true)}
         />
       </div>

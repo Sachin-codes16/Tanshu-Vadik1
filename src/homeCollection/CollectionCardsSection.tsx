@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { products } from '../data';
 import { Product } from '../types';
+
 import { ProductShowcaseModal } from '../components/ProductShowcaseModal';
+import { getCategoryList } from '../api';
 import homeCollectionImage from '../assets/collection/HomeCollection.png';
 import petUtilityImage from '../assets/collection/Petutility.png';
 import seasonalCollectionImage from '../assets/collection/SesonalCollection.png';
@@ -11,8 +13,10 @@ import homeIcon from '../assets/Icons/HomeCollection.png';
 import petIcon from '../assets/Icons/Petutility.png';
 import seasonalIcon from '../assets/Icons/Sesonal.png';
 
+
 interface CardConfig {
-  key: Product['collection'];
+  key: string;
+  categorySlug: string;
   title: string;
   description: string;
   cta: string;
@@ -20,9 +24,20 @@ interface CardConfig {
   icon: React.ReactNode;
 }
 
-const cards: CardConfig[] = [
+interface ApiCategory {
+  catID: string;
+  categoryName: string;
+  catImage: string;
+  catIcon: string;
+  shortDescription: string;
+  categorySlug: string;
+}
+
+// Shown until the category-list API responds, and kept as a fallback if it fails.
+const FALLBACK_CARDS: CardConfig[] = [
   {
     key: 'home-decor',
+    categorySlug: 'home-collection-1',
     title: 'Home Collection',
     description: 'Beautiful handcrafted home décor designed for comfort, style, and everyday living.',
     cta: 'Explore Home Collection',
@@ -31,6 +46,7 @@ const cards: CardConfig[] = [
   },
   {
     key: 'pet-living',
+    categorySlug: 'pet-utility-1',
     title: 'Pet Utility',
     description: 'Premium handmade pet essentials combining comfort, durability and elegant design.',
     cta: 'Explore Pet Utility',
@@ -39,6 +55,7 @@ const cards: CardConfig[] = [
   },
   {
     key: 'seasonal',
+    categorySlug: 'seasonal-collection-1',
     title: 'Seasonal Collection',
     description: 'Fresh collections inspired by every season and celebration around the world.',
     cta: 'Explore Seasonal Collection',
@@ -48,15 +65,57 @@ const cards: CardConfig[] = [
 ];
 
 interface CollectionCardsSectionProps {
-  onOpenHomeCollection: () => void;
-  onOpenSeasonalCollection: () => void;
+  onOpenHomeCollection: (categorySlug: string) => void;
+  onOpenSeasonalCollection: (categorySlug: string) => void;
 }
+
+// Maps the API's free-form categorySlug/categoryName to the fixed collection
+// keys used to filter local product data and to route to the dedicated
+// Home/Seasonal pages. Categories that don't match a known keyword still
+// render as a card, just keyed by their own categorySlug.
+const resolveCollectionKey = (categorySlug: string, categoryName: string): Product['collection'] | null => {
+  const text = `${categorySlug} ${categoryName}`.toLowerCase();
+  if (text.includes('pet')) return 'pet-living';
+  if (text.includes('season')) return 'seasonal';
+  if (text.includes('home')) return 'home-decor';
+  return null;
+};
 
 export const CollectionCardsSection: React.FC<CollectionCardsSectionProps> = ({
   onOpenHomeCollection,
   onOpenSeasonalCollection,
 }) => {
+  const [cards, setCards] = useState<CardConfig[]>(FALLBACK_CARDS);
   const [activeCollection, setActiveCollection] = useState<CardConfig | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getCategoryList()
+      .then((res: { data?: { data?: ApiCategory[] } }) => {
+        const categories = res?.data?.data ?? [];
+        const mapped = categories.map((item): CardConfig => ({
+          key: resolveCollectionKey(item.categorySlug, item.categoryName) ?? item.categorySlug,
+          categorySlug: item.categorySlug,
+          title: item.categoryName,
+          description: item.shortDescription,
+          cta: `Explore ${item.categoryName}`,
+          image: item.catImage,
+          icon: <img src={item.catIcon} alt="" className="w-7 h-7 object-contain" />,
+        }));
+
+        if (!cancelled) {
+          setCards(mapped);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to load product categories, using fallback cards.', err);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const activeProducts = useMemo(
     () => (activeCollection ? products.filter((p) => p.collection === activeCollection.key) : []),
@@ -65,9 +124,9 @@ export const CollectionCardsSection: React.FC<CollectionCardsSectionProps> = ({
 
   const handleCardClick = (card: CardConfig) => {
     if (card.key === 'home-decor') {
-      onOpenHomeCollection();
+      onOpenHomeCollection(card.categorySlug);
     } else if (card.key === 'seasonal') {
-      onOpenSeasonalCollection();
+      onOpenSeasonalCollection(card.categorySlug);
     } else {
       setActiveCollection(card);
     }

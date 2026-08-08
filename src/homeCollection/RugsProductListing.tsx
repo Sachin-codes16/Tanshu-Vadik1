@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SlidersHorizontal,
   Minus,
@@ -11,72 +11,53 @@ import {
   Globe,
 } from 'lucide-react';
 import { Product } from '../types';
-import stripedRugImage from '../assets/images/WhatsApp Image 2026-07-20 at 11.45.28.jpeg';
-import trellisRugImage from '../assets/images/WhatsApp Image 2026-07-18 at 11.12.09.jpeg';
-import woolRugImage from '../assets/images/Rug.jpeg';
+import {
+  getMaterialList,
+  getSizeList,
+  getColorList,
+  getCollectionFilterList,
+  getShapeList,
+  getWeaveList,
+} from '../api';
 
 interface RugsProductListingProps {
   products: Product[];
   onSelectProduct: (product: Product) => void;
 }
 
-const swatchTones = ['#D9C7AC', '#A9744F', '#8C8378', '#5C4A3A'];
+interface FilterOption {
+  slug: string;
+  label: string;
+}
 
-// Groups with no backing data field on the product model yet (no color/collection/
-// shape/weave attributes exist), left as visual expand/collapse until that data exists.
-const collapsedFilterGroups = ['Color', 'Collection', 'Shape', 'Weave'];
+interface FilterOptionsState {
+  material: FilterOption[];
+  size: FilterOption[];
+  color: FilterOption[];
+  collection: FilterOption[];
+  shape: FilterOption[];
+  weave: FilterOption[];
+}
 
-// Fiber vocabulary used to pull real material tags out of each product's free-text
-// `material` string (e.g. "70% Sustainable Jute, 30% Unbleached Cotton" -> Jute, Cotton).
-const KNOWN_MATERIAL_KEYWORDS = ['Jute', 'Cotton', 'Wool', 'Recycled Cotton', 'Linen', 'Silk', 'Bamboo'];
+const EMPTY_FILTER_OPTIONS: FilterOptionsState = {
+  material: [],
+  size: [],
+  color: [],
+  collection: [],
+  shape: [],
+  weave: [],
+};
 
-// Display-only fillers so the grid shows a fuller catalog feel; each is a full Product
-// so it can open the same detail page and "Add to RFQ" flow as real catalog items.
-const displayFillers: Product[] = [
-  {
-    id: 'rug-filler-jute-braided',
-    name: 'Jute Braided Rug',
-    collection: 'home-decor',
-    subcategory: 'Rugs',
-    image: stripedRugImage,
-    description:
-      'Densely braided jute rug finished with a hand-knotted fringe, bringing warm natural texture to entryways and living spaces.',
-    material: '100% Jute',
-    dimensions: '150 x 150 cm, Custom sizes',
-    leadTime: '6-8 weeks',
-    minOrderQuantity: '100 pcs',
-  },
-  {
-    id: 'rug-filler-trellis-woven',
-    name: 'Trellis Woven Rug',
-    collection: 'home-decor',
-    subcategory: 'Rugs',
-    image: trellisRugImage,
-    description:
-      'Quatrefoil trellis pattern woven from recycled cotton yarns for a soft, durable rug with a refined geometric look.',
-    material: 'Recycled Cotton',
-    dimensions: '160 x 230 cm, Custom sizes',
-    leadTime: '6-8 weeks',
-    minOrderQuantity: '100 pcs',
-  },
-  {
-    id: 'rug-filler-wool-tufted',
-    name: 'Wool Hand Tufted Rug',
-    collection: 'home-decor',
-    subcategory: 'Rugs',
-    image: woolRugImage,
-    description:
-      'Hand-tufted 100% wool rug with a plush pile and a classic bordered motif, built for long-lasting everyday comfort.',
-    material: '100% Wool',
-    dimensions: '170 x 240 cm, Custom sizes',
-    leadTime: '7-9 weeks',
-    minOrderQuantity: '100 pcs',
-  },
+// Groups shown collapsed by default; "Material" always stays expanded.
+const collapsibleFilterGroups: { key: keyof FilterOptionsState; title: string }[] = [
+  { key: 'size', title: 'Size' },
+  { key: 'color', title: 'Color' },
+  { key: 'collection', title: 'Collection' },
+  { key: 'shape', title: 'Shape' },
+  { key: 'weave', title: 'Weave' },
 ];
 
-// Combines real catalog rugs with the display fillers into one ordered list, used
-// both for the product grid here and for computing "related products" elsewhere.
-export const getAllRugItems = (products: Product[]): Product[] => [...products, ...displayFillers];
+const swatchTones = ['#D9C7AC', '#A9744F', '#8C8378', '#5C4A3A'];
 
 const trustItems = [
   {
@@ -103,25 +84,38 @@ const trustItems = [
 
 export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products, onSelectProduct }) => {
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
+  const [filterOptions, setFilterOptions] = useState<FilterOptionsState>(EMPTY_FILTER_OPTIONS);
 
-  const allItems = getAllRugItems(products);
+  useEffect(() => {
+    let cancelled = false;
 
-  // Only show a material checkbox if it's actually present in a listed product's
-  // material string, so the filter always reflects what's really in the catalog.
-  const materialFilters = KNOWN_MATERIAL_KEYWORDS.filter((keyword) =>
-    allItems.some((item) => item.material.toLowerCase().includes(keyword.toLowerCase()))
-  );
+    Promise.all([
+      getMaterialList(),
+      getSizeList(),
+      getColorList(),
+      getCollectionFilterList(),
+      getShapeList(),
+      getWeaveList(),
+    ])
+      .then(([materialRes, sizeRes, colorRes, collectionRes, shapeRes, weaveRes]) => {
+        if (cancelled) return;
+        setFilterOptions({
+          material: (materialRes?.data?.data ?? []).map((i: any) => ({ label: i.materialName, slug: i.materialSlug })),
+          size: (sizeRes?.data?.data ?? []).map((i: any) => ({ label: i.sizeName, slug: i.sizeSlug })),
+          color: (colorRes?.data?.data ?? []).map((i: any) => ({ label: i.colorName, slug: i.colorSlug })),
+          collection: (collectionRes?.data?.data ?? []).map((i: any) => ({ label: i.collectionName, slug: i.collectionSlug })),
+          shape: (shapeRes?.data?.data ?? []).map((i: any) => ({ label: i.shapeName, slug: i.shapeSlug })),
+          weave: (weaveRes?.data?.data ?? []).map((i: any) => ({ label: i.weaveName, slug: i.weaveSlug })),
+        });
+      })
+      .catch((err) => {
+        console.error('Failed to load filter options.', err);
+      });
 
-  // Sizes come straight from each product's dimensions field, split on commas and
-  // de-duplicated, so new sizes show up automatically as the catalog grows.
-  const sizeFilters = Array.from(
-    new Set(
-      allItems
-        .flatMap((item) => item.dimensions.split(','))
-        .map((size) => size.trim())
-        .filter((size) => size && !/custom/i.test(size))
-    )
-  );
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section className="pt-6 pb-0">
@@ -139,58 +133,45 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
               <Minus size={14} className="text-[#615751]" />
             </div>
             <div className="flex flex-col gap-1.5">
-              {materialFilters.map((material) => (
+              {filterOptions.material.map((material) => (
                 <label
-                  key={material}
+                  key={material.slug}
                   className="flex items-center gap-2 font-sans text-xs text-[#615751] cursor-pointer"
                 >
                   <input type="checkbox" className="accent-[#8F533C]" />
-                  {material}
+                  {material.label}
                 </label>
               ))}
             </div>
           </div>
 
-          <div className="py-3 border-b border-[#EBE4DC]">
-            <button
-              onClick={() => setExpandedGroup(expandedGroup === 'Size' ? null : 'Size')}
-              className="w-full flex items-center justify-between mb-2 cursor-pointer"
-            >
-              <span className="font-sans text-sm font-bold text-[#2C2623]">Size</span>
-              {expandedGroup === 'Size' ? (
-                <Minus size={14} className="text-[#615751]" />
-              ) : (
-                <Plus size={14} className="text-[#615751]" />
+          {collapsibleFilterGroups.map(({ key, title }) => (
+            <div key={key} className="py-3 border-b border-[#EBE4DC]">
+              <button
+                onClick={() => setExpandedGroup(expandedGroup === title ? null : title)}
+                className="w-full flex items-center justify-between mb-2 cursor-pointer"
+              >
+                <span className="font-sans text-sm font-bold text-[#2C2623]">{title}</span>
+                {expandedGroup === title ? (
+                  <Minus size={14} className="text-[#615751]" />
+                ) : (
+                  <Plus size={14} className="text-[#615751]" />
+                )}
+              </button>
+              {expandedGroup === title && (
+                <div className="flex flex-col gap-1.5">
+                  {filterOptions[key].map((option) => (
+                    <label
+                      key={option.slug}
+                      className="flex items-center gap-2 font-sans text-xs text-[#615751] cursor-pointer"
+                    >
+                      <input type="checkbox" className="accent-[#8F533C]" />
+                      {option.label}
+                    </label>
+                  ))}
+                </div>
               )}
-            </button>
-            {expandedGroup === 'Size' && (
-              <div className="flex flex-col gap-1.5">
-                {sizeFilters.map((size) => (
-                  <label
-                    key={size}
-                    className="flex items-center gap-2 font-sans text-xs text-[#615751] cursor-pointer"
-                  >
-                    <input type="checkbox" className="accent-[#8F533C]" />
-                    {size}
-                  </label>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {collapsedFilterGroups.map((group) => (
-            <button
-              key={group}
-              onClick={() => setExpandedGroup(expandedGroup === group ? null : group)}
-              className="w-full flex items-center justify-between py-1.5 border-b border-[#EBE4DC] cursor-pointer"
-            >
-              <span className="font-sans text-sm font-bold text-[#2C2623]">{group}</span>
-              {expandedGroup === group ? (
-                <Minus size={14} className="text-[#615751]" />
-              ) : (
-                <Plus size={14} className="text-[#615751]" />
-              )}
-            </button>
+            </div>
           ))}
 
           <button className="w-full mt-4 py-2 border border-[#8F533C] text-[#8F533C] font-button text-xs tracking-widest uppercase hover:bg-[#8F533C] hover:text-white transition-colors cursor-pointer">
@@ -202,7 +183,7 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-6">
             <span className="font-sans text-xs text-[#615751]">
-              Showing {allItems.length} of {allItems.length} results
+              Showing {products.length} of {products.length} results
             </span>
             <div className="flex items-center gap-2 font-sans text-xs text-[#615751]">
               Sort by:
@@ -211,7 +192,7 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-            {allItems.map((item) => (
+            {products.map((item) => (
               <div
                 key={item.id}
                 className="group cursor-pointer bg-[#FAF8F5] border border-[#EBE4DC] hover:border-[#8F533C]/40 hover:shadow-md transition-all duration-300"

@@ -14,6 +14,24 @@ export default defineConfig(() => {
     server: {
       hmr: true,
       watch: {},
+      proxy: {
+        '/api': {
+          target: 'https://tapi.checkour.work',
+          changeOrigin: true,
+          // Upstream's TLS cert doesn't match its hostname; this only
+          // affects this Node-side proxy, not the browser connection.
+          secure: false,
+          configure: (proxy) => {
+            proxy.on('proxyReq', (proxyReq) => {
+              // Stray cookies from unrelated local projects sharing the
+              // `localhost` domain get attached by the browser and trip the
+              // upstream WAF (ModSecurity) on some routes. This API needs
+              // no cookie auth, so never forward the browser's cookie jar.
+              proxyReq.removeHeader('cookie');
+            });
+          },
+        },
+      },
     },
   };
 });
