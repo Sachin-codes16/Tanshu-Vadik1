@@ -18,15 +18,19 @@ import {
   getCollectionFilterList,
   getShapeList,
   getWeaveList,
+  filterProductList,
 } from '../api';
+import { ApiProduct, mapApiProduct } from './productMapper';
 
 interface RugsProductListingProps {
   products: Product[];
   onSelectProduct: (product: Product) => void;
+  categorySlug: string;
+  subCategorySlug: string;
 }
 
 interface FilterOption {
-  slug: string;
+  id: string;
   label: string;
 }
 
@@ -39,7 +43,18 @@ interface FilterOptionsState {
   weave: FilterOption[];
 }
 
+type SelectedFilters = Record<keyof FilterOptionsState, string[]>;
+
 const EMPTY_FILTER_OPTIONS: FilterOptionsState = {
+  material: [],
+  size: [],
+  color: [],
+  collection: [],
+  shape: [],
+  weave: [],
+};
+
+const EMPTY_SELECTED_FILTERS: SelectedFilters = {
   material: [],
   size: [],
   color: [],
@@ -56,8 +71,6 @@ const collapsibleFilterGroups: { key: keyof FilterOptionsState; title: string }[
   { key: 'shape', title: 'Shape' },
   { key: 'weave', title: 'Weave' },
 ];
-
-const swatchTones = ['#D9C7AC', '#A9744F', '#8C8378', '#5C4A3A'];
 
 const trustItems = [
   {
@@ -82,9 +95,17 @@ const trustItems = [
   },
 ];
 
-export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products, onSelectProduct }) => {
+export const RugsProductListing: React.FC<RugsProductListingProps> = ({
+  products,
+  onSelectProduct,
+  categorySlug,
+  subCategorySlug,
+}) => {
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
   const [filterOptions, setFilterOptions] = useState<FilterOptionsState>(EMPTY_FILTER_OPTIONS);
+  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>(EMPTY_SELECTED_FILTERS);
+  const [filteredProducts, setFilteredProducts] = useState<Product[] | null>(null);
+  const [filterLoading, setFilterLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -100,12 +121,12 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
       .then(([materialRes, sizeRes, colorRes, collectionRes, shapeRes, weaveRes]) => {
         if (cancelled) return;
         setFilterOptions({
-          material: (materialRes?.data?.data ?? []).map((i: any) => ({ label: i.materialName, slug: i.materialSlug })),
-          size: (sizeRes?.data?.data ?? []).map((i: any) => ({ label: i.sizeName, slug: i.sizeSlug })),
-          color: (colorRes?.data?.data ?? []).map((i: any) => ({ label: i.colorName, slug: i.colorSlug })),
-          collection: (collectionRes?.data?.data ?? []).map((i: any) => ({ label: i.collectionName, slug: i.collectionSlug })),
-          shape: (shapeRes?.data?.data ?? []).map((i: any) => ({ label: i.shapeName, slug: i.shapeSlug })),
-          weave: (weaveRes?.data?.data ?? []).map((i: any) => ({ label: i.weaveName, slug: i.weaveSlug })),
+          material: (materialRes?.data?.data ?? []).map((i: any) => ({ label: i.materialName, id: i.materialID })),
+          size: (sizeRes?.data?.data ?? []).map((i: any) => ({ label: i.sizeName, id: i.sizeID })),
+          color: (colorRes?.data?.data ?? []).map((i: any) => ({ label: i.colorName, id: i.colorID })),
+          collection: (collectionRes?.data?.data ?? []).map((i: any) => ({ label: i.collectionName, id: i.collectionID })),
+          shape: (shapeRes?.data?.data ?? []).map((i: any) => ({ label: i.shapeName, id: i.shapeID })),
+          weave: (weaveRes?.data?.data ?? []).map((i: any) => ({ label: i.weaveName, id: i.weaveID })),
         });
       })
       .catch((err) => {
@@ -116,6 +137,56 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
       cancelled = true;
     };
   }, []);
+
+  const hasActiveFilters = Object.values(selectedFilters).some((ids) => ids.length > 0);
+
+  useEffect(() => {
+    if (!hasActiveFilters) {
+      setFilteredProducts(null);
+      return;
+    }
+
+    let cancelled = false;
+    setFilterLoading(true);
+
+    filterProductList(categorySlug, subCategorySlug, {
+      materialIds: selectedFilters.material,
+      sizeIds: selectedFilters.size,
+      colorIds: selectedFilters.color,
+      collectionIds: selectedFilters.collection,
+      shapeIds: selectedFilters.shape,
+      weaveIds: selectedFilters.weave,
+    })
+      .then((res: { data?: { data?: ApiProduct[] | null } }) => {
+        if (cancelled) return;
+        const list = res?.data?.data ?? [];
+        setFilteredProducts(list.map(mapApiProduct));
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        console.error('Failed to load filtered products.', err);
+        setFilteredProducts([]);
+      })
+      .finally(() => {
+        if (!cancelled) setFilterLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedFilters, categorySlug, subCategorySlug, hasActiveFilters]);
+
+  const toggleFilter = (group: keyof FilterOptionsState, id: string) => {
+    setSelectedFilters((prev) => {
+      const current = prev[group];
+      const next = current.includes(id) ? current.filter((v) => v !== id) : [...current, id];
+      return { ...prev, [group]: next };
+    });
+  };
+
+  const clearAllFilters = () => setSelectedFilters(EMPTY_SELECTED_FILTERS);
+
+  const displayedProducts = filteredProducts ?? products;
 
   return (
     <section className="pt-6 pb-0">
@@ -135,10 +206,15 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
             <div className="flex flex-col gap-1.5">
               {filterOptions.material.map((material) => (
                 <label
-                  key={material.slug}
+                  key={material.id}
                   className="flex items-center gap-2 font-sans text-xs text-[#615751] cursor-pointer"
                 >
-                  <input type="checkbox" className="accent-[#8F533C]" />
+                  <input
+                    type="checkbox"
+                    className="accent-[#8F533C]"
+                    checked={selectedFilters.material.includes(material.id)}
+                    onChange={() => toggleFilter('material', material.id)}
+                  />
                   {material.label}
                 </label>
               ))}
@@ -162,10 +238,15 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
                 <div className="flex flex-col gap-1.5">
                   {filterOptions[key].map((option) => (
                     <label
-                      key={option.slug}
+                      key={option.id}
                       className="flex items-center gap-2 font-sans text-xs text-[#615751] cursor-pointer"
                     >
-                      <input type="checkbox" className="accent-[#8F533C]" />
+                      <input
+                        type="checkbox"
+                        className="accent-[#8F533C]"
+                        checked={selectedFilters[key].includes(option.id)}
+                        onChange={() => toggleFilter(key, option.id)}
+                      />
                       {option.label}
                     </label>
                   ))}
@@ -174,7 +255,10 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
             </div>
           ))}
 
-          <button className="w-full mt-4 py-2 border border-[#8F533C] text-[#8F533C] font-button text-xs tracking-widest uppercase hover:bg-[#8F533C] hover:text-white transition-colors cursor-pointer">
+          <button
+            onClick={clearAllFilters}
+            className="w-full mt-4 py-2 border border-[#8F533C] text-[#8F533C] font-button text-xs tracking-widest uppercase hover:bg-[#8F533C] hover:text-white transition-colors cursor-pointer"
+          >
             Clear All Filters
           </button>
         </aside>
@@ -183,7 +267,9 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-6">
             <span className="font-sans text-xs text-[#615751]">
-              Showing {products.length} of {products.length} results
+              {filterLoading
+                ? 'Filtering...'
+                : `Showing ${displayedProducts.length} of ${displayedProducts.length} results`}
             </span>
             <div className="flex items-center gap-2 font-sans text-xs text-[#615751]">
               Sort by:
@@ -191,8 +277,14 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
             </div>
           </div>
 
+          {!filterLoading && displayedProducts.length === 0 && (
+            <p className="text-center font-sans text-sm text-[#615751] py-16">
+              No rugs match the selected filters.
+            </p>
+          )}
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-            {products.map((item) => (
+            {displayedProducts.map((item) => (
               <div
                 key={item.id}
                 className="group cursor-pointer bg-[#FAF8F5] border border-[#EBE4DC] hover:border-[#8F533C]/40 hover:shadow-md transition-all duration-300"
@@ -212,15 +304,23 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({ products
                 </div>
 
                 <div className="p-4">
-                  <div className="flex items-center gap-2 mb-2.5">
-                    {swatchTones.map((tone) => (
-                      <span
-                        key={tone}
-                        className="w-3.5 h-3.5 rounded-full border border-[#EBE4DC]"
-                        style={{ backgroundColor: tone }}
-                      />
-                    ))}
-                  </div>
+                  {item.colors && item.colors.length > 0 && (
+                    <div className="flex items-center gap-2 mb-2.5">
+                      {item.colors.map((colorImage, index) => (
+                        <span
+                          key={`${colorImage}-${index}`}
+                          className="w-3.5 h-3.5 rounded-full border border-[#EBE4DC] overflow-hidden shrink-0"
+                        >
+                          <img
+                            src={colorImage}
+                            alt=""
+                            referrerPolicy="no-referrer"
+                            className="w-full h-full object-cover"
+                          />
+                        </span>
+                      ))}
+                    </div>
+                  )}
                   <h4 className="font-serif text-base text-[#2C2623] font-medium line-clamp-1">{item.name}</h4>
                   <p className="font-sans text-xs text-[#615751] mt-1.5 line-clamp-1">{item.material}</p>
                   <p className="font-sans text-xs text-[#615751] mt-0.5 line-clamp-1">{item.dimensions}</p>

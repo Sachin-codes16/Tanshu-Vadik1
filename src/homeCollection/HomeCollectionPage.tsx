@@ -1,25 +1,40 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { HeroBanner } from './HeroBanner';
 import { CollectionCardsSection } from './CollectionCardsSection';
 import { TrustStrip } from './TrustStrip';
 import { HomeCollectionDetailPage } from './homecollection1';
 import { SeasonalCollectionDetailPage } from './SeasonalCollectionDetailPage';
+import { getCollectionPathSegments, pushCollectionPath } from './collectionRouting';
 
 export const HomeCollectionPage: React.FC = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
-  const [homeDetailSlug, setHomeDetailSlug] = useState<string | null>(null);
-  const [showSeasonalDetail, setShowSeasonalDetail] = useState(false);
+  const [categorySlug, setCategorySlug] = useState<string | null>(() => getCollectionPathSegments()[0] ?? null);
+
+  useEffect(() => {
+    const onPopState = () => setCategorySlug(getCollectionPathSegments()[0] ?? null);
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
 
   const scrollToCards = () => {
     cardsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  if (homeDetailSlug) {
-    return <HomeCollectionDetailPage categorySlug={homeDetailSlug} onBack={() => setHomeDetailSlug(null)} />;
-  }
+  const openCategory = (slug: string) => {
+    setCategorySlug(slug);
+    pushCollectionPath([slug]);
+  };
 
-  if (showSeasonalDetail) {
-    return <SeasonalCollectionDetailPage onBack={() => setShowSeasonalDetail(false)} />;
+  const closeCategory = () => {
+    setCategorySlug(null);
+    pushCollectionPath([]);
+  };
+
+  if (categorySlug) {
+    if (categorySlug.toLowerCase().includes('season')) {
+      return <SeasonalCollectionDetailPage onBack={closeCategory} />;
+    }
+    return <HomeCollectionDetailPage categorySlug={categorySlug} onBack={closeCategory} />;
   }
 
   return (
@@ -27,8 +42,8 @@ export const HomeCollectionPage: React.FC = () => {
       <HeroBanner onExploreCollections={scrollToCards} />
       <div ref={cardsRef}>
         <CollectionCardsSection
-          onOpenHomeCollection={(categorySlug) => setHomeDetailSlug(categorySlug)}
-          onOpenSeasonalCollection={() => setShowSeasonalDetail(true)}
+          onOpenHomeCollection={openCategory}
+          onOpenSeasonalCollection={openCategory}
         />
       </div>
       <TrustStrip />

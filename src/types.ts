@@ -10,6 +10,7 @@ export interface Product {
   leadTime: string;
   minOrderQuantity: string;
   slug?: string;
+  colors?: string[];
 }
 
 export interface ProductDetailData {

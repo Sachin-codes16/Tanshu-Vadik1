@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { products } from '../data';
 import { Product } from '../types';
 import { useInquiry } from '../context/InquiryContext';
 import { TrustStats } from './TrustStats';
 import { Certifications } from './Certifications';
 import { ProductShowcaseModal } from './ProductShowcaseModal';
+import { getHomeCollections } from '../api';
 import springCollection from "../assets/collection/Spring.png"
 import fallCollection from "../assets/collection/Spring2.png"
 
@@ -22,8 +23,41 @@ interface CategoryCard {
   subtitle?: string;
 }
 
+interface ApiHomeSubCategory {
+  subCatID: string;
+  subCategoryName: string;
+  subCatImg: string;
+  subCategorySlug: string;
+}
+
+interface ApiHomeCategory {
+  categoryName: string;
+  categorySlug: string;
+  subCategories: ApiHomeSubCategory[];
+}
+
 export const Collections: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [homeCategories, setHomeCategories] = useState<ApiHomeCategory[]>([]);
+
+  // Nested loop straight from /api/home: categories -> subCategories.
+  useEffect(() => {
+    let cancelled = false;
+
+    getHomeCollections()
+      .then((res: { data?: { data?: ApiHomeCategory[] } }) => {
+        if (cancelled) return;
+        const list = res?.data?.data ?? [];
+        if (list.length > 0) setHomeCategories(list);
+      })
+      .catch((err) => {
+        console.error('Failed to load home collections.', err);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Custom Swatch Visualizer State
   const [weftColor, setWeftColor] = useState('#8F533C'); // Terracotta copper
@@ -141,6 +175,32 @@ export const Collections: React.FC = () => {
     }
   ], []);
 
+  // Shown until the /api/home response lands, and kept as a fallback if it fails.
+  const fallbackCategories: ApiHomeCategory[] = useMemo(() => [
+    {
+      categoryName: 'HOME DÉCOR COLLECTION',
+      categorySlug: 'home-decor-fallback',
+      subCategories: homeDecorCategories.map((cat) => ({
+        subCatID: cat.name,
+        subCategoryName: cat.name,
+        subCatImg: cat.image,
+        subCategorySlug: cat.name.toLowerCase().replace(/\s+/g, '-'),
+      })),
+    },
+    {
+      categoryName: 'PET LIVING COLLECTION',
+      categorySlug: 'pet-living-fallback',
+      subCategories: petLivingCategories.map((cat) => ({
+        subCatID: cat.name,
+        subCategoryName: cat.name,
+        subCatImg: cat.image,
+        subCategorySlug: cat.name.toLowerCase().replace(/\s+/g, '-'),
+      })),
+    },
+  ], [homeDecorCategories, petLivingCategories]);
+
+  const categoriesToRender = homeCategories.length > 0 ? homeCategories : fallbackCategories;
+
   // Filter products by selected category
   const activeProducts = useMemo(() => {
     if (!selectedCategory) return [];
@@ -214,98 +274,64 @@ export const Collections: React.FC = () => {
           
         </div>
 
-        {/* 1. HOME DECOR SECTION */}
-        <div className="mb-10 sm:mb-12">
-          <div className="flex flex-col items-start mb-6 border-b border-[#EBE4DC] pb-4">
-            <h3 className="font-serif text-2xl sm:text-3xl text-[#2C2623] font-medium tracking-wide">
-              HOME DÉCOR COLLECTION
-            </h3>
-            <p className="font-sans text-xs sm:text-sm text-[#615751] italic mt-1">
-              Timeless designs for every space.
-            </p>
-          </div>
+        {/* Categories -> subcategories, straight from /api/home */}
+        {categoriesToRender.map((category) => {
+          const isPetCategory = `${category.categorySlug} ${category.categoryName}`.toLowerCase().includes('pet');
 
-          {/* 12 Grid Layout precisely matched */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
-            {homeDecorCategories.map((cat, index) => (
-              <motion.div
-                key={cat.name}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                onClick={() => setSelectedCategory(cat.name)}
-                className="group cursor-pointer flex flex-col"
+          return (
+            <div key={category.categorySlug} className={isPetCategory ? 'mb-6 sm:mb-8' : 'mb-10 sm:mb-12'}>
+              <div className="flex flex-col items-start mb-6 border-b border-[#EBE4DC] pb-4">
+                <h3 className="font-serif text-2xl sm:text-3xl text-[#2C2623] font-medium tracking-wide">
+                  {category.categoryName}
+                </h3>
+              </div>
+
+              <div
+                className={
+                  isPetCategory
+                    ? 'grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16 sm:gap-x-10 sm:gap-y-20'
+                    : 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8'
+                }
               >
-                {/* Image Container with high contrast and hover zooms */}
-                <div
-                  className="relative overflow-hidden bg-[#F4EFEA] border border-[#EBE4DC] shadow-xs group-hover:border-[#8F533C]/40 group-hover:shadow-md transition-all duration-300"
-                  style={{ aspectRatio: cat.name === 'Basket' ? '568 / 316' : '16 / 9' }}
-                >
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                  />
-                </div>
+                {category.subCategories.map((sub, index) => (
+                  <motion.div
+                    key={sub.subCatID}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                    onClick={() => setSelectedCategory(sub.subCategoryName)}
+                    className="group cursor-pointer flex flex-col"
+                  >
+                    {/* Image Container with high contrast and hover zooms */}
+                    <div
+                      className={
+                        isPetCategory
+                          ? 'relative aspect-video overflow-hidden bg-[#F4EFEA] border border-[#EBE4DC] shadow-xs group-hover:border-[#8F533C]/40 group-hover:shadow-md transition-all duration-300'
+                          : 'relative aspect-[16/9] overflow-hidden bg-[#F4EFEA] border border-[#EBE4DC] shadow-xs group-hover:border-[#8F533C]/40 group-hover:shadow-md transition-all duration-300'
+                      }
+                    >
+                      <img
+                        src={sub.subCatImg}
+                        alt={sub.subCategoryName}
+                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        referrerPolicy="no-referrer"
+                        loading="lazy"
+                      />
+                    </div>
 
-                {/* Subcategory Label below card */}
-                <div className="mt-3 flex items-center justify-between">
-                  <span className="font-sans text-[13px] font-bold tracking-[0.12em] text-[#2C2623] uppercase group-hover:text-[#8F533C] transition-colors">
-                    {cat.name}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* 2. PET LIVING SECTION */}
-        <div className="mb-6 sm:mb-8">
-          <div className="flex flex-col items-start mb-6 border-b border-[#EBE4DC] pb-4">
-            <h3 className="font-serif text-2xl sm:text-3xl text-[#2C2623] font-medium tracking-wide">
-              PET LIVING COLLECTION
-            </h3>
-            <p className="font-sans text-xs sm:text-sm text-[#615751] italic mt-1">
-              Comfort, care and style for pets.
-            </p>
-          </div>
-
-          {/* 4 Grid Layout precisely matched */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16 sm:gap-x-10 sm:gap-y-20">
-            {petLivingCategories.map((cat, index) => (
-              <motion.div
-                key={cat.name}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                onClick={() => setSelectedCategory(cat.name)}
-                className="group cursor-pointer flex flex-col"
-              >
-                {/* Image Container with high contrast and hover zooms */}
-                <div className="relative aspect-video overflow-hidden bg-[#F4EFEA] border border-[#EBE4DC] shadow-xs group-hover:border-[#8F533C]/40 group-hover:shadow-md transition-all duration-300">
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* Subcategory Label below card */}
-                <div className="mt-3 flex items-center justify-between">
-                  <span className="font-sans text-[13px] font-bold tracking-[0.12em] text-[#2C2623] uppercase group-hover:text-[#8F533C] transition-colors">
-                    {cat.name}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+                    {/* Subcategory Label below card */}
+                    <div className="mt-3 flex items-center justify-between">
+                      <span className="font-sans text-[13px] font-bold tracking-[0.12em] text-[#2C2623] uppercase group-hover:text-[#8F533C] transition-colors">
+                        {sub.subCategoryName}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
 
         {/* Seasonal & Holiday images, fixed directly below Pet Living (heading removed) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">

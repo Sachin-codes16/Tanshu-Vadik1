@@ -30,6 +30,7 @@ const PAGE_ROUTES: Record<PageKey, { path: string; title: string }> = {
 };
 
 function getPageFromPath(pathname: string): PageKey {
+  if (pathname === '/collections' || pathname.startsWith('/collections/')) return 'collections';
   const match = (Object.keys(PAGE_ROUTES) as PageKey[]).find((key) => PAGE_ROUTES[key].path === pathname);
   return match ?? 'home';
 }
@@ -41,6 +42,7 @@ export default function App() {
     setPage(key);
     if (window.location.pathname !== PAGE_ROUTES[key].path) {
       window.history.pushState({}, '', PAGE_ROUTES[key].path);
+      window.dispatchEvent(new PopStateEvent('popstate'));
     }
     window.scrollTo({ top: 0 });
   };

@@ -5,6 +5,7 @@ import { ProductShowcaseModal } from '../components/ProductShowcaseModal';
 import { getProductsForHomeCategory } from './HomeCollectionClick';
 import { RugsDetailsPage } from './RugsDetailsPage';
 import { getSubCategoryList } from '../api';
+import { getCollectionPathSegments, pushCollectionPath } from './collectionRouting';
 import heroImage from '../assets/collection/homecollection1.png';
 
 interface HomeCollectionDetailPageProps {
@@ -15,7 +16,7 @@ interface HomeCollectionDetailPageProps {
 interface ApiSubCategory {
   subCatID: string;
   subCategoryName: string;
-  subCatImage: string;
+  subCatImg: string;
   subCatIcon: string;
   shortDescription: string;
   subCategorySlug: string;
@@ -49,7 +50,7 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
           list.map((item) => ({
             slug: item.subCategorySlug,
             name: item.subCategoryName,
-            image: item.subCatImage,
+            image: item.subCatImg,
             icon: item.subCatIcon,
             description: item.shortDescription,
           }))
@@ -69,6 +70,40 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
     };
   }, [categorySlug]);
 
+  // Apply a sub-category deep link (e.g. /collections/home-collection-1/rugs) once the list has loaded.
+  useEffect(() => {
+    const subSlug = getCollectionPathSegments()[1];
+    if (!subSlug || subCategories.length === 0) return;
+    const match = subCategories.find((item) => item.slug === subSlug);
+    if (!match) return;
+    if (match.name === 'Rugs') {
+      setRugsSubCategorySlug(match.slug);
+    } else {
+      setSelectedCategory(match.name);
+    }
+  }, [subCategories]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      const subSlug = getCollectionPathSegments()[1];
+      if (!subSlug) {
+        setRugsSubCategorySlug(null);
+        setSelectedCategory(null);
+        return;
+      }
+      const match = subCategories.find((item) => item.slug === subSlug);
+      if (match?.name === 'Rugs') {
+        setRugsSubCategorySlug(match.slug);
+        setSelectedCategory(null);
+      } else if (match) {
+        setSelectedCategory(match.name);
+        setRugsSubCategorySlug(null);
+      }
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [subCategories]);
+
   const activeProducts = useMemo(
     () => (selectedCategory ? getProductsForHomeCategory(selectedCategory) : []),
     [selectedCategory]
@@ -80,6 +115,7 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
     } else {
       setSelectedCategory(category.name);
     }
+    pushCollectionPath([categorySlug, category.slug]);
   };
 
   if (rugsSubCategorySlug) {
@@ -87,7 +123,10 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
       <RugsDetailsPage
         categorySlug={categorySlug}
         subCategorySlug={rugsSubCategorySlug}
-        onBack={() => setRugsSubCategorySlug(null)}
+        onBack={() => {
+          setRugsSubCategorySlug(null);
+          pushCollectionPath([categorySlug]);
+        }}
       />
     );
   }
@@ -193,7 +232,10 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
           <ProductShowcaseModal
             heading={`${selectedCategory} Collection`}
             products={activeProducts}
-            onClose={() => setSelectedCategory(null)}
+            onClose={() => {
+              setSelectedCategory(null);
+              pushCollectionPath([categorySlug]);
+            }}
           />
         )}
       </AnimatePresence>

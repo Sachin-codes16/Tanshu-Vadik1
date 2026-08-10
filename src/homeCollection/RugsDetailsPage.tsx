@@ -3,6 +3,8 @@ import { Leaf, Hand, Globe } from 'lucide-react';
 import { RugsProductListing } from './RugsProductListing';
 import { RugProductDetailPage } from './RugProductDetailPage';
 import { getProductList, getProductDetail } from '../api';
+import { getCollectionPathSegments, pushCollectionPath } from './collectionRouting';
+import { ApiProduct, mapApiProduct } from './productMapper';
 import { Product, ProductDetailData } from '../types';
 import rugsHeroImage from '../assets/collection/ChatGPT Image Jul 23, 2026, 12_59_04 AM.png';
 
@@ -10,18 +12,6 @@ interface RugsDetailsPageProps {
   categorySlug: string;
   subCategorySlug: string;
   onBack: () => void;
-}
-
-interface ApiProduct {
-  productID: string;
-  productName: string;
-  productImage: string;
-  shortDescription: string;
-  material: string;
-  dimensions: string;
-  leadTime: string;
-  minOrderQuantity: string;
-  productSlug: string;
 }
 
 interface ApiProductDetailResponse {
@@ -55,21 +45,7 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, 
       .then((res: { data?: { data?: ApiProduct[] } }) => {
         if (cancelled) return;
         const list = res?.data?.data ?? [];
-        setRugsProducts(
-          list.map((item): Product => ({
-            id: item.productID,
-            name: item.productName,
-            collection: 'home-decor',
-            subcategory: 'Rugs',
-            image: item.productImage,
-            description: item.shortDescription,
-            material: item.material,
-            dimensions: item.dimensions,
-            leadTime: item.leadTime,
-            minOrderQuantity: item.minOrderQuantity,
-            slug: item.productSlug,
-          }))
-        );
+        setRugsProducts(list.map(mapApiProduct));
       })
       .catch((err) => {
         if (cancelled) return;
@@ -84,6 +60,28 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, 
       cancelled = true;
     };
   }, [categorySlug, subCategorySlug]);
+
+  // Apply a product deep link (e.g. /collections/home-collection-1/rugs/some-rug) once the list has loaded.
+  useEffect(() => {
+    const productSlug = getCollectionPathSegments()[2];
+    if (!productSlug || rugsProducts.length === 0) return;
+    const match = rugsProducts.find((item) => item.slug === productSlug);
+    if (match) setSelectedProduct(match);
+  }, [rugsProducts]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      const productSlug = getCollectionPathSegments()[2];
+      if (!productSlug) {
+        setSelectedProduct(null);
+        return;
+      }
+      const match = rugsProducts.find((item) => item.slug === productSlug);
+      setSelectedProduct(match ?? null);
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [rugsProducts]);
 
   useEffect(() => {
     if (!selectedProduct?.slug) {
@@ -123,7 +121,7 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, 
 
   const openProduct = (product: Product) => {
     setSelectedProduct(product);
-    window.scrollTo({ top: 0 });
+    pushCollectionPath([categorySlug, subCategorySlug, product.slug]);
   };
 
   if (selectedProduct) {
@@ -134,7 +132,10 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, 
         detailLoading={detailLoading}
         detailError={detailError}
         relatedProducts={rugsProducts.filter((item) => item.id !== selectedProduct.id)}
-        onBack={() => setSelectedProduct(null)}
+        onBack={() => {
+          setSelectedProduct(null);
+          pushCollectionPath([categorySlug, subCategorySlug]);
+        }}
         onSelectRelated={openProduct}
       />
     );
@@ -192,7 +193,12 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, 
         <p className="text-center font-sans text-sm text-[#C0392B] py-16">{error}</p>
       )}
       {!loading && !error && (
-        <RugsProductListing products={rugsProducts} onSelectProduct={openProduct} />
+        <RugsProductListing
+          products={rugsProducts}
+          onSelectProduct={openProduct}
+          categorySlug={categorySlug}
+          subCategorySlug={subCategorySlug}
+        />
       )}
     </div>
   );

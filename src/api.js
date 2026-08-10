@@ -49,6 +49,8 @@ export const apiPost = (endpoint, body) =>
 
 export const getCategoryList = () => apiGet('/api/product/category-list');
 
+export const getHomeCollections = () => apiGet('/api/home');
+
 export const getSubCategoryList = (categorySlug) =>
   apiGet(`/api/product/sub-category-list/${categorySlug}`);
 
@@ -59,6 +61,9 @@ export const getProductList = (categorySlug, subCategorySlug) =>
 
 export const getProductDetail = (categorySlug, subCategorySlug, productSlug) =>
   apiGet(`/api/product-detail/${categorySlug}/${subCategorySlug}/${productSlug}`);
+
+export const filterProductList = (categorySlug, subCategorySlug, payload) =>
+  apiPost(`/api/product/filter/${categorySlug}/${subCategorySlug}`, payload);
 
 export const getSizeList = () => apiGet('/api/size-list');
 
