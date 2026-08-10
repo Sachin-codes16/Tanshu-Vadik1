@@ -11,6 +11,10 @@ import rugsHeroImage from '../assets/collection/ChatGPT Image Jul 23, 2026, 12_5
 interface RugsDetailsPageProps {
   categorySlug: string;
   subCategorySlug: string;
+  categoryName: string;
+  subCategoryName: string;
+  subCategoryImage?: string;
+  subCategoryDescription?: string;
   onBack: () => void;
 }
 
@@ -26,7 +30,15 @@ const features = [
   { icon: <Globe size={14} />, label: 'Export Quality' },
 ];
 
-export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, subCategorySlug, onBack }) => {
+export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({
+  categorySlug,
+  subCategorySlug,
+  categoryName,
+  subCategoryName,
+  subCategoryImage,
+  subCategoryDescription,
+  onBack,
+}) => {
   const [rugsProducts, setRugsProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -132,6 +144,8 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, 
         detailLoading={detailLoading}
         detailError={detailError}
         relatedProducts={rugsProducts.filter((item) => item.id !== selectedProduct.id)}
+        categoryName={categoryName}
+        subCategoryName={subCategoryName}
         onBack={() => {
           setSelectedProduct(null);
           pushCollectionPath([categorySlug, subCategorySlug]);
@@ -146,8 +160,8 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, 
       {/* Hero */}
       <section className="relative min-h-[280px] sm:min-h-[320px] flex items-end overflow-hidden bg-[#2C2623]">
         <img
-          src={rugsHeroImage}
-          alt="Handcrafted Rugs"
+          src={subCategoryImage || rugsHeroImage}
+          alt={subCategoryName}
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_75%_at_0%_100%,_rgba(44,38,35,0.88)_0%,_rgba(44,38,35,0.5)_40%,_transparent_75%)]" />
@@ -160,15 +174,15 @@ export const RugsDetailsPage: React.FC<RugsDetailsPageProps> = ({ categorySlug, 
           >
             <span className="hover:underline">Home</span>
             <span>&gt;</span>
-            <span className="hover:underline">Home Collection</span>
+            <span className="hover:underline">{categoryName}</span>
             <span>&gt;</span>
-            <span className="text-white">Rugs</span>
+            <span className="text-white">{subCategoryName}</span>
           </button>
 
-          <h1 className="font-serif text-3xl sm:text-4xl text-white font-medium">Handcrafted Rugs</h1>
+          <h1 className="font-serif text-3xl sm:text-4xl text-white font-medium">Handcrafted {subCategoryName}</h1>
           <div className="h-[2px] w-12 bg-[#8F533C] my-2.5" />
           <p className="font-sans text-sm text-white/80 max-w-md leading-relaxed">
-            Premium quality rugs made with natural fibers and timeless designs.
+            {subCategoryDescription || 'Premium quality products made with natural fibers and timeless designs.'}
           </p>
 
           {/* Feature badges */}

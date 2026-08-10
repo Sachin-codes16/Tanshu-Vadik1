@@ -52,6 +52,8 @@ interface RugProductDetailPageProps {
   detailLoading: boolean;
   detailError: string | null;
   relatedProducts: Product[];
+  categoryName: string;
+  subCategoryName: string;
   onBack: () => void;
   onSelectRelated: (product: Product) => void;
 }
@@ -62,6 +64,8 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
   detailLoading,
   detailError,
   relatedProducts,
+  categoryName,
+  subCategoryName,
   onBack,
   onSelectRelated,
 }) => {
@@ -120,10 +124,10 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
             <span className="text-[#EBE4DC]">/</span>
             <span>Collections</span>
             <span className="text-[#EBE4DC]">/</span>
-            <span>Home Collection</span>
+            <span>{categoryName}</span>
             <span className="text-[#EBE4DC]">/</span>
             <button onClick={onBack} className="hover:text-[#8F533C] transition-colors cursor-pointer">
-              Rugs
+              {subCategoryName}
             </button>
             <span className="text-[#EBE4DC]">/</span>
             <span className="text-[#2C2623]">{product.name}</span>
@@ -184,7 +188,7 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
             {/* Info panel */}
             <div className="order-3 min-w-0">
               <span className="font-sans text-xs font-bold tracking-widest uppercase text-[#8F533C]">
-                {detail?.subCategoryName ? `${detail.subCategoryName} Collection` : 'Rugs Collection'}
+                {detail?.subCategoryName ? `${detail.subCategoryName} Collection` : `${subCategoryName} Collection`}
               </span>
               <h1 className="font-serif text-3xl sm:text-4xl text-[#2C2623] font-bold uppercase leading-tight mt-2">
                 {product.name}
@@ -331,7 +335,9 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
                 ))}
               </div>
             ) : (
-              <p className="font-sans text-sm text-[#615751] text-center">No other rugs to show right now.</p>
+              <p className="font-sans text-sm text-[#615751] text-center">
+                No other {subCategoryName.toLowerCase()} to show right now.
+              </p>
             )
           ) : (
             <div className="flex items-center gap-2 sm:gap-4">

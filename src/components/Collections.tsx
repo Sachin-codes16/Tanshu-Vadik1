@@ -36,7 +36,11 @@ interface ApiHomeCategory {
   subCategories: ApiHomeSubCategory[];
 }
 
-export const Collections: React.FC = () => {
+interface CollectionsProps {
+  onNavigateToSubCategory: (categorySlug: string, subCategorySlug: string, categoryName: string) => void;
+}
+
+export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategory }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [homeCategories, setHomeCategories] = useState<ApiHomeCategory[]>([]);
 
@@ -300,7 +304,7 @@ export const Collections: React.FC = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
-                    onClick={() => setSelectedCategory(sub.subCategoryName)}
+                    onClick={() => onNavigateToSubCategory(category.categorySlug, sub.subCategorySlug, category.categoryName)}
                     className="group cursor-pointer flex flex-col"
                   >
                     {/* Image Container with high contrast and hover zooms */}

@@ -279,7 +279,7 @@ export const RugsProductListing: React.FC<RugsProductListingProps> = ({
 
           {!filterLoading && displayedProducts.length === 0 && (
             <p className="text-center font-sans text-sm text-[#615751] py-16">
-              No rugs match the selected filters.
+              No products match the selected filters.
             </p>
           )}
 

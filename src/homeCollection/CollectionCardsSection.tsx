@@ -1,10 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
-import { products } from '../data';
-import { Product } from '../types';
 
-import { ProductShowcaseModal } from '../components/ProductShowcaseModal';
 import { getCategoryList } from '../api';
 import homeCollectionImage from '../assets/collection/HomeCollection.png';
 import petUtilityImage from '../assets/collection/Petutility.png';
@@ -65,15 +62,15 @@ const FALLBACK_CARDS: CardConfig[] = [
 ];
 
 interface CollectionCardsSectionProps {
-  onOpenHomeCollection: (categorySlug: string) => void;
+  onOpenHomeCollection: (categorySlug: string, categoryName: string, categoryImage: string, categoryDescription: string) => void;
   onOpenSeasonalCollection: (categorySlug: string) => void;
 }
 
 // Maps the API's free-form categorySlug/categoryName to the fixed collection
-// keys used to filter local product data and to route to the dedicated
-// Home/Seasonal pages. Categories that don't match a known keyword still
-// render as a card, just keyed by their own categorySlug.
-const resolveCollectionKey = (categorySlug: string, categoryName: string): Product['collection'] | null => {
+// keys used to route to the dedicated Seasonal page. Categories that don't
+// match a known keyword still render as a card, just keyed by their own
+// categorySlug, and route through the generic collection detail page.
+const resolveCollectionKey = (categorySlug: string, categoryName: string): 'pet-living' | 'seasonal' | 'home-decor' | null => {
   const text = `${categorySlug} ${categoryName}`.toLowerCase();
   if (text.includes('pet')) return 'pet-living';
   if (text.includes('season')) return 'seasonal';
@@ -86,7 +83,6 @@ export const CollectionCardsSection: React.FC<CollectionCardsSectionProps> = ({
   onOpenSeasonalCollection,
 }) => {
   const [cards, setCards] = useState<CardConfig[]>(FALLBACK_CARDS);
-  const [activeCollection, setActiveCollection] = useState<CardConfig | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -117,18 +113,11 @@ export const CollectionCardsSection: React.FC<CollectionCardsSectionProps> = ({
     };
   }, []);
 
-  const activeProducts = useMemo(
-    () => (activeCollection ? products.filter((p) => p.collection === activeCollection.key) : []),
-    [activeCollection]
-  );
-
   const handleCardClick = (card: CardConfig) => {
-    if (card.key === 'home-decor') {
-      onOpenHomeCollection(card.categorySlug);
-    } else if (card.key === 'seasonal') {
+    if (card.key === 'seasonal') {
       onOpenSeasonalCollection(card.categorySlug);
     } else {
-      setActiveCollection(card);
+      onOpenHomeCollection(card.categorySlug, card.title, card.image, card.description);
     }
   };
 
@@ -179,17 +168,6 @@ export const CollectionCardsSection: React.FC<CollectionCardsSectionProps> = ({
           ))}
         </div>
       </div>
-
-      {/* Product listing modal for the selected collection */}
-      <AnimatePresence>
-        {activeCollection && (
-          <ProductShowcaseModal
-            heading={activeCollection.title}
-            products={activeProducts}
-            onClose={() => setActiveCollection(null)}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 };

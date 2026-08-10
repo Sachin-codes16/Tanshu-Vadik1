@@ -6,12 +6,40 @@ import { HomeCollectionDetailPage } from './homecollection1';
 import { SeasonalCollectionDetailPage } from './SeasonalCollectionDetailPage';
 import { getCollectionPathSegments, pushCollectionPath } from './collectionRouting';
 
-export const HomeCollectionPage: React.FC = () => {
+interface OpenCategory {
+  slug: string;
+  name: string;
+  image: string;
+  description: string;
+}
+
+interface HomeCollectionPageProps {
+  // Seeds the category name/image/description when a caller (e.g. the home page's
+  // "OUR COLLECTIONS" section) navigates straight into a subcategory's URL instead
+  // of going through the CollectionCardsSection click that normally supplies this.
+  initialCategory?: OpenCategory;
+}
+
+export const HomeCollectionPage: React.FC<HomeCollectionPageProps> = ({ initialCategory }) => {
   const cardsRef = useRef<HTMLDivElement>(null);
-  const [categorySlug, setCategorySlug] = useState<string | null>(() => getCollectionPathSegments()[0] ?? null);
+  const [category, setCategory] = useState<OpenCategory | null>(() => {
+    if (initialCategory) return initialCategory;
+    const slug = getCollectionPathSegments()[0];
+    return slug ? { slug, name: '', image: '', description: '' } : null;
+  });
 
   useEffect(() => {
-    const onPopState = () => setCategorySlug(getCollectionPathSegments()[0] ?? null);
+    // pushCollectionPath dispatches this synchronously right after openCategory's own
+    // setCategory call, so skip when the slug hasn't actually changed — otherwise this
+    // clobbers the rich name/image/description just set by the click with a blank one.
+    const onPopState = () => {
+      const slug = getCollectionPathSegments()[0];
+      setCategory((prev) => {
+        if (!slug) return null;
+        if (prev?.slug === slug) return prev;
+        return { slug, name: '', image: '', description: '' };
+      });
+    };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
@@ -20,21 +48,34 @@ export const HomeCollectionPage: React.FC = () => {
     cardsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const openCategory = (slug: string) => {
-    setCategorySlug(slug);
+  const openCategory = (slug: string, name: string, image: string, description: string) => {
+    setCategory({ slug, name, image, description });
+    pushCollectionPath([slug]);
+  };
+
+  const openSeasonalCategory = (slug: string) => {
+    setCategory({ slug, name: '', image: '', description: '' });
     pushCollectionPath([slug]);
   };
 
   const closeCategory = () => {
-    setCategorySlug(null);
+    setCategory(null);
     pushCollectionPath([]);
   };
 
-  if (categorySlug) {
-    if (categorySlug.toLowerCase().includes('season')) {
+  if (category) {
+    if (category.slug.toLowerCase().includes('season')) {
       return <SeasonalCollectionDetailPage onBack={closeCategory} />;
     }
-    return <HomeCollectionDetailPage categorySlug={categorySlug} onBack={closeCategory} />;
+    return (
+      <HomeCollectionDetailPage
+        categorySlug={category.slug}
+        categoryName={category.name || undefined}
+        heroImage={category.image || undefined}
+        heroDescription={category.description || undefined}
+        onBack={closeCategory}
+      />
+    );
   }
 
   return (
@@ -43,7 +84,7 @@ export const HomeCollectionPage: React.FC = () => {
       <div ref={cardsRef}>
         <CollectionCardsSection
           onOpenHomeCollection={openCategory}
-          onOpenSeasonalCollection={openCategory}
+          onOpenSeasonalCollection={openSeasonalCategory}
         />
       </div>
       <TrustStrip />

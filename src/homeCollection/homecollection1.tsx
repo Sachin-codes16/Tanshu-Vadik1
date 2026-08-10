@@ -1,15 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { ProductShowcaseModal } from '../components/ProductShowcaseModal';
-import { getProductsForHomeCategory } from './HomeCollectionClick';
 import { RugsDetailsPage } from './RugsDetailsPage';
 import { getSubCategoryList } from '../api';
 import { getCollectionPathSegments, pushCollectionPath } from './collectionRouting';
-import heroImage from '../assets/collection/homecollection1.png';
+import defaultHeroImage from '../assets/collection/homecollection1.png';
 
 interface HomeCollectionDetailPageProps {
   categorySlug: string;
+  categoryName?: string;
+  heroImage?: string;
+  heroDescription?: string;
   onBack: () => void;
 }
 
@@ -30,12 +31,17 @@ interface SubCategoryCard {
   description: string;
 }
 
-export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> = ({ categorySlug, onBack }) => {
+export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> = ({
+  categorySlug,
+  categoryName = 'Home Collection',
+  heroImage = defaultHeroImage,
+  heroDescription = 'Timeless handcrafted home décor designed to elevate modern interiors worldwide.',
+  onBack,
+}) => {
   const [subCategories, setSubCategories] = useState<SubCategoryCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [rugsSubCategorySlug, setRugsSubCategorySlug] = useState<string | null>(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<SubCategoryCard | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -75,56 +81,39 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
     const subSlug = getCollectionPathSegments()[1];
     if (!subSlug || subCategories.length === 0) return;
     const match = subCategories.find((item) => item.slug === subSlug);
-    if (!match) return;
-    if (match.name === 'Rugs') {
-      setRugsSubCategorySlug(match.slug);
-    } else {
-      setSelectedCategory(match.name);
-    }
+    if (match) setSelectedSubCategory(match);
   }, [subCategories]);
 
   useEffect(() => {
     const onPopState = () => {
       const subSlug = getCollectionPathSegments()[1];
       if (!subSlug) {
-        setRugsSubCategorySlug(null);
-        setSelectedCategory(null);
+        setSelectedSubCategory(null);
         return;
       }
       const match = subCategories.find((item) => item.slug === subSlug);
-      if (match?.name === 'Rugs') {
-        setRugsSubCategorySlug(match.slug);
-        setSelectedCategory(null);
-      } else if (match) {
-        setSelectedCategory(match.name);
-        setRugsSubCategorySlug(null);
-      }
+      setSelectedSubCategory(match ?? null);
     };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, [subCategories]);
 
-  const activeProducts = useMemo(
-    () => (selectedCategory ? getProductsForHomeCategory(selectedCategory) : []),
-    [selectedCategory]
-  );
-
   const handleCategoryClick = (category: SubCategoryCard) => {
-    if (category.name === 'Rugs') {
-      setRugsSubCategorySlug(category.slug);
-    } else {
-      setSelectedCategory(category.name);
-    }
+    setSelectedSubCategory(category);
     pushCollectionPath([categorySlug, category.slug]);
   };
 
-  if (rugsSubCategorySlug) {
+  if (selectedSubCategory) {
     return (
       <RugsDetailsPage
         categorySlug={categorySlug}
-        subCategorySlug={rugsSubCategorySlug}
+        subCategorySlug={selectedSubCategory.slug}
+        categoryName={categoryName}
+        subCategoryName={selectedSubCategory.name}
+        subCategoryImage={selectedSubCategory.image}
+        subCategoryDescription={selectedSubCategory.description}
         onBack={() => {
-          setRugsSubCategorySlug(null);
+          setSelectedSubCategory(null);
           pushCollectionPath([categorySlug]);
         }}
       />
@@ -137,7 +126,7 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
       <section className="relative min-h-[380px] sm:min-h-[440px] flex items-end overflow-hidden bg-[#2C2623]">
         <img
           src={heroImage}
-          alt="Home Collection"
+          alt={categoryName}
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_75%_at_0%_100%,_rgba(44,38,35,0.88)_0%,_rgba(44,38,35,0.5)_40%,_transparent_75%)]" />
@@ -151,10 +140,10 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
         </button>
 
         <div className="relative z-10 w-full px-6 sm:px-10 lg:px-20 pb-10 sm:pb-14">
-          <h1 className="font-serif text-4xl sm:text-5xl text-white font-medium">Home Collection</h1>
+          <h1 className="font-serif text-4xl sm:text-5xl text-white font-medium">{categoryName}</h1>
           <div className="h-[2px] w-14 bg-[#8F533C] my-3" />
           <p className="font-sans text-sm sm:text-base text-white/80 max-w-xl leading-relaxed">
-            Timeless handcrafted home décor designed to elevate modern interiors worldwide.
+            {heroDescription}
           </p>
         </div>
       </section>
@@ -164,7 +153,7 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
         <div className="w-full px-6 sm:px-10 lg:px-20">
           <div className="flex flex-col items-center text-center gap-1 mb-6">
             <h2 className="font-serif text-2xl sm:text-3xl text-[#2C2623] font-medium tracking-tight">
-              Explore Our Home Categories
+              Explore Our {categoryName} Categories
             </h2>
             <p className="font-sans text-sm text-[#615751]">
               Discover thoughtfully crafted products for every corner of your home.
@@ -225,20 +214,6 @@ export const HomeCollectionDetailPage: React.FC<HomeCollectionDetailPageProps> =
           )}
         </div>
       </section>
-
-      {/* Product listing modal for the selected category */}
-      <AnimatePresence>
-        {selectedCategory && (
-          <ProductShowcaseModal
-            heading={`${selectedCategory} Collection`}
-            products={activeProducts}
-            onClose={() => {
-              setSelectedCategory(null);
-              pushCollectionPath([categorySlug]);
-            }}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 };
