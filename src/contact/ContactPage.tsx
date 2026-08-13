@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Phone,
   Send,
@@ -24,6 +24,7 @@ import { COUNTRIES } from '../data/countries';
 import { offices } from '../data';
 import { useInquiry } from '../context/InquiryContext';
 import { submitContactUs } from '../api';
+import { SimpleCaptcha, type CaptchaHandle } from '../components/SimpleCaptcha';
 
 const PinterestIcon: React.FC<{ size?: number }> = ({ size = 15 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -50,9 +51,12 @@ export const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const captchaRef = useRef<CaptchaHandle>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!captchaRef.current?.validate()) return;
+
     const formData = new FormData(e.currentTarget);
 
     setSubmitting(true);
@@ -68,6 +72,7 @@ export const ContactPage: React.FC = () => {
         Message: formData.get('message'),
       });
       setSubmitted(true);
+      captchaRef.current?.reset();
     } catch (err) {
       setSubmitError('Something went wrong while sending your message. Please try again.');
     } finally {
@@ -233,6 +238,8 @@ export const ContactPage: React.FC = () => {
                  className="w-full border border-[#D8CFC4] bg-white px-4 py-3 font-sans text-sm text-[#2C2623] resize-y focus:outline-none focus:border-[#8F533C]"
                />
              </div>
+
+             <SimpleCaptcha ref={captchaRef} className="sm:col-span-2" />
 
              <label className="flex items-start gap-2.5 cursor-pointer sm:col-span-2">
                <input

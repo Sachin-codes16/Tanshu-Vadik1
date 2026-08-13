@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useInquiry } from '../context/InquiryContext';
 import { X, ChevronDown, Check, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { COUNTRIES } from '../data/countries';
 import { submitProductEnquiry } from '../api';
+import { SimpleCaptcha, type CaptchaHandle } from './SimpleCaptcha';
 
 export const B2BPortal: React.FC = () => {
   const { cart, clearCart, isPortalOpen, setIsPortalOpen } = useInquiry();
-  const [notRobotChecked, setNotRobotChecked] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
+  const captchaRef = useRef<CaptchaHandle>(null);
   const [selectedCountry, setSelectedCountry] = useState(
     () => COUNTRIES.find((c) => c.iso2 === 'IN') ?? COUNTRIES[0]
   );
@@ -44,6 +45,7 @@ export const B2BPortal: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
+    if (!captchaRef.current?.validate()) return;
 
     setSubmitError(null);
     setSubmitting(true);
@@ -64,8 +66,8 @@ export const B2BPortal: React.FC = () => {
       setEmail('');
       setPhone('');
       setServiceInquiry('');
-      setNotRobotChecked(false);
       setTermsChecked(false);
+      captchaRef.current?.reset();
     } catch (err) {
       console.error('Failed to submit product enquiry.', err);
       setSubmitError('Could not submit your enquiry right now. Please try again shortly.');
@@ -239,25 +241,7 @@ export const B2BPortal: React.FC = () => {
                   />
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="font-sans text-sm text-[#2C2623]">
-                    Anti-bot validation <span className="text-[#C0392B]">*</span>
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setNotRobotChecked((v) => !v)}
-                    className="flex items-center gap-3 border border-[#D8CFC4] bg-white px-4 py-3 cursor-pointer"
-                  >
-                    <span
-                      className={`w-5 h-5 shrink-0 border-2 flex items-center justify-center transition-colors ${
-                        notRobotChecked ? 'bg-[#8F533C] border-[#8F533C]' : 'border-[#B8AC9E]'
-                      }`}
-                    >
-                      {notRobotChecked && <Check size={13} className="text-white" />}
-                    </span>
-                    <span className="font-sans text-sm text-[#2C2623]">I'm not a robot</span>
-                  </button>
-                </div>
+                <SimpleCaptcha ref={captchaRef} />
 
                 <label className="flex items-start gap-2.5 cursor-pointer">
                   <input
