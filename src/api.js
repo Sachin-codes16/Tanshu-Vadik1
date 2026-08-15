@@ -1,5 +1,6 @@
 
-export const BASE_URL = import.meta.env.DEV ? '' : 'https://tapi.checkour.work';
+//export const BASE_URL = import.meta.env.DEV ? '' : 'https://tapi.checkour.work';
+export const BASE_URL = import.meta.env.DEV ? '' : 'https://api.tanshuvaidik.com';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -58,6 +59,7 @@ export const submitContactUs = (payload) => apiPost('/api/contactus/insert', pay
 
 export const getProductList = (categorySlug, subCategorySlug) =>
   apiGet(`/api/product-list/${categorySlug}/${subCategorySlug}`);
+
 
 export const getProductDetail = (categorySlug, subCategorySlug, productSlug) =>
   apiGet(`/api/product-detail/${categorySlug}/${subCategorySlug}/${productSlug}`);
