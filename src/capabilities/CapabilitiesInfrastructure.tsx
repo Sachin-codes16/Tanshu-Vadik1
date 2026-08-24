@@ -1,6 +1,6 @@
 import React from 'react';
 import { Ruler, Cog, Layers, Warehouse, Workflow, ArrowRight } from 'lucide-react';
-import warehouseImage from '../assets/collection/ChatGPT Image Jul 23, 2026, 12_19_43 AM.png';
+import warehouseImage from '../assets/collection/ChatGPT Image Jul 23, 2026, 12_19_43 AM.jpg';
 
 const leftStats = [
   { icon: <Ruler size={22} strokeWidth={1.5} />, title: '50,000+ Sq.Ft.', description: 'Manufacturing Area' },

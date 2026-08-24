@@ -22,24 +22,16 @@ export const CapabilitiesGroup: React.FC = () => {
               The Tanshu Group
             </span>
 
-            <h2 className="font-serif text-4xl text-[#2C2623] mt-1 mb-2">
+            <h2 className="font-serif text-4xl text-[#2C2623] mt-1 mb-6">
               One Group.
               <br />
               Many Strengths.
             </h2>
 
-            <p className="text-[#615751] leading-8 mb-4 max-w-lg">
-              The Tanshu Group brings together
-              <br />
-              design, manufacturing, innovation and
-              <br />
-              global expertise through a family
-              <br />
-              of companies.
-            </p>
-
             <a
-              href="#contact"
+              href="https://www.tanshuaustralia.com.au/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 border border-[#8F533C] text-[#8F533C] hover:bg-[#8F533C] hover:text-white transition-all duration-300 uppercase tracking-[2px] font-semibold text-sm"
             >
               Explore The Group

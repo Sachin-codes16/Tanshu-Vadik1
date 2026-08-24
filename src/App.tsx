@@ -35,16 +35,9 @@ function getPageFromPath(pathname: string): PageKey {
   return match ?? 'home';
 }
 
-interface PendingCategoryNav {
-  slug: string;
-  name: string;
-  image: string;
-  description: string;
-}
-
 export default function App() {
   const [page, setPage] = useState<PageKey>(() => getPageFromPath(window.location.pathname));
-  const [pendingCategoryNav, setPendingCategoryNav] = useState<PendingCategoryNav | null>(null);
+  const [pendingScrollTarget, setPendingScrollTarget] = useState<string | null>(null);
 
   const navigate = (key: PageKey) => {
     setPage(key);
@@ -55,27 +48,20 @@ export default function App() {
     window.scrollTo({ top: 0 });
   };
 
-  // Jumps straight from the home page's "OUR COLLECTIONS" section into the real
-  // subcategory listing page (no popup) — same generic detail page the /collections
-  // cards already use, just entered from a different door.
-  const handleNavigateToCollectionSubCategory = (
-    categorySlug: string,
-    subCategorySlug: string,
-    categoryName: string
-  ) => {
-    setPendingCategoryNav({ slug: categorySlug, name: categoryName, image: '', description: '' });
-    setPage('collections');
-    const path = `/collections/${categorySlug}/${subCategorySlug}`;
-    if (window.location.pathname !== path) {
-      window.history.pushState({}, '', path);
-      window.dispatchEvent(new PopStateEvent('popstate'));
-    }
-    window.scrollTo({ top: 0 });
-  };
-
   useEffect(() => {
     document.title = PAGE_ROUTES[page].title;
   }, [page]);
+
+  // Footer's "Certifications" link points at a section that only lives inline
+  // on the home page — hop home first, then scroll once it's mounted.
+  useEffect(() => {
+    if (page !== 'home' || !pendingScrollTarget) return;
+    const id = pendingScrollTarget;
+    setPendingScrollTarget(null);
+    requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }, [page, pendingScrollTarget]);
 
   useEffect(() => {
     const onPopState = () => setPage(getPageFromPath(window.location.pathname));
@@ -90,6 +76,15 @@ export default function App() {
   const handleNavigateSustainability = () => navigate('sustainability');
   const handleNavigateContact = () => navigate('contact');
   const handleBackToHome = () => navigate('home');
+
+  const handleNavigateCertifications = () => {
+    if (page === 'home') {
+      document.getElementById('certifications')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      setPendingScrollTarget('certifications');
+      navigate('home');
+    }
+  };
 
   return (
     <InquiryProvider>
@@ -111,7 +106,7 @@ export default function App() {
           ) : page === 'about' ? (
             <AboutPage />
           ) : page === 'collections' ? (
-            <HomeCollectionPage initialCategory={pendingCategoryNav ?? undefined} />
+            <HomeCollectionPage />
           ) : page === 'blogs' ? (
             <BlogsPage />
           ) : page === 'capabilities' ? (
@@ -132,7 +127,7 @@ export default function App() {
               <WhyChooseUs />
 
               {/* Interactive Catalog and Bespoke Thread Visualizer */}
-              <Collections onNavigateToSubCategory={handleNavigateToCollectionSubCategory} />
+              <Collections />
 
               {/* High Fidelity Video / Story Banner */}
               <VideoBanner />
@@ -148,10 +143,13 @@ export default function App() {
 
         {/* Editorial Footnotes and Contacts */}
         <Footer
+          onNavigateAbout={handleNavigateAbout}
+          onNavigateCollections={handleNavigateCollections}
           onNavigateBlogs={handleNavigateBlogs}
           onNavigateCapabilities={handleNavigateCapabilities}
           onNavigateSustainability={handleNavigateSustainability}
           onNavigateContact={handleNavigateContact}
+          onNavigateCertifications={handleNavigateCertifications}
         />
 
         {/* Selected-products drawer, opened from the navbar's Request Catalogue button */}

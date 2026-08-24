@@ -16,9 +16,18 @@ import {
   Truck,
 } from 'lucide-react';
 import { Product, ProductDetailData } from '../types';
+import { products as staticProducts } from '../data';
 import { useInquiry } from '../context/InquiryContext';
 import { ProductStorySection } from './ProductStorySection';
 import { CustomDesignBanner } from './CustomDesignBanner';
+import customColours from '../assets/Customisation-Studio/colors.jpg';
+import customMaterials from '../assets/Customisation-Studio/Materals.jpg';
+import customSizes from '../assets/Customisation-Studio/Sizes.jpg';
+import customCushionOptions from '../assets/Customisation-Studio/CushionOptions.jpg';
+import customBranding from '../assets/Customisation-Studio/Branding.jpg';
+import customLabelling from '../assets/Customisation-Studio/labeling.jpg';
+import customPackaging from '../assets/Customisation-Studio/Packging.jpg';
+import customHangTags from '../assets/Customisation-Studio/hangTags.jpg';
 
 const introBadges = [
   { icon: <Hand size={28} strokeWidth={1.5} />, label: 'Handcrafted Excellence' },
@@ -27,15 +36,17 @@ const introBadges = [
   { icon: <ShieldCheck size={28} strokeWidth={1.5} />, label: 'Sustainable Choice' },
 ];
 
-const customisationLabels = [
-  'Colours',
-  'Materials',
-  'Sizes',
-  'Cushion Options',
-  'Branding',
-  'Labelling',
-  'Packaging',
-  'Hang Tags',
+// Fixed images per customisation option — same on every product page,
+// not derived from the current product's own gallery.
+const customisationOptions = [
+  { label: 'Colours', image: customColours },
+  { label: 'Materials', image: customMaterials },
+  { label: 'Sizes', image: customSizes },
+  { label: 'Cushion Options', image: customCushionOptions },
+  { label: 'Branding', image: customBranding },
+  { label: 'Labelling', image: customLabelling },
+  { label: 'Packaging', image: customPackaging },
+  { label: 'Hang Tags', image: customHangTags },
 ];
 
 const trustBadges = [
@@ -46,17 +57,27 @@ const trustBadges = [
   { icon: <Truck size={32} strokeWidth={1.5} />, label: 'On-Time Delivery Assured' },
 ];
 
+export interface RelatedProduct {
+  productName: string;
+  thumbnailImage: string;
+  categorySlug: string;
+  subCategorySlug: string;
+  productSlug: string;
+}
+
 interface RugProductDetailPageProps {
   product: Product;
   detail: ProductDetailData | null;
   detailLoading: boolean;
   detailError: string | null;
-  relatedProducts: Product[];
+  relatedProducts: RelatedProduct[];
   categoryName: string;
   subCategoryName: string;
   onBack: () => void;
   onSelectRelated: (product: Product) => void;
 }
+
+
 
 export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
   product,
@@ -112,6 +133,12 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
   const mainImage = detail?.thumbnailImage ?? product.image;
   const gallery = [mainImage, ...galleryImages.filter((img) => img !== mainImage)];
   const inCart = isInCart(product.id);
+
+  // "You May Also Like" is intentionally static: sourced from the fixed local
+  // catalog (src/data.ts) rather than the live API, matched by subcategory.
+  const staticRelated = staticProducts
+    .filter((p) => p.subcategory === product.subcategory && p.id !== product.id)
+    .slice(0, 8);
 
   return (
     <div style={{ paddingTop: navHeight }} className="bg-[#FAF8F5]">
@@ -224,7 +251,7 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
                   }}
                   className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#2C2623] hover:bg-[#8F533C] text-white font-button text-xs tracking-widest uppercase transition-colors cursor-pointer"
                 >
-                  Request Product Details
+                  Get Product Details
                   <ArrowRight size={14} />
                 </button>
               </div>
@@ -275,13 +302,12 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
           </div>
 
           <div className="grid grid-cols-4 sm:grid-cols-8 gap-x-4 gap-y-8">
-            {customisationLabels.map((label, index) => (
+            {customisationOptions.map(({ label, image }) => (
               <div key={label} className="flex flex-col items-center gap-3">
                 <span className="w-24 h-24 rounded-full overflow-hidden border border-[#EBE4DC]">
                   <img
-                    src={gallery[index % gallery.length]}
-                    alt=""
-                    referrerPolicy="no-referrer"
+                    src={image}
+                    alt={label}
                     className="w-full h-full object-cover"
                   />
                 </span>
@@ -310,78 +336,63 @@ export const RugProductDetailPage: React.FC<RugProductDetailPageProps> = ({
 
       {/* YOU MAY ALSO LIKE */}
       <section className="bg-[#FAF8F5] pt-10 pb-10">
-        <div className="w-full px-6 sm:px-[80px]">
-          <div className="relative flex items-center justify-center mb-8">
-            <div className="absolute inset-x-0 top-1/2 h-px bg-[#EBE4DC]" />
-            <span className="relative bg-[#FAF8F5] px-6 font-sans text-base font-extrabold tracking-[0.2em] uppercase text-[#2C2623]">
-              You May Also Like
-            </span>
-          </div>
+  <div className="w-full px-6 sm:px-[80px]">
+    <div className="relative flex items-center justify-center mb-8">
+      <div className="absolute inset-x-0 top-1/2 h-px bg-[#EBE4DC]" />
+      <span className="relative bg-[#FAF8F5] px-6 font-sans text-base font-extrabold tracking-[0.2em] uppercase text-[#2C2623]">
+        You May Also Like
+      </span>
+    </div>
 
-          {relatedProducts.length === 0 ? (
-            galleryImages.length > 0 ? (
-              <div className="flex items-center justify-center gap-5 flex-wrap">
-                {galleryImages.map((img) => (
-                  <div key={img} className="w-[180px] sm:w-[220px]">
-                    <div className="relative aspect-square overflow-hidden rounded-lg bg-white">
-                      <img
-                        src={img}
-                        alt={product.name}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </div>
-                ))}
+    {!detail?.relatedProduct || detail.relatedProduct.length === 0 ? (
+      <p className="font-sans text-sm text-[#615751] text-center">
+        No related products found.
+      </p>
+    ) : (
+      <div className="flex items-center gap-2 sm:gap-4">
+        <button
+          onClick={() => scrollRelated('left')}
+          aria-label="Scroll left"
+          className="hidden sm:flex shrink-0 items-center justify-center text-[#2C2623] hover:text-[#8F533C] transition-colors cursor-pointer"
+        >
+          <ChevronLeft size={22} />
+        </button>
+
+        <div
+          ref={relatedScrollRef}
+          className="flex-1 flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {detail.relatedProduct.map((item) => (
+            <div
+              key={item.productSlug}
+              className="group shrink-0 snap-start w-[180px] sm:w-[220px] cursor-pointer"
+            >
+              <div className="relative aspect-square overflow-hidden rounded-lg bg-white">
+                <img
+                  src={item.thumbnailImage}
+                  alt={item.productName}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
               </div>
-            ) : (
-              <p className="font-sans text-sm text-[#615751] text-center">
-                No other {subCategoryName.toLowerCase()} to show right now.
+
+              <p className="mt-3 font-sans text-sm text-[#2C2623] text-center">
+                {item.productName}
               </p>
-            )
-          ) : (
-            <div className="flex items-center gap-2 sm:gap-4">
-              <button
-                onClick={() => scrollRelated('left')}
-                aria-label="Scroll left"
-                className="hidden sm:flex shrink-0 items-center justify-center text-[#2C2623] hover:text-[#8F533C] transition-colors cursor-pointer"
-              >
-                <ChevronLeft size={22} />
-              </button>
-
-              <div
-                ref={relatedScrollRef}
-                className="flex-1 flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-              >
-                {relatedProducts.map((item) => (
-                  <div
-                    key={item.id}
-                    onClick={() => onSelectRelated(item)}
-                    className="group cursor-pointer shrink-0 snap-start w-[180px] sm:w-[220px]"
-                  >
-                    <div className="relative aspect-square overflow-hidden rounded-lg bg-white">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <p className="mt-3 font-sans text-sm text-[#2C2623] text-center">{item.name}</p>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={() => scrollRelated('right')}
-                aria-label="Scroll right"
-                className="hidden sm:flex shrink-0 items-center justify-center text-[#2C2623] hover:text-[#8F533C] transition-colors cursor-pointer"
-              >
-                <ChevronRight size={22} />
-              </button>
             </div>
-          )}
+          ))}
         </div>
-      </section>
+
+        <button
+          onClick={() => scrollRelated('right')}
+          aria-label="Scroll right"
+          className="hidden sm:flex shrink-0 items-center justify-center text-[#2C2623] hover:text-[#8F533C] transition-colors cursor-pointer"
+        >
+          <ChevronRight size={22} />
+        </button>
+      </div>
+    )}
+  </div>
+</section>
 
       {/* Scroll to top */}
       {showScrollTop && (

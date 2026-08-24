@@ -1,5 +1,5 @@
 import React from 'react';
-import heartBehindImage from '../assets/images/heartbehind.png';
+import heartBehindImage from '../assets/images/heartbehind.jpg';
 
 export const About: React.FC = () => {
   return (

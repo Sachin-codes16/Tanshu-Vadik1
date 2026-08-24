@@ -1,11 +1,11 @@
 import React from 'react';
 import { Palette, Landmark, ShieldCheck, Leaf, Tag, Globe } from 'lucide-react';
 import { motion } from 'motion/react';
-import icon1 from '../assets/Icons/whychoose(design).png';
-import icon3 from '../assets/images/ic3.svg';
-import icon4 from '../assets/images/ic4.svg';
-import icon5 from '../assets/images/ic5.svg';
-import icon6 from '../assets/images/ic6.svg';
+import icon1 from '../assets/images/design_product_development.webp';
+import icon3 from '../assets/images/manufacturing_excellence.png';
+import icon4 from '../assets/images/sustainable_materials.png';
+import icon5 from '../assets/images/private_label_solutions.png';
+import icon6 from '../assets/images/export_expertise.png';
 import headOfficeFlag from '../assets/Capablities/headoffice.jpeg';
 
 export const WhyChooseUs: React.FC = () => {
@@ -21,22 +21,22 @@ export const WhyChooseUs: React.FC = () => {
       description: 'Seamless communication and dedicated support for global buyers.',
     },
     {
-      icon:  <img src = {icon3} className="w-16 h-16 text-[#8F533C] object-contain mix-blend-multiply"  />,
+      icon:  <img src = {icon3} className="w-12 h-12 text-[#8F533C] object-contain mix-blend-multiply"  />,
       title: 'MANUFACTURING EXCELLENCE',
       description: 'Skilled craftsmanship with scalable production capabilities.',
     },
     {
-      icon:  <img src = {icon4} className="w-16 h-16 text-[#8F533C] object-contain mix-blend-multiply"  />,
+      icon:  <img src = {icon4} className="w-12 h-12 text-[#8F533C] object-contain mix-blend-multiply"  />,
       title: 'SUSTAINABLE MATERIALS',
       description: 'Natural, eco-friendly fibers and responsible manufacturing.',
     },
     {
-      icon: <img src = {icon5} className="w-16 h-16 text-[#8F533C] object-contain mix-blend-multiply"  />,
+      icon: <img src = {icon5} className="w-12 h-12 text-[#8F533C] object-contain mix-blend-multiply"  />,
       title: 'PRIVATE LABEL SOLUTIONS',
       description: 'End-to-end private label services from concept to shelf.',
     },
     {
-      icon:  <img src = {icon6} className="w-16 h-16 text-[#8F533C] object-contain mix-blend-multiply"  />,
+      icon:  <img src = {icon6} className="w-12 h-12 text-[#8F533C] object-contain mix-blend-multiply"  />,
       title: 'EXPORT EXPERTISE',
       description: 'Documentation, compliance and logistics support for smooth exports.',
     },

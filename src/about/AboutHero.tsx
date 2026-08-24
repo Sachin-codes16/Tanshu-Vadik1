@@ -1,6 +1,7 @@
 import React from 'react';
-import heroImage from '../assets/images/heartbehind.png';
+import heroImage from '../assets/images/heartbehind.jpg';
 import teamHeroImage from '../assets/Our Team/our team hero image (2).png';
+import businessHeroImage from '../assets/finalimages1/image2.jpg';
 
 export type AboutTab = 'about' | 'business' | 'team';
 
@@ -36,8 +37,7 @@ const heroContent: Record<AboutTab, HeroContent> = {
     ctaHref: '#about-intro',
   },
   business: {
-    image:
-      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1600&q=80',
+    image: businessHeroImage,
     eyebrow: 'Tanshu Vaidik India Pvt. Ltd.',
     title: 'How We Do Business',
     description:
@@ -70,9 +70,7 @@ export const AboutHero: React.FC<AboutHeroProps> = (props: AboutHeroProps) => {
         <img
           src={content.image}
           alt={content.title}
-          className={`absolute inset-0 w-full h-full ${
-            activeTab === 'team' ? 'object-contain' : 'object-cover'
-          }`}
+          className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(44,38,35,0.8)_0%,rgba(44,38,35,0.8)_18%,rgba(44,38,35,0)_32%)]" />

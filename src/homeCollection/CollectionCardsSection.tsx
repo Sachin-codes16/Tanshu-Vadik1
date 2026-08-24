@@ -3,9 +3,9 @@ import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 
 import { getCategoryList } from '../api';
-import homeCollectionImage from '../assets/collection/HomeCollection.png';
-import petUtilityImage from '../assets/collection/Petutility.png';
-import seasonalCollectionImage from '../assets/collection/SesonalCollection.png';
+import homeCollectionImage from '../assets/collection/HomeCollection.jpg';
+import petUtilityImage from '../assets/collection/Petutility.jpg';
+import seasonalCollectionImage from '../assets/collection/SesonalCollection.jpg';
 import homeIcon from '../assets/Icons/HomeCollection.png';
 import petIcon from '../assets/Icons/Petutility.png';
 import seasonalIcon from '../assets/Icons/Sesonal.png';
@@ -63,7 +63,7 @@ const FALLBACK_CARDS: CardConfig[] = [
 
 interface CollectionCardsSectionProps {
   onOpenHomeCollection: (categorySlug: string, categoryName: string, categoryImage: string, categoryDescription: string) => void;
-  onOpenSeasonalCollection: (categorySlug: string) => void;
+  onOpenSeasonalCollection: (categorySlug: string, categoryName: string, categoryImage: string, categoryDescription: string) => void;
 }
 
 // Maps the API's free-form categorySlug/categoryName to the fixed collection
@@ -115,7 +115,7 @@ export const CollectionCardsSection: React.FC<CollectionCardsSectionProps> = ({
 
   const handleCardClick = (card: CardConfig) => {
     if (card.key === 'seasonal') {
-      onOpenSeasonalCollection(card.categorySlug);
+      onOpenSeasonalCollection(card.categorySlug, card.title, card.image, card.description);
     } else {
       onOpenHomeCollection(card.categorySlug, card.title, card.image, card.description);
     }

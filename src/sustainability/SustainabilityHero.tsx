@@ -1,5 +1,5 @@
 import React from 'react';
-import heroImage from '../assets/Capablities/Sustaibility.png';
+import heroImage from '../assets/Capablities/Sustaibility.jpg';
 
 export const SustainabilityHero: React.FC = () => {
   return (

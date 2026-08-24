@@ -15,7 +15,7 @@ import {
   Download,
   FileText,
 } from 'lucide-react';
-import heroImage from '../assets/collection/Contactus.png';
+import heroImage from '../assets/finalimages1/Contact Us Hero image.jpeg';
 import indiaOfficePhoto from '../assets/Capablities/image.png';
 import australiaOfficePhoto from '../assets/Capablities/image copy.png';
 import indiaMapShape from '../assets/Capablities/ChatGPT Image Aug 1, 2026, 05_45_15 PM.png';
@@ -25,12 +25,6 @@ import { offices } from '../data';
 import { useInquiry } from '../context/InquiryContext';
 import { submitContactUs } from '../api';
 import { SimpleCaptcha, type CaptchaHandle } from '../components/SimpleCaptcha';
-
-const PinterestIcon: React.FC<{ size?: number }> = ({ size = 15 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.024 0 1.518.769 1.518 1.69 0 1.03-.655 2.568-.993 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345c-.09.375-.293 1.194-.333 1.361-.052.221-.174.267-.401.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.379l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146A12 12 0 1 0 12 0z" />
-  </svg>
-);
 
 const ENQUIRY_TYPES = [
   'General Inquiry',
@@ -87,7 +81,7 @@ export const ContactPage: React.FC = () => {
      <img
        src={heroImage}
        alt="Contact Tanshu Vaidik"
-       className="absolute inset-0 w-full h-full object-cover object-top"
+       className="absolute inset-0 w-full h-full object-cover object-[50%_30%]"
        referrerPolicy="no-referrer"
      />
      <div className="absolute inset-0 bg-gradient-to-r from-white from-5% via-white/50 via-30% to-transparent to-45%" />
@@ -282,11 +276,8 @@ export const ContactPage: React.FC = () => {
            <h3 className="font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase">
              Email Us
            </h3>
-           <a href={`mailto:${indiaOffice.email}`} className="font-sans text-sm text-[#615751] hover:text-[#8F533C]">
-             {indiaOffice.email}
-           </a>
-           <a href={`mailto:${australiaOffice.email}`} className="font-sans text-sm text-[#615751] hover:text-[#8F533C]">
-             {australiaOffice.email}
+           <a href="mailto:info@tanshuvaidik.com" className="font-sans text-sm text-[#615751] hover:text-[#8F533C]">
+             info@tanshuvaidik.com
            </a>
          </div>
 
@@ -315,12 +306,16 @@ export const ContactPage: React.FC = () => {
            <h3 className="font-sans text-xs font-bold tracking-widest text-[#2C2623] uppercase">
              AUSTRALIA
            </h3>
-           <span className="font-sans text-sm text-[#615751]">Registered Office</span>
+           <span className="font-sans text-sm text-[#615751]">Registered Head Office</span>
            <span className="font-sans text-xs text-[#615751] leading-snug">
              Tanshu Australia Pty Ltd,<br />
              Melbourne, Victoria,<br />
              Australia
            </span>
+           <a href={`tel:${australiaOffice.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 font-sans text-sm text-[#615751] hover:text-[#8F533C] mt-1">
+             <Phone size={14} />
+             {australiaOffice.phone}
+           </a>
          </div>
 
          <div className="h-px bg-[#EBE4DC]" />
@@ -333,10 +328,16 @@ export const ContactPage: React.FC = () => {
              Connect With Us
            </h3>
            <div className="flex items-center gap-3">
-             {[Linkedin, Instagram, Facebook, PinterestIcon].map((Icon, i) => (
+             {[
+               { Icon: Linkedin, href: 'https://in.linkedin.com/company/tanshu-vaidik-india-pvt-ltd' },
+               { Icon: Instagram, href: 'https://www.instagram.com/tanshuvaidik/' },
+               { Icon: Facebook, href: 'https://www.facebook.com/Tanshuvaidik/' },
+             ].map(({ Icon, href }, i) => (
                <a
                  key={i}
-                 href="#"
+                 href={href}
+                 target="_blank"
+                 rel="noopener noreferrer"
                  className="w-9 h-9 rounded-full bg-[#4A5D3A] text-white flex items-center justify-center hover:bg-[#8F533C] transition-colors"
                >
                  <Icon size={15} />

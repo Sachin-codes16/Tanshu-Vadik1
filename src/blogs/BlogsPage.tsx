@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Calendar } from 'lucide-react';
-import heroImage from '../assets/images/heartbehind.png';
+import heroImage from '../assets/images/heartbehind.jpg';
 import { getBlogList } from '../api';
 
 interface ApiBlog {

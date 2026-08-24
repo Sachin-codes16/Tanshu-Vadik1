@@ -154,7 +154,7 @@ export const TrustStats: React.FC = () => {
 return (
     <section id="capabilities" className="bg-[#FAF8F5] scroll-mt-28">
       <div className="w-full">
-        <div className="bg-white border border-[#EBE4DC] px-6 py-5">
+        <div className="bg-white border border-[#EBE4DC] px-1 py-5">
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-x-4 gap-y-6 items-start justify-items-center">
           {stats.map((s, index) => (
             <motion.div

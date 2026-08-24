@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { RugsDetailsPage } from './RugsDetailsPage';
 import { getSubCategoryList } from '../api';
 import { getCollectionPathSegments, pushCollectionPath } from './collectionRouting';
-import defaultHeroImage from '../assets/collection/homecollection1.png';
+import defaultHeroImage from '../assets/collection/homecollection1.jpg';
 
 interface HomeCollectionDetailPageProps {
   categorySlug: string;

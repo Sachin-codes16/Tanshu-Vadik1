@@ -5,9 +5,10 @@ import { useInquiry } from '../context/InquiryContext';
 import { TrustStats } from './TrustStats';
 import { Certifications } from './Certifications';
 import { ProductShowcaseModal } from './ProductShowcaseModal';
-import { getHomeCollections } from '../api';
-import springCollection from "../assets/collection/Spring.png"
-import fallCollection from "../assets/collection/Spring2.png"
+import { getHomeCollections, getProductList } from '../api';
+import { mapApiProduct } from '../homeCollection/productMapper';
+import springCollection from "../assets/collection/Spring.jpg"
+import fallCollection from "../assets/collection/Spring2.jpg"
 
 const localImages = import.meta.glob('../assets/images/*', { eager: true, import: 'default' }) as Record<string, string>;
 const img = (filename: string): string => {
@@ -36,11 +37,23 @@ interface ApiHomeCategory {
   subCategories: ApiHomeSubCategory[];
 }
 
-interface CollectionsProps {
-  onNavigateToSubCategory: (categorySlug: string, subCategorySlug: string, categoryName: string) => void;
-}
+// API-driven category order sometimes puts Bath Mats out of sequence; pin it
+// right after Carpets to match the intended layout.
+const reorderBathMats = (categories: ApiHomeCategory[]): ApiHomeCategory[] =>
+  categories.map((category) => {
+    const subs = [...category.subCategories];
+    const bathMatIndex = subs.findIndex((s) => s.subCategoryName.toLowerCase().includes('bath mat'));
+    const carpetIndex = subs.findIndex((s) => s.subCategoryName.toLowerCase().includes('carpet'));
+    if (bathMatIndex === -1 || carpetIndex === -1 || bathMatIndex === carpetIndex + 1) {
+      return category;
+    }
+    const [bathMat] = subs.splice(bathMatIndex, 1);
+    const newCarpetIndex = subs.findIndex((s) => s.subCategoryName.toLowerCase().includes('carpet'));
+    subs.splice(newCarpetIndex + 1, 0, bathMat);
+    return { ...category, subCategories: subs };
+  });
 
-export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategory }) => {
+export const Collections: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [homeCategories, setHomeCategories] = useState<ApiHomeCategory[]>([]);
 
@@ -52,7 +65,7 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
       .then((res: { data?: { data?: ApiHomeCategory[] } }) => {
         if (cancelled) return;
         const list = res?.data?.data ?? [];
-        if (list.length > 0) setHomeCategories(list);
+        if (list.length > 0) setHomeCategories(reorderBathMats(list));
       })
       .catch((err) => {
         console.error('Failed to load home collections.', err);
@@ -86,6 +99,11 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
       itemCount: products.filter(p => p.subcategory === 'Carpets').length
     },
     {
+      name: 'Bath Mats',
+      image: img('WhatsApp Image 2026-07-17 at 15.35.01.jpeg'),
+      itemCount: products.filter(p => p.subcategory === 'Bath Mats').length
+    },
+    {
       name: 'Cushions',
       image: img('cushion.jpeg'),
       itemCount: products.filter(p => p.subcategory === 'Cushions').length
@@ -104,12 +122,6 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
       name: 'Planters',
       image: img('WhatsApp Image 2026-07-17 at 15.35.57.jpeg'),
       itemCount: products.filter(p => p.subcategory === 'Planters').length
-    },
-    ,
-    {
-      name: 'Bath Mats',
-      image: img('WhatsApp Image 2026-07-17 at 15.35.01.jpeg'),
-      itemCount: products.filter(p => p.subcategory === 'Bath Mats').length
     },
     {
       name: 'Table Linen',
@@ -133,7 +145,7 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
     },
     {
       name: 'Home Accessories',
-      image: img('ChatGPT Image Jul 21, 2026, 11_56_04 AM.png'),
+      image: img('ChatGPT Image Jul 21, 2026, 11_56_04 AM.jpg'),
       itemCount: products.filter(p => p.subcategory === 'Table Placemat').length
     }
   ], []);
@@ -205,27 +217,60 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
 
   const categoriesToRender = homeCategories.length > 0 ? homeCategories : fallbackCategories;
 
-  // Filter products by selected category
-  const activeProducts = useMemo(() => {
-    if (!selectedCategory) return [];
-    const lowerSel = selectedCategory.toLowerCase();
-    if (lowerSel.includes('spring') || lowerSel.includes('summer')) {
-      return products.filter((p) => p.subcategory === 'Christmas Collection');
+  // Both the sub-category grid and the seasonal banners open the same showcase
+  // modal with real products fetched from /api/product-list — the home page
+  // teaser never navigates away, matching the reference's popup-based design.
+  const [modalProducts, setModalProducts] = useState<Product[]>([]);
+  const [loadingModalKey, setLoadingModalKey] = useState<string | null>(null);
+
+  const handleSubCategoryClick = async (category: ApiHomeCategory, sub: ApiHomeSubCategory) => {
+    setLoadingModalKey(sub.subCatID);
+    try {
+      const res = await getProductList(category.categorySlug, sub.subCategorySlug);
+      const list = res?.data?.data ?? [];
+      setModalProducts(list.map(mapApiProduct));
+    } catch (err) {
+      console.error('Failed to load products for this sub-category.', err);
+      setModalProducts([]);
+    } finally {
+      setLoadingModalKey(null);
+      setSelectedCategory(sub.subCategoryName);
     }
-    if (lowerSel.includes('fall') || lowerSel.includes('winter')) {
-      return products.filter((p) => p.subcategory === 'Fall Collection');
+  };
+
+  const handleSeasonalBannerClick = async (category: { name: string }) => {
+    const lower = category.name.toLowerCase();
+    const isSpringSummer = lower.includes('spring') || lower.includes('summer');
+
+    const seasonalApiCategory = homeCategories.find((c) =>
+      `${c.categorySlug} ${c.categoryName}`.toLowerCase().includes('season')
+    );
+    const matchedSub = seasonalApiCategory?.subCategories.find((sub) => {
+      const subText = `${sub.subCategorySlug} ${sub.subCategoryName}`.toLowerCase();
+      return isSpringSummer
+        ? subText.includes('spring') || subText.includes('summer')
+        : subText.includes('fall') || subText.includes('winter') || subText.includes('autumn');
+    });
+
+    if (!seasonalApiCategory || !matchedSub) {
+      setModalProducts([]);
+      setSelectedCategory(category.name);
+      return;
     }
-    if (lowerSel === 'kitchen linen') {
-      return products.filter((p) => p.subcategory === 'Apron');
+
+    setLoadingModalKey(category.name);
+    try {
+      const res = await getProductList(seasonalApiCategory.categorySlug, matchedSub.subCategorySlug);
+      const list = res?.data?.data ?? [];
+      setModalProducts(list.map(mapApiProduct));
+    } catch (err) {
+      console.error('Failed to load seasonal products.', err);
+      setModalProducts([]);
+    } finally {
+      setLoadingModalKey(null);
+      setSelectedCategory(category.name);
     }
-    if (lowerSel === 'throws') {
-      return products.filter((p) => p.subcategory === 'Kitchen Towel');
-    }
-    if (lowerSel === 'home accessories') {
-      return products.filter((p) => p.subcategory === 'Table Placemat');
-    }
-    return products.filter((p) => p.subcategory.toLowerCase() === lowerSel);
-  }, [selectedCategory]);
+  };
 
   const handleRequestCustomSwatch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -281,6 +326,9 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
         {/* Categories -> subcategories, straight from /api/home */}
         {categoriesToRender.map((category) => {
           const isPetCategory = `${category.categorySlug} ${category.categoryName}`.toLowerCase().includes('pet');
+          const sectionSubtitle = isPetCategory
+            ? 'Comfort, care and style for pets.'
+            : 'Timeless designs for every space.';
 
           return (
             <div key={category.categorySlug} className={isPetCategory ? 'mb-6 sm:mb-8' : 'mb-10 sm:mb-12'}>
@@ -288,6 +336,9 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
                 <h3 className="font-serif text-2xl sm:text-3xl text-[#2C2623] font-medium tracking-wide">
                   {category.categoryName}
                 </h3>
+                <p className="font-sans text-xs sm:text-sm text-[#615751] italic mt-1">
+                  {sectionSubtitle}
+                </p>
               </div>
 
               <div
@@ -304,7 +355,7 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
-                    onClick={() => onNavigateToSubCategory(category.categorySlug, sub.subCategorySlug, category.categoryName)}
+                    onClick={() => handleSubCategoryClick(category, sub)}
                     className="group cursor-pointer flex flex-col"
                   >
                     {/* Image Container with high contrast and hover zooms */}
@@ -312,8 +363,9 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
                       className={
                         isPetCategory
                           ? 'relative aspect-video overflow-hidden bg-[#F4EFEA] border border-[#EBE4DC] shadow-xs group-hover:border-[#8F533C]/40 group-hover:shadow-md transition-all duration-300'
-                          : 'relative aspect-[16/9] overflow-hidden bg-[#F4EFEA] border border-[#EBE4DC] shadow-xs group-hover:border-[#8F533C]/40 group-hover:shadow-md transition-all duration-300'
+                          : 'relative overflow-hidden bg-[#F4EFEA] border border-[#EBE4DC] shadow-xs group-hover:border-[#8F533C]/40 group-hover:shadow-md transition-all duration-300'
                       }
+                      style={!isPetCategory ? { aspectRatio: sub.subCategoryName === 'Basket' ? '568 / 316' : '16 / 9' } : undefined}
                     >
                       <img
                         src={sub.subCatImg}
@@ -343,7 +395,7 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
             <div
               key={category.name}
               className="relative group overflow-hidden cursor-pointer w-full aspect-[2/1]"
-              onClick={() => setSelectedCategory(category.name)}
+              onClick={() => handleSeasonalBannerClick(category)}
             >
               {/* 1. Image Background */}
               <img
@@ -359,17 +411,11 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
 
               {/* 3. Content Box: Spring/Summer stays centered, Fall/Winter sits to the side */}
               <div
-                className={`absolute inset-0 flex flex-col justify-center p-6 sm:p-10 text-white ${
-                  category.name.includes('SPRING')
-                    ? 'items-center text-center'
-                    : 'items-start text-left'
-                }`}
+                className={`absolute inset-0 flex flex-col justify-center p-6 sm:p-10 text-white items-center text-center`}
                 style={{ textShadow: '0 2px 10px rgba(0,0,0,0.75), 0 1px 3px rgba(0,0,0,0.9)' }}
               >
                 <h3
-                  className={`font-serif font-bold text-lg sm:text-2xl md:text-3xl tracking-wide sm:tracking-widest uppercase mb-2 leading-snug ${
-                    category.name.includes('SPRING') ? 'w-full' : 'max-w-[70%]'
-                  }`}
+                  className={`font-serif font-bold text-lg sm:text-2xl md:text-3xl tracking-wide sm:tracking-widest uppercase mb-2 leading-snug w-full`}
                 >
                   {category.name.replace(' COLLECTION', '')}
                   <br />
@@ -387,7 +433,7 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
                   className="px-6 py-2.5 border border-white text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white hover:text-black bg-black/25 backdrop-blur-[2px]"
                   style={{ textShadow: 'none' }}
                 >
-                  Explore Now &rarr;
+                  {loadingModalKey === category.name ? 'Loading...' : <>Explore Now &rarr;</>}
                 </button>
               </div>
             </div>
@@ -405,8 +451,11 @@ export const Collections: React.FC<CollectionsProps> = ({ onNavigateToSubCategor
         {selectedCategory && (
           <ProductShowcaseModal
             heading={`${selectedCategory} Collection`}
-            products={activeProducts}
-            onClose={() => setSelectedCategory(null)}
+            products={modalProducts}
+            onClose={() => {
+              setSelectedCategory(null);
+              setModalProducts([]);
+            }}
           />
         )}
       </AnimatePresence>

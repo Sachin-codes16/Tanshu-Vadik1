@@ -269,7 +269,7 @@ export const B2BPortal: React.FC = () => {
                   disabled={submitting}
                   className="w-full py-4 bg-[#8F533C] hover:bg-[#2C2623] text-white font-button text-xs tracking-widest uppercase transition-colors rounded-none cursor-pointer border border-[#8F533C] hover:border-[#2C2623] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {submitting ? 'Submitting...' : 'Submit Enquiry'}
+                  {submitting ? 'Submitting...' : 'Get Now'}
                 </button>
               </form>
               )}

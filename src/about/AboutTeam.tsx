@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import {
   Linkedin,
   Megaphone,
@@ -14,15 +15,16 @@ import {
   Gem,
   PenTool,
 } from 'lucide-react';
-import nareshPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_29_24 PM.png';
-import adityaPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_34_15 PM.png';
-import shubhamPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_32_34 PM.png';
+import nareshPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_29_24 PM.jpg';
+import adityaPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_34_15 PM.jpg';
+import shubhamPhoto from '../assets/About/ChatGPT Image Jul 24, 2026, 06_32_34 PM.jpg';
 import ourTeamPhoto from '../assets/About/ourteam.jpeg';
 import deepakPhoto from '../assets/Our Team/Deepak.jpg';
 import monuPhoto from '../assets/About/Monu Sharma.jpeg';
 import rahatPhoto from '../assets/Our Team/Rahat (1).jpg';
 import rahulPhoto from '../assets/Our Team/Rahul Verma (2).jpg';
 import vijayPhoto from '../assets/Our Team/Vijay Chugh.jpg';
+import { getTeamList } from '../api';
 
 interface Director {
   photo?: string;
@@ -31,6 +33,32 @@ interface Director {
   title: string;
   bio: string;
 }
+
+interface ApiTeamMember {
+  name: string;
+  role?: string;
+  designation?: string;
+  position?: string;
+  photo?: string;
+  image?: string;
+  thumbnail?: string;
+}
+
+interface TeamMember {
+  name: string;
+  role: string;
+  photo?: string;
+  initials: string;
+}
+
+const toInitials = (name: string) =>
+  name
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
 const directors: Director[] = [
   {
@@ -70,15 +98,7 @@ const founders: Founder[] = [
   },
 ];
 
-const teamMembers = [
-  { initials: 'MA', name: 'Mamta Arora', role: 'Marketing Merchandiser', icon: Megaphone },
-  { initials: 'VC', name: 'Vijay Chugh', role: 'Production Manager', icon: Settings, photo: vijayPhoto },
-  { initials: 'RS', name: 'Rajvir Sharma', role: 'HR & Legal Head', icon: Users },
-  { initials: 'RV', name: 'Rahul Verma', role: 'Quality Head', icon: ShieldCheck, photo: rahulPhoto },
-  { initials: 'D', name: 'Deepak', role: 'Dispatch Head', icon: Truck, photo: deepakPhoto },
-  { initials: 'MS', name: 'Monu Sharma', role: 'Accounts', icon: Calculator, photo: monuPhoto },
-  { initials: 'R', name: 'Rahat', role: 'Designer', icon: PenTool, photo: rahatPhoto },
-];
+
 
 const values = [
   {
@@ -120,8 +140,40 @@ const SectionLabel: React.FC<{ label: string }> = ({ label }) => (
     <span className="h-px flex-1 bg-[#8F533C]/40" />
   </div>
 );
-
+// Api team member
 export const AboutTeam: React.FC = () => {
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchTeam = async () => {
+      try {
+        const res = await getTeamList();
+        const list: ApiTeamMember[] = res?.data?.data ?? [];
+
+        if (!cancelled) {
+          setTeamMembers(
+            list.map((item) => ({
+              name: item.name,
+              role: item.role ?? item.designation ?? item.position ?? '',
+              photo: item.photo ?? item.image ?? item.thumbnail,
+              initials: toInitials(item.name ?? ''),
+            }))
+          );
+        }
+      } catch (error) {
+        console.error('Team API Error:', error);
+      }
+    };
+
+    fetchTeam();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <>
       {/* Founders */}
@@ -135,12 +187,12 @@ export const AboutTeam: React.FC = () => {
 
         <div className="w-full px-6 sm:px-10 lg:px-20 grid grid-cols-1 lg:grid-cols-[0.85fr_1.6fr_0.85fr] gap-3 lg:gap-8 lg:items-stretch">
           <div className="order-3 lg:order-1 flex flex-col gap-6 font-sans text-base text-[#615751] leading-relaxed">
-            <p>
+            <p style={{ textAlign: 'justify' }}>
               Tanshu Vaidik was founded on the belief that traditional craftsmanship, when combined
               with contemporary design and ethical practices, can create products that enhance lives
               across the globe.
             </p>
-            <p>
+            <p style={{ textAlign: 'justify' }}>
               Our founders bring together a shared vision of sustainability, quality and empowerment —
               building a brand that supports artisans and delivers excellence to our partners
               worldwide.
@@ -232,7 +284,6 @@ export const AboutTeam: React.FC = () => {
                   {m.name}
                 </h3>
                 <span className="font-sans text-xs text-[#615751]">{m.role}</span>
-                <m.icon size={26} className="text-[#8F533C] mt-1" />
               </div>
             </div>
           ))}

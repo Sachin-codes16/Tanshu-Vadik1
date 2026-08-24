@@ -1,6 +1,7 @@
 
-//export const BASE_URL = import.meta.env.DEV ? '' : 'https://tapi.checkour.work';
-export const BASE_URL = import.meta.env.DEV ? '' : 'https://api.tanshuvaidik.com';
+// api.tanshuvaidik.com does not accept HTTPS connections (port 443 is
+// unreachable); the backend only serves over plain HTTP.
+export const BASE_URL = import.meta.env.DEV ? '' : 'http://api.tanshuvaidik.com';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -82,3 +83,6 @@ export const getMaterialList = () => apiGet('/api/material-list');
 export const getBlogList = () => apiGet('/api/blog-list');
 
 export const submitProductEnquiry = (payload) => apiPost('/api/product-enquiry', payload);
+export async function getTeamList() {
+  return apiRequest('/api/team-list');
+}

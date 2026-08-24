@@ -71,7 +71,7 @@ export const homeCategories: HomeCategory[] = [
   },
   {
     name: 'Home Accessories',
-    image: img('ChatGPT Image Jul 21, 2026, 11_56_04 AM.png'),
+    image: img('ChatGPT Image Jul 21, 2026, 11_56_04 AM.jpg'),
     description: 'Thoughtfully designed accessories for the modern home.',
   },
 ];

@@ -13,6 +13,14 @@ export interface Product {
   colors?: string[];
 }
 
+export interface RelatedProduct {
+  productName: string;
+  thumbnailImage: string;
+  categorySlug: string;
+  subCategorySlug: string;
+  productSlug: string;
+}
+
 export interface ProductDetailData {
   categoryName: string;
   categorySlug: string;
@@ -33,6 +41,8 @@ export interface ProductDetailData {
   certifications: string;
   productSlug: string;
   productGallery: { image: string }[];
+
+  relatedProduct: RelatedProduct[];
 }
 
 export interface Artisan {

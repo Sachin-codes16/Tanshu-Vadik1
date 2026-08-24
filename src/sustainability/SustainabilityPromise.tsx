@@ -1,6 +1,6 @@
 import React from 'react';
 import { Leaf, HeartHandshake, Recycle, Heart } from 'lucide-react';
-import forestBg from '../assets/collection/image.png';
+import forestBg from '../assets/collection/image.jpg';
 
 const promises = [
   {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useInquiry } from '../context/InquiryContext';
 import logo from "../assets/Icons/tanshulogo.png";
 import australianOwnedBadge from "../assets/Icons/Austrilla.png";
 import familyOwnedBadge from "../assets/Icons/Family .png";
@@ -58,11 +59,7 @@ const LinkedinIcon: React.FC<IconProps> = ({ size = 15 }) => (
   </svg>
 );
 
-const PinterestIcon: React.FC<IconProps> = ({ size = 15 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.607 0 11.985-5.365 11.985-11.988C24.002 5.367 18.624.001 12.017.001z" />
-  </svg>
-);
+
 
 /* ------------------------------------------------------------------ */
 /*  Fonts                                                              */
@@ -74,30 +71,43 @@ const SANS = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 const quickLinks = [
-  'About Us',
-  'Collections',
-  'Capabilities',
-  'Sustainability',
-  'Certifications',
-  'Contact Us',
-  'Blogs',
+  { label: 'About Us', href: '/about' },
+  { label: 'Collections', href: '/collections' },
+  { label: 'Capabilities', href: '/capabilities' },
+  { label: 'Sustainability', href: '/sustainability' },
+  { label: 'Certifications', href: '#certifications' },
+  { label: 'Contact Us', href: '/contact' },
+  { label: 'Blogs', href: '/blogs' },
 ];
 
 const socials = [
-  { label: 'Facebook', Icon: FacebookIcon },
-  { label: 'Instagram', Icon: InstagramIcon },
-  { label: 'LinkedIn', Icon: LinkedinIcon },
-  { label: 'Pinterest', Icon: PinterestIcon },
+  { label: 'Facebook', Icon: FacebookIcon, href: 'https://www.facebook.com/Tanshuvaidik/' },
+  { label: 'Instagram', Icon: InstagramIcon, href: 'https://www.instagram.com/tanshuvaidik/' },
+  { label: 'LinkedIn', Icon: LinkedinIcon, href: 'https://in.linkedin.com/company/tanshu-vaidik-india-pvt-ltd' },
 ];
 
 interface FooterProps {
+  onNavigateAbout?: () => void;
+  onNavigateCollections?: () => void;
   onNavigateBlogs?: () => void;
   onNavigateCapabilities?: () => void;
   onNavigateSustainability?: () => void;
   onNavigateContact?: () => void;
+  onNavigateCertifications?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapabilities, onNavigateSustainability, onNavigateContact }) => {
+const QUICK_LINK_HANDLER_KEYS: Record<string, keyof FooterProps> = {
+  'About Us': 'onNavigateAbout',
+  'Collections': 'onNavigateCollections',
+  'Capabilities': 'onNavigateCapabilities',
+  'Sustainability': 'onNavigateSustainability',
+  'Certifications': 'onNavigateCertifications',
+  'Contact Us': 'onNavigateContact',
+  'Blogs': 'onNavigateBlogs',
+};
+
+export const Footer: React.FC<FooterProps> = (props) => {
+  const { setIsPortalOpen } = useInquiry();
   const [hovered, setHovered] = useState<string | null>(null);
   const [reqHover, setReqHover] = useState(false);
   const [bookHover, setBookHover] = useState(false);
@@ -165,6 +175,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapab
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 4 }}>
             <button
+              onClick={() => setIsPortalOpen(true)}
               onMouseEnter={() => setReqHover(true)}
               onMouseLeave={() => setReqHover(false)}
               style={{
@@ -242,12 +253,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapab
 
           {/* Social Icons */}
           <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
-            {socials.map(({ label, Icon }) => {
+            {socials.map(({ label, Icon, href }) => {
               const isHover = hovered === label;
               return (
                 <a
                   key={label}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   onMouseEnter={() => setHovered(label)}
                   onMouseLeave={() => setHovered(null)}
@@ -272,41 +285,41 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapab
 
         {/* ---------------- Quick Links ---------------- */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <h4 style={headingStyle}>Quick Links</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-            {quickLinks.map((label) => {
-              const isHover = hovered === `ql-${label}`;
-              return (
-                <a
-                  key={label}
-                  href="#"
-                  onClick={
-                    label === 'Blogs'
-                      ? (e) => { e.preventDefault(); onNavigateBlogs?.(); }
-                      : label === 'Capabilities'
-                      ? (e) => { e.preventDefault(); onNavigateCapabilities?.(); }
-                      : label === 'Sustainability'
-                      ? (e) => { e.preventDefault(); onNavigateSustainability?.(); }
-                      : label === 'Contact Us'
-                      ? (e) => { e.preventDefault(); onNavigateContact?.(); }
-                      : undefined
-                  }
-                  onMouseEnter={() => setHovered(`ql-${label}`)}
-                  onMouseLeave={() => setHovered(null)}
-                  style={{
-                    fontSize: 12.5,
-                    color: isHover ? ACCENT : MUTED,
-                    textDecoration: 'none',
-                    transition: 'color 0.2s ease',
-                    cursor: label === 'Blogs' || label === 'Capabilities' || label === 'Sustainability' || label === 'Contact Us' ? 'pointer' : undefined,
-                  }}
-                >
-                  {label}
-                </a>
-              );
-            })}
-          </div>
-        </div>
+  <h4 style={headingStyle}>Quick Links</h4>
+
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+    {quickLinks.map((item) => {
+      const isHover = hovered === `ql-${item.label}`;
+      const handler = props[QUICK_LINK_HANDLER_KEYS[item.label]] as (() => void) | undefined;
+
+      return (
+        <a
+          key={item.label}
+          href={item.href}
+          onClick={
+            handler
+              ? (e) => {
+                  e.preventDefault();
+                  handler();
+                }
+              : undefined
+          }
+          onMouseEnter={() => setHovered(`ql-${item.label}`)}
+          onMouseLeave={() => setHovered(null)}
+          style={{
+            fontSize: 12.5,
+            color: isHover ? ACCENT : MUTED,
+            textDecoration: 'none',
+            transition: 'color 0.2s ease',
+            cursor: handler ? 'pointer' : undefined,
+          }}
+        >
+          {item.label}
+        </a>
+      );
+    })}
+  </div>
+</div>
 
         {/* ---------------- Contact Us ---------------- */}
         <div className="flex flex-col items-center sm:items-start">
@@ -314,11 +327,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateBlogs, onNavigateCapab
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14, fontSize: 12.5, color: MUTED }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <PhoneIcon />
-              <span>+918930009468</span>
+              <a href="tel:+918930009468" style={{ color: 'inherit', textDecoration: 'none' }}>
+                +918930009468
+              </a>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <MailIcon />
-              <span>info@tanshuvaidik.com</span>
+              <a href="mailto:info@tanshuvaidik.com" style={{ color: 'inherit', textDecoration: 'none' }}>
+                info@tanshuvaidik.com
+              </a>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <MapPinIcon />

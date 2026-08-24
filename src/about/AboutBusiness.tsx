@@ -30,7 +30,7 @@ export const AboutBusiness: React.FC = () => {
     <>
       <section id="about-business" className="py-14 sm:py-16 bg-[#FAF8F5]">
         <div className="w-full px-[20px] grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4" style={{ textAlign: 'justify' }}>
             <span className="font-sans text-[11px] font-bold tracking-[0.3em] text-[#8F533C] uppercase">
               OUR PROCESS
             </span>

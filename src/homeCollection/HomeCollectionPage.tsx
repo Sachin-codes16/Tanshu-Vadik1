@@ -53,11 +53,6 @@ export const HomeCollectionPage: React.FC<HomeCollectionPageProps> = ({ initialC
     pushCollectionPath([slug]);
   };
 
-  const openSeasonalCategory = (slug: string) => {
-    setCategory({ slug, name: '', image: '', description: '' });
-    pushCollectionPath([slug]);
-  };
-
   const closeCategory = () => {
     setCategory(null);
     pushCollectionPath([]);
@@ -65,7 +60,15 @@ export const HomeCollectionPage: React.FC<HomeCollectionPageProps> = ({ initialC
 
   if (category) {
     if (category.slug.toLowerCase().includes('season')) {
-      return <SeasonalCollectionDetailPage onBack={closeCategory} />;
+      return (
+        <SeasonalCollectionDetailPage
+          categorySlug={category.slug}
+          categoryName={category.name || undefined}
+          heroImage={category.image || undefined}
+          heroDescription={category.description || undefined}
+          onBack={closeCategory}
+        />
+      );
     }
     return (
       <HomeCollectionDetailPage
@@ -84,7 +87,7 @@ export const HomeCollectionPage: React.FC<HomeCollectionPageProps> = ({ initialC
       <div ref={cardsRef}>
         <CollectionCardsSection
           onOpenHomeCollection={openCategory}
-          onOpenSeasonalCollection={openSeasonalCategory}
+          onOpenSeasonalCollection={openCategory}
         />
       </div>
       <TrustStrip />

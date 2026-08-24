@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Play, ChevronLeft, ChevronRight } from 'lucide-react';
-import heroImage from '../assets/collection/homedog.png';
-import heroImage2 from '../assets/collection/ClickCollection2.png';
-import heroImage3 from '../assets/collection/Clickcollection3.png';
+import heroImage from '../assets/collection/homedog.jpg';
+import heroImage2 from '../assets/collection/ClickCollection2.jpg';
+import heroImage3 from '../assets/collection/Clickcollection3.jpg';
 
 const SLIDES = [heroImage, heroImage2, heroImage3];
 const SLIDE_COUNT = SLIDES.length;

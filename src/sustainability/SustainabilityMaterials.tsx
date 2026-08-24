@@ -1,9 +1,9 @@
 import React from 'react';
-import juteImg from '../assets/images/basket_rope_twotone_1783702315626.jpeg';
-import cottonImg from '../assets/images/Rug.jpeg';
-import woolImg from '../assets/images/throws.jpeg';
-import recycledCottonImg from '../assets/images/pot_holders_terracotta_1783704070207.jpg';
-import seagrassImg from '../assets/images/Rugs.jpeg';
+import juteImg from '../assets/finalimages1/image.jpg';
+import cottonImg from '../assets/finalimages1/cotton.jpeg';
+import woolImg from '../assets/finalimages1/wool.jpg';
+import recycledCottonImg from '../assets/finalimages1/image4.jpg';
+import seagrassImg from '../assets/finalimages1/seagrass.jpg';
 
 const materials = [
   { label: 'Jute', image: juteImg },

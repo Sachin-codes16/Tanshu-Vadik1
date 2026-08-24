@@ -12,7 +12,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { Product, ProductDetailData } from '../types';
-import defaultStoryImage from '../assets/collection/rugs2.png';
+import defaultStoryImage from '../assets/collection/rugs2.jpg';
 
 interface StorySection {
   id: string;

@@ -6,7 +6,7 @@ import { getProductList, getProductDetail } from '../api';
 import { getCollectionPathSegments, pushCollectionPath } from './collectionRouting';
 import { ApiProduct, mapApiProduct } from './productMapper';
 import { Product, ProductDetailData } from '../types';
-import rugsHeroImage from '../assets/collection/ChatGPT Image Jul 23, 2026, 12_59_04 AM.png';
+import rugsHeroImage from '../assets/collection/ChatGPT Image Jul 23, 2026, 12_59_04 AM.jpg';
 
 interface RugsDetailsPageProps {
   categorySlug: string;

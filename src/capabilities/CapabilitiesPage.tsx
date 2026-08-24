@@ -5,6 +5,7 @@ import { CapabilitiesProductStory } from './CapabilitiesProductStory';
 import { CapabilitiesInfrastructure } from './CapabilitiesInfrastructure';
 import { CapabilitiesWomen } from './CapabilitiesWomen';
 import { CapabilitiesGroup } from './CapabilitiesGroup';
+import { VideoBanner } from '../components/VideoBanner';
 
 export const CapabilitiesPage: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ export const CapabilitiesPage: React.FC = () => {
       <CapabilitiesProcess />
       <CapabilitiesProductStory />
       <CapabilitiesInfrastructure />
+      <VideoBanner />
       <CapabilitiesWomen />
       <CapabilitiesGroup />
     </div>

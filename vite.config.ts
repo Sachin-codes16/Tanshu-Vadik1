@@ -16,11 +16,9 @@ export default defineConfig(() => {
       watch: {},
       proxy: {
         '/api': {
-          target: 'https://tapi.checkour.work',
+          // Backend only serves over plain HTTP; port 443 is unreachable.
+          target: 'http://api.tanshuvaidik.com',
           changeOrigin: true,
-          // Upstream's TLS cert doesn't match its hostname; this only
-          // affects this Node-side proxy, not the browser connection.
-          secure: false,
           configure: (proxy) => {
             proxy.on('proxyReq', (proxyReq) => {
               // Stray cookies from unrelated local projects sharing the
